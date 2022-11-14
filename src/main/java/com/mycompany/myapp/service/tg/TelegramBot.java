@@ -120,9 +120,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         row.add("delete my data");
 
         keyboardRows.add(row);
-
         keyboardMarkup.setKeyboard(keyboardRows);
-
         message.setReplyMarkup(keyboardMarkup);
 
         try {
