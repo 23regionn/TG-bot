@@ -1,0 +1,133 @@
+
+entity TGUser{
+    	idTgUser Long,			
+    	firstName String,
+    	usertName String,
+    	registrationDate ZonedDateTime,
+    	userRole String,
+	isBuier Boolean,
+	is Sales Boolean,
+	isManager Boolean,
+	isAdmin Boolean,
+	dateFirsBuy ZonedDateTime,
+	dateLastBuy ZonedDateTime,
+	countDeals Long,
+	procentSuccesDeals BigDecimal;
+	// связь с каналами
+	// связь со сделками
+}
+
+entity Category{
+	name String,
+	countChanellInCategory Long,
+	relativeCategory BigDecimal,
+	countTotalDealsByCategory Long,
+	countDealsByCurrentMonth Long,
+	countDealsByLastMonth Long,
+	countDealsByCurrentWeek Long,
+	countDealsByLastWeek Long,
+	countDealsByCurrentDay Long,
+	countDealsByLastDay Long,
+	countDealsByCurrentYear Long,
+	countDealsByLastYear Long,
+	// все каналы по этой категории
+	// связь между категорями многий ко многим
+}
+
+entity СompatibilityCategory{ // совместимостиКатегорий
+	category1Id Long,
+	category2Id Long,
+	compatibilityBetweenCategory BigDecimal,
+	// запихнуть логи по совместимости категорий с датами
+	
+}
+
+entity СompatibilityChanell{ // совместимостиКанала
+	chanellId Long,
+	categoryId Long,
+	factorBetweenCategoryAndChannel BigDecimal, 
+	// запихнуть логи по совместимости канала с датами
+}
+
+
+entity Chanell{
+	name String,
+	link String,
+	score BigDecimal,
+	countSuccessDeal Long,
+	countUnSuccessDeal Long, 
+	countDealsForLastMonth Long,
+	countSuccessDealsForLastMonth Long,
+	status String,
+	dateFirsBuy ZonedDateTime,
+	dateLastBuy ZonedDateTime,
+	countSubscribers Long,
+	quailityFromAnotherSources BigDecimal
+	
+	// связь с владельцем канала
+	// связь с категориями
+}
+
+
+entity ContractBeforeDeal{
+	// написать связь с категорией
+	// написать связь с Каналом
+	// связь с пользователем покупателем	
+	// связь с пользователем продавцом
+	countsSubscriberBeforeBuyerChanell Long;
+	chanellSallesId Long; 
+	chanellBuierId Long; 
+	userSallesId Long;
+	userBuierId Long;
+	dateCreateContract ZonedDateTime,
+	confirmPayFromSalles Boolean, //подтверждение продавцом 		оплаты 
+	confirmContract Boolean, //согласие продавцом на 				размещение
+	// ссылка на объявление
+	postTextFromBuyer String, // текст поста
+	categoryChanel String, // категория канала 
+	linkChanel String, // ссылка на канал 
+}
+
+// задумка с тем, что для контракта нужна таблица, в котором 	хранится информация о посте... Таблица Пост
+
+
+entity Deal{
+	// написать связь с категорией
+	// написать связь с Каналом
+	// связь с пользователем покупателем	
+	// связь с пользователем продавцом
+	countsSubscriberBefore Long;
+	countsSubscriberAfter Long;
+	chanellSallesId Long; 
+	chanellBuierId Long; 
+	userSallesId Long;
+	userBuyerId Long;
+	dateDeal ZonedDateTime,
+	priceDeal BigDecimal,
+	lifeTimePost Long, // время жизни поста
+}
+
+
+entity PostForAdFromSales{ // пост для рекламы от продавца
+	// связь с объявлением многий ко одному
+	lengthLifePostAd Double, // длина жизни поста
+	placementTime Double, //время размещения
+	
+	commentToPost String, //комментарий к посту
+	requirementsToPosts String, // требования к посту
+}
+
+entity Ad{ // Объявление - обвёртка над постами
+	// свзяь с постами один ко многим
+	price Double,
+	name String,
+	number Long,
+	stopCategories String, // стоп категории
+	comment String, // комментарий
+	decription String // описание
+	// связь с каналом многий к одному
+	 
+	
+}
+
+
