@@ -12,7 +12,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -64,7 +66,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
-
+            String name = update.getMessage().getChat().getFirstName();
+            log.info("Сообщение от пользователя " + update.getMessage().getChat().getFirstName() + ", сообщение: " +  messageText);
 
             switch (messageText) {
                 case "/start":
@@ -72,35 +75,72 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
 
                 case "/help":
-                    sendMessage(chatId, HELP_TEXT);
+                    sendMessage(chatId, HELP_TEXT, name);
                     break;
 
                 case "weather":
-                    sendMessage(chatId, "Вы запросили погоду");
+                    sendMessage(chatId, "Вы запросили погоду", name);
                     break;
 
+                case "/register":
+                    register(chatId);
+                    break;
+                    
                 default:
-                    sendMessage(chatId, "Sorry, command was not recognized");
+                    sendMessage(chatId, "Sorry, command was not recognized", name);
             }
         }
 
 
     }
 
+    private void register(long chatId) {
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Do you really want to register?");
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        var yesButton = new InlineKeyboardButton();
+
+        yesButton.setText("Yes");
+        yesButton.setCallbackData("YES_BUTTON");
+
+        var noButton = new InlineKeyboardButton();
+
+        noButton.setText("No");
+        noButton.setCallbackData("NO_BUTTON");
+
+        rowInLine.add(yesButton);
+        rowInLine.add(noButton);
+
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error occurred: " + e.getMessage());
+        }
+    }
+
     private void startCommandReceived(long chatId, String name) {
 
         String answer = EmojiParser.parseToUnicode("Hi, " + name + ", nice to meet you!" + " :blush:" + " :grinning:");
-        log.info("Replied to user " + name);
-
-        sendMessage(chatId, answer);
+        sendMessage(chatId, answer, name);
     }
 
-    private void sendMessage(long chatId, String textToSend) {
+    private void sendMessage(long chatId, String textToSend, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
 
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        keyboardMarkup.setResizeKeyboard(true); // размер кнопок в клавиатуре
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
 
@@ -123,6 +163,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             execute(message);
+            log.info("Ответ пользователю " + name + ", answer: "+ message.getText());
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
