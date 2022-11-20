@@ -68,18 +68,19 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             switch (messageText) {
                 case "/start":
-
                     startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                     break;
 
                 case "/help":
-
                     sendMessage(chatId, HELP_TEXT);
                     break;
+
+                case "weather":
+                    sendMessage(chatId, "Вы запросили погоду");
+                    break;
+
                 default:
-
                     sendMessage(chatId, "Sorry, command was not recognized");
-
             }
         }
 
@@ -88,11 +89,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void startCommandReceived(long chatId, String name) {
 
-
         String answer = EmojiParser.parseToUnicode("Hi, " + name + ", nice to meet you!" + " :blush:" + " :grinning:");
-//        String answer = "Hi, " + name + ", nice to meet you!";
         log.info("Replied to user " + name);
-
 
         sendMessage(chatId, answer);
     }
