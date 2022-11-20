@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -67,7 +68,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
             String name = update.getMessage().getChat().getFirstName();
-            log.info("Сообщение от пользователя " + update.getMessage().getChat().getFirstName() + ", сообщение: " +  messageText);
+            log.info("Сообщение от пользователя " + name + ", сообщение: " +  messageText);
 
             switch (messageText) {
                 case "/start":
@@ -83,30 +84,67 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
 
                 case "/register":
-                    register(chatId);
+                    register(chatId, name);
                     break;
-                    
                 default:
                     sendMessage(chatId, "Sorry, command was not recognized", name);
             }
+        } else if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            long messageId = update.getCallbackQuery().getMessage().getMessageId(); // айди текущего сообщения
+            long chatId = update.getCallbackQuery().getMessage().getChatId();
+            String name = update.getMessage().getChat().getFirstName();
+            log.info("Сообщение от пользователя " + name + ", (нажата кнопка): " +  callbackData);
+
+            if(callbackData.equals("YES_BUTTON")){
+                String text = "You pressed YES button";
+                // Вместо отправки ответа ниже на кнопках - меняется сообщение
+                // в котором был задан вопрос
+                EditMessageText message = new EditMessageText();
+                message.setChatId(String.valueOf(chatId));
+                message.setText(text);
+                message.setMessageId((int) messageId);
+
+                try {
+                    execute(message);
+                    log.info("Ответ пользователю " + name + ", answer: "+ message.getText());
+                } catch (TelegramApiException e) {
+                    log.error("Error occurred: " + e.getMessage());
+                }
+            }
+            else if(callbackData.equals("NO_BUTTON")){
+                String text = "You pressed NO button";
+                EditMessageText message = new EditMessageText();
+                message.setChatId(String.valueOf(chatId));
+                message.setText(text);
+                message.setMessageId((int) messageId);
+
+                try {
+                    execute(message);
+                    log.info("Ответ пользователю " + name + ", answer: "+ message.getText());
+                } catch (TelegramApiException e) {
+                    log.error("Error occurred: " + e.getMessage());
+                }
+            }
         }
-
-
     }
 
-    private void register(long chatId) {
+    private void register(long chatId, String name){
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Do you really want to register?");
 
+        // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        // создание списка с кнопками в ответе на сообщение
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
         var yesButton = new InlineKeyboardButton();
 
-        yesButton.setText("Yes");
-        yesButton.setCallbackData("YES_BUTTON");
+        yesButton.setText("Yes"); // Содержимое ответа в кнопке
+        yesButton.setCallbackData("YES_BUTTON"); // Привязка кнопки к реагирование на YES_BUTTON в сообщении, типо когда ответ не текст а кол-бек
 
         var noButton = new InlineKeyboardButton();
 
@@ -123,6 +161,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             execute(message);
+            log.info("Ответ пользователю " + name + ", answer: "+ message.getText());
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
