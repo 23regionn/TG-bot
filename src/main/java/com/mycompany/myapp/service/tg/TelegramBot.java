@@ -5,6 +5,7 @@ import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -239,5 +240,18 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
+    }
+
+    @Scheduled(fixedDelay = 60000)
+    private void sendAds(){
+
+        /*var ads = adsRepository.findAll();
+        var users = userRepository.findAll();
+        for(Ads ad: ads) {
+            for (User user: users){
+                prepareAndSendMessage(user.getChatId(), ad.getAd());
+            }
+        }*/
+//        sendMessage(config.getOwnerId(), "textToSend", "Olezhan");
     }
 }
