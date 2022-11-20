@@ -10,6 +10,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -19,6 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +69,19 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
-            String name = update.getMessage().getChat().getFirstName();
-            log.info("Сообщение от пользователя " + name + ", сообщение: " +  messageText);
+            String nameForLog = update.getMessage().getChat().getFirstName();
+            log.info("Сообщение от пользователя " + nameForLog + ", сообщение: " +  messageText);
+
+            // Рассылка пользователям
+            if(messageText.contains("/send") && config.getOwnerId() == chatId) {
+                var textToSend = EmojiParser.parseToUnicode(messageText.substring(messageText.indexOf(" ")));
+                /*var users = userRepository.findAll();
+                for (User user: users){
+                    sendMessage(user.getChatId(), textToSend);
+                }*/
+                sendMessage(chatId, textToSend, nameForLog);
+            }
+
 
             switch (messageText) {
                 case "/start":
@@ -76,18 +89,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
 
                 case "/help":
-                    sendMessage(chatId, HELP_TEXT, name);
+                    sendMessage(chatId, HELP_TEXT, nameForLog);
                     break;
 
                 case "weather":
-                    sendMessage(chatId, "Вы запросили погоду", name);
+                    sendMessage(chatId, "Вы запросили погоду", nameForLog);
                     break;
 
                 case "/register":
-                    register(chatId, name);
+                    register(chatId, nameForLog);
                     break;
                 default:
-                    sendMessage(chatId, "Sorry, command was not recognized", name);
+                    sendMessage(chatId, "Sorry, command was not recognized", nameForLog);
             }
         } else if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
@@ -167,13 +180,33 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    /*private void registerUser(Message msg) {
+
+        if(userRepository.findById(msg.getChatId()).isEmpty()){
+
+            var chatId = msg.getChatId();
+            var chat = msg.getChat();
+
+            User user = new User();
+
+            user.setChatId(chatId);
+            user.setFirstName(chat.getFirstName());
+            user.setLastName(chat.getLastName());
+            user.setUserName(chat.getUserName());
+            user.setRegisteredAt(new Timestamp(System.currentTimeMillis()));
+
+            userRepository.save(user);
+            log.info("user saved: " + user);
+        }
+    }*/
+
     private void startCommandReceived(long chatId, String name) {
 
         String answer = EmojiParser.parseToUnicode("Hi, " + name + ", nice to meet you!" + " :blush:" + " :grinning:");
         sendMessage(chatId, answer, name);
     }
 
-    private void sendMessage(long chatId, String textToSend, String name) {
+    private void sendMessage(long chatId, String textToSend, String nameForLog) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
@@ -202,7 +235,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             execute(message);
-            log.info("Ответ пользователю " + name + ", answer: "+ message.getText());
+            log.info("Ответ пользователю " + nameForLog + ", answer: "+ message.getText());
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
