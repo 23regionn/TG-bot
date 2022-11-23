@@ -8,13 +8,13 @@ entity TGUser{
 	score Double,
 	isBlocked Boolean,
 	chatId Long,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
@@ -27,13 +27,13 @@ entity TGUserLog{
 	score Double,
 	isBlocked Boolean,
 	chatId Long,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
@@ -41,25 +41,25 @@ entity TGUserLog{
 entity Category{
 	name String,
 	countChanellInCategory Long,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity CategoryLog{
 	name String,
 	countChanellInCategory Long,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 
@@ -72,18 +72,18 @@ entity Chanell{
 	quailityFromAnotherSources Double,
 	priceDiapozon Double,
 	isModerate Boolean,
-	showChanellInTopByCategory Booalean,
+	showChanellInTopByCategory Boolean,
 	region String,
 	city String,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
-	/** текущая дата*/
+	/** С‚РµРєСѓС‰Р°СЏ РґР°С‚Р°*/
 	currentDate ZonedDateTime,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity ChanellLog{
@@ -95,147 +95,147 @@ entity ChanellLog{
 	quailityFromAnotherSources Double,
 	priceDiapozon Double,
 	isModerate Boolean,
-	showChanellInTopByCategory Booalean,
+	showChanellInTopByCategory Boolean,
 	region String,
 	city String,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
-	/** текущая дата*/
+	/** С‚РµРєСѓС‰Р°СЏ РґР°С‚Р°*/
 	currentDate ZonedDateTime,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 
 
 entity Review{
-	/** отзыв активен или не активен = прошел или не прошел*/
+	/** РѕС‚Р·С‹РІ Р°РєС‚РёРІРµРЅ РёР»Рё РЅРµ Р°РєС‚РёРІРµРЅ = РїСЂРѕС€РµР» РёР»Рё РЅРµ РїСЂРѕС€РµР»*/
 	isActive Boolean, 
-	/** текст отзыва */
+	/** С‚РµРєСЃС‚ РѕС‚Р·С‹РІР° */
 	text String,
-	/** айди пользователя который написал */
+	/** Р°Р№РґРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РєРѕС‚РѕСЂС‹Р№ РЅР°РїРёСЃР°Р» */
 	userId Long,
-	/** ссылка на канал продавца рекламы от пользователя*/
+	/** СЃСЃС‹Р»РєР° РЅР° РєР°РЅР°Р» РїСЂРѕРґР°РІС†Р° СЂРµРєР»Р°РјС‹ РѕС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ*/
 	linkToSaller String,
-	/** ссылка на админа, который пропустил отзыв  */
+	/** СЃСЃС‹Р»РєР° РЅР° Р°РґРјРёРЅР°, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРїСѓСЃС‚РёР» РѕС‚Р·С‹РІ  */
 	adminId Long,
-	/** отзыв положительный или негативный*/
+	/** РѕС‚Р·С‹РІ РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№ РёР»Рё РЅРµРіР°С‚РёРІРЅС‹Р№*/
 	isNegative Boolean
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
 entity OfferFromCostumers{
-	/** текст предложения, обратная связь*/
+	/** С‚РµРєСЃС‚ РїСЂРµРґР»РѕР¶РµРЅРёСЏ, РѕР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ*/
 	text String, 
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
-	/** ссылка на админа, который пропустил отзыв  */
+	/** СЃСЃС‹Р»РєР° РЅР° Р°РґРјРёРЅР°, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРїСѓСЃС‚РёР» РѕС‚Р·С‹РІ  */
 	adminId Long,
-	/** предложение = обработали или нет */
+	/** РїСЂРµРґР»РѕР¶РµРЅРёРµ = РѕР±СЂР°Р±РѕС‚Р°Р»Рё РёР»Рё РЅРµС‚ */
 	isActive Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity OfferFromCostumersLog{
-	/** текст предложения, обратная связь*/
+	/** С‚РµРєСЃС‚ РїСЂРµРґР»РѕР¶РµРЅРёСЏ, РѕР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ*/
 	text String, 
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
-	/** ссылка на админа, который пропустил отзыв  */
+	/** СЃСЃС‹Р»РєР° РЅР° Р°РґРјРёРЅР°, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРїСѓСЃС‚РёР» РѕС‚Р·С‹РІ  */
 	adminId Long,
-	/** предложение = обработали или нет */
+	/** РїСЂРµРґР»РѕР¶РµРЅРёРµ = РѕР±СЂР°Р±РѕС‚Р°Р»Рё РёР»Рё РЅРµС‚ */
 	isActive Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 
 entity Pays{
-	/** дата оплаты подписки*/	
+	/** РґР°С‚Р° РѕРїР»Р°С‚С‹ РїРѕРґРїРёСЃРєРё*/	
 	datePaysSubscriptions ZonedDateTime,
-	/** за какой канал он оплатил, за ссылку на какой канал*/
+	/** Р·Р° РєР°РєРѕР№ РєР°РЅР°Р» РѕРЅ РѕРїР»Р°С‚РёР», Р·Р° СЃСЃС‹Р»РєСѓ РЅР° РєР°РєРѕР№ РєР°РЅР°Р»*/
 	link String,
-	/** сумма оплаты*/
+	/** СЃСѓРјРјР° РѕРїР»Р°С‚С‹*/
 	sumForPays Double,
-	/** тип покупки*/
+	/** С‚РёРї РїРѕРєСѓРїРєРё*/
 	typeBuy String,
-	/** категория */
+	/** РєР°С‚РµРіРѕСЂРёСЏ */
 	category String,
-	/** тип покупки long*/
+	/** С‚РёРї РїРѕРєСѓРїРєРё long*/
 	typeBuyLong Long,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity LinksByCategoryInTop{
-	/** категория */
+	/** РєР°С‚РµРіРѕСЂРёСЏ */
 	category String,
-	/** ценовой диапозон*/
+	/** С†РµРЅРѕРІРѕР№ РґРёР°РїРѕР·РѕРЅ*/
 	priceDiapozon Double,
-	/** ссылку на канал*/
+	/** СЃСЃС‹Р»РєСѓ РЅР° РєР°РЅР°Р»*/
 	link String,
-	/** ссылка на админа*/
+	/** СЃСЃС‹Р»РєР° РЅР° Р°РґРјРёРЅР°*/
 	chanellAdminId 	Long,
-	/** дата размещения ссылки */
+	/** РґР°С‚Р° СЂР°Р·РјРµС‰РµРЅРёСЏ СЃСЃС‹Р»РєРё */
     	datePostLinkStart ZonedDateTime,
-	/** дата окончания размещения */
+	/** РґР°С‚Р° РѕРєРѕРЅС‡Р°РЅРёСЏ СЂР°Р·РјРµС‰РµРЅРёСЏ */
     	datePostLinkEnd ZonedDateTime,
-	/** место среди ссылок */
-	positionBetweenLinks,
+	/** РјРµСЃС‚Рѕ СЃСЂРµРґРё СЃСЃС‹Р»РѕРє */
+	positionBetweenLinks Long,
 	showLink Boolean,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
 entity LinksByCategoryInTopLog{
-	/** категория */
+	/** РєР°С‚РµРіРѕСЂРёСЏ */
 	category String,
-	/** ценовой диапозон*/
+	/** С†РµРЅРѕРІРѕР№ РґРёР°РїРѕР·РѕРЅ*/
 	priceDiapozon Double,
-	/** ссылку на канал*/
+	/** СЃСЃС‹Р»РєСѓ РЅР° РєР°РЅР°Р»*/
 	link String,
-	/** ссылка на админа*/
+	/** СЃСЃС‹Р»РєР° РЅР° Р°РґРјРёРЅР°*/
 	chanellAdminId 	Long,
-	/** дата размещения ссылки */
+	/** РґР°С‚Р° СЂР°Р·РјРµС‰РµРЅРёСЏ СЃСЃС‹Р»РєРё */
     	datePostLinkStart ZonedDateTime,
-	/** дата окончания размещения */
+	/** РґР°С‚Р° РѕРєРѕРЅС‡Р°РЅРёСЏ СЂР°Р·РјРµС‰РµРЅРёСЏ */
     	datePostLinkEnd ZonedDateTime,
-	/** место среди ссылок */
-	positionBetweenLinks,
+	/** РјРµСЃС‚Рѕ СЃСЂРµРґРё СЃСЃС‹Р»РѕРє */
+	positionBetweenLinks Long,
 	showLink Boolean,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
@@ -243,97 +243,97 @@ entity LinksByCategoryInTopLog{
 
 
 entity TradeShop{
-	/** категория */
+	/** РєР°С‚РµРіРѕСЂРёСЏ */
 	category String,
-	/** ценовой диапозон*/
+	/** С†РµРЅРѕРІРѕР№ РґРёР°РїРѕР·РѕРЅ*/
 	priceDiapozon Double,
-	/** текущая цена */
+	/** С‚РµРєСѓС‰Р°СЏ С†РµРЅР° */
 	currentPrice Double,
-	/** место- какая строка из пяти */
+	/** РјРµСЃС‚Рѕ- РєР°РєР°СЏ СЃС‚СЂРѕРєР° РёР· РїСЏС‚Рё */
 	whiceLineFromAllCountLines Long,
-	/** айди текущего победителя*/
+	/** Р°Р№РґРё С‚РµРєСѓС‰РµРіРѕ РїРѕР±РµРґРёС‚РµР»СЏ*/
 	tgUserIdWinner Long,
-	/** дата размещения*/
+	/** РґР°С‚Р° СЂР°Р·РјРµС‰РµРЅРёСЏ*/
 	inWhatDateWillPostThisLinks Long,
-	/** дата окончания торгов */
+	/** РґР°С‚Р° РѕРєРѕРЅС‡Р°РЅРёСЏ С‚РѕСЂРіРѕРІ */
 	dateFinishTorgs ZonedDateTime,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
 entity TradeShopLog{
-	/** категория */
+	/** РєР°С‚РµРіРѕСЂРёСЏ */
 	category String,
-	/** ценовой диапозон*/
+	/** С†РµРЅРѕРІРѕР№ РґРёР°РїРѕР·РѕРЅ*/
 	priceDiapozon Double,
-	/** текущая цена */
+	/** С‚РµРєСѓС‰Р°СЏ С†РµРЅР° */
 	currentPrice Double,
-	/** место- какая строка из пяти */
+	/** РјРµСЃС‚Рѕ- РєР°РєР°СЏ СЃС‚СЂРѕРєР° РёР· РїСЏС‚Рё */
 	whiceLineFromAllCountLines Long,
-	/** айди текущего победителя*/
+	/** Р°Р№РґРё С‚РµРєСѓС‰РµРіРѕ РїРѕР±РµРґРёС‚РµР»СЏ*/
 	tgUserIdWinner Long,
-	/** дата размещения*/
+	/** РґР°С‚Р° СЂР°Р·РјРµС‰РµРЅРёСЏ*/
 	inWhatDateWillPostThisLinks Long,
-	/** дата окончания торгов */
+	/** РґР°С‚Р° РѕРєРѕРЅС‡Р°РЅРёСЏ С‚РѕСЂРіРѕРІ */
 	dateFinishTorgs ZonedDateTime,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 
 }
 
 
 entity MembersTradeDeal{
-	/** айди текущего пользователя */
+	/** Р°Р№РґРё С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ */
 	tgUserIdCurrent Long,
-	/** предложение цена*/
+	/** РїСЂРµРґР»РѕР¶РµРЅРёРµ С†РµРЅР°*/
 	priceOffer Double,
-	/** дата текущая*/
+	/** РґР°С‚Р° С‚РµРєСѓС‰Р°СЏ*/
 	currentDate ZonedDateTime,
-	/** победитель? */
+	/** РїРѕР±РµРґРёС‚РµР»СЊ? */
 	isWinner Boolean,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity MembersTradeDealLog{
-	/** айди текущего пользователя */
+	/** Р°Р№РґРё С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ */
 	tgUserIdCurrent Long,
-	/** предложение цена*/
+	/** РїСЂРµРґР»РѕР¶РµРЅРёРµ С†РµРЅР°*/
 	priceOffer Double,
-	/** дата текущая*/
+	/** РґР°С‚Р° С‚РµРєСѓС‰Р°СЏ*/
 	currentDate ZonedDateTime,
-	/** победитель? */
+	/** РїРѕР±РµРґРёС‚РµР»СЊ? */
 	isWinner Boolean,
-	/** удаленный*/
+	/** СѓРґР°Р»РµРЅРЅС‹Р№*/
 	isDelete Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 
 entity Balance{
 	balace Double,
 	userId Long,
-	/** сумма заморозки для торгов*/
+	/** СЃСѓРјРјР° Р·Р°РјРѕСЂРѕР·РєРё РґР»СЏ С‚РѕСЂРіРѕРІ*/
 	frostSum Double,
 	dateLastAddBalance ZonedDateTime,
 	dateLastMinusFromBalance ZonedDateTime,
@@ -341,13 +341,13 @@ entity Balance{
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 entity BalanceLog{
 	balace Double,
 	userId Long,
-	/** сумма заморозки для торгов*/
+	/** СЃСѓРјРјР° Р·Р°РјРѕСЂРѕР·РєРё РґР»СЏ С‚РѕСЂРіРѕРІ*/
 	frostSum Double,
 	dateLastAddBalance ZonedDateTime,
 	dateLastMinusFromBalance ZonedDateTime,
@@ -355,28 +355,24 @@ entity BalanceLog{
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
 
 
 entity ConfigTable{
-	/** поле 1 для проверки статусов*/
-	showInfoByСondition1 Boolean,
-	/** поле 2 для проверки статусов*/
-	showInfoByСondition2 Boolean,
-	/** поле 3 для проверки статусов*/
-	showInfoByСondition3 Boolean,
-	/** поле 4 для проверки статусов*/
-	showInfoByСondition4 Boolean,
-	/** поле 5 для проверки статусов*/
-	showInfoByСondition5 Boolean,
+
+	dateOne ZonedDateTime,
+	dateTwo ZonedDateTime,
+	longOne Long,
+	stringOne String,
+	booleanOne Boolean,
+	booleanTwo Boolean,
 	date1 ZonedDateTime,
 	date2 ZonedDateTime,
 	long1 Long,
 	string1 String,
-	Boolean1 Boolean
+	boolean1 Boolean
 }
-
 
 
 relationship OneToMany {
@@ -400,11 +396,16 @@ relationship OneToOne {
 	TGUser to Balance
 }
 
-
 relationship ManyToMany {
   Category{chanellId} to Chanell{categoryId},
   Category{linksByCategoryInTopId} to 	LinksByCategoryInTop{categoryId}
 }
+
+
+
+
+
+
 
 
 
