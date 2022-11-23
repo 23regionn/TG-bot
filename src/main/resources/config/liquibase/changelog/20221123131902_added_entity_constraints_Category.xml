@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity Category.
+    -->
+    <changeSet id="20221123131902-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="rel_category__chanell_id"
+                                 constraintName="fk_rel_category__chanell_id__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+
+        <addForeignKeyConstraint baseColumnNames="chanell_id_id"
+                                 baseTableName="rel_category__chanell_id"
+                                 constraintName="fk_rel_category__chanell_id__chanell_id_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="chanell"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="rel_category__links_by_category_in_top_id"
+                                 constraintName="fk_rel_category__links_by_category_in_top_id__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+
+        <addForeignKeyConstraint baseColumnNames="links_by_category_in_top_id_id"
+                                 baseTableName="rel_category__links_by_category_in_top_id"
+                                 constraintName="fk_rel_category__links_by_categ__links_by_category_in_top_9b_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="links_by_category_in_top"/>
+    </changeSet>
+</databaseChangeLog>

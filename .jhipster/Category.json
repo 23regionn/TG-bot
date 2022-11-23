@@ -1,0 +1,70 @@
+{
+  "name": "Category",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "countChanellInCategory",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "categoryLog",
+      "otherEntityRelationshipName": "category",
+      "relationshipName": "categoryLog"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "chanell",
+      "otherEntityRelationshipName": "categoryId",
+      "relationshipName": "chanellId",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "linksByCategoryInTop",
+      "otherEntityRelationshipName": "categoryId",
+      "relationshipName": "linksByCategoryInTopId",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "category",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131902"
+}

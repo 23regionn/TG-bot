@@ -1,0 +1,97 @@
+{
+  "name": "ChanellLog",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "score",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "countSubscribers",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "quailityFromAnotherSources",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "priceDiapozon",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isModerate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "showChanellInTopByCategory",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "region",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "currentDate",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "текущая дата"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "chanell",
+      "otherEntityRelationshipName": "chanellLog",
+      "relationshipName": "chanell"
+    }
+  ],
+  "entityTableName": "chanell_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131905"
+}

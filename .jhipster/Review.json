@@ -1,0 +1,78 @@
+{
+  "name": "Review",
+  "fields": [
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean",
+      "javadoc": "отзыв активен или не активен = прошел или не прошел"
+    },
+    {
+      "fieldName": "text",
+      "fieldType": "String",
+      "javadoc": "текст отзыва"
+    },
+    {
+      "fieldName": "userId",
+      "fieldType": "Long",
+      "javadoc": "айди пользователя который написал"
+    },
+    {
+      "fieldName": "linkToSaller",
+      "fieldType": "String",
+      "javadoc": "ссылка на канал продавца рекламы от пользователя"
+    },
+    {
+      "fieldName": "adminId",
+      "fieldType": "Long",
+      "javadoc": "ссылка на админа, который пропустил отзыв"
+    },
+    {
+      "fieldName": "isNegative",
+      "fieldType": "Boolean",
+      "javadoc": "отзыв положительный или негативный"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "review",
+      "relationshipName": "tGUser"
+    }
+  ],
+  "entityTableName": "review",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131906"
+}

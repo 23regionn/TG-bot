@@ -41,6 +41,28 @@
     "jwtSecretKey": "ZjEzZTEyZGFiYzU5ZDQ3NGIxYTU1Y2JjMzRkZTE3MzFiOWI4OGY5MTgzNGJlOTA2NTA2NzRiYTk1NzQ5Nzk2YmNmMzA1MjRjMDQzNWNiNTk5MzZlOWVhMzAxNWU3OWEwZGZmZDIyMmNmZmQyZjRiZGU0YmQ3NzUwMmVlYzNjOGI=",
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en", "fr"]
+    "languages": ["en", "fr"],
+    "entities": [
+      "TGUser",
+      "TGUserLog",
+      "Category",
+      "CategoryLog",
+      "Chanell",
+      "ChanellLog",
+      "Review",
+      "OfferFromCostumers",
+      "OfferFromCostumersLog",
+      "Pays",
+      "LinksByCategoryInTop",
+      "LinksByCategoryInTopLog",
+      "TradeShop",
+      "TradeShopLog",
+      "MembersTradeDeal",
+      "MembersTradeDealLog",
+      "Balance",
+      "BalanceLog",
+      "ConfigTable"
+    ],
+    "lastLiquibaseTimestamp": 1669209558000
   }
 }

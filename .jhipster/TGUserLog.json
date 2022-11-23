@@ -1,0 +1,80 @@
+{
+  "name": "TGUserLog",
+  "fields": [
+    {
+      "fieldName": "idTgUser",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "registrationDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "userRole",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isAdmin",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "score",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isBlocked",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "chatId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "tGUserLog",
+      "relationshipName": "tGUser"
+    }
+  ],
+  "entityTableName": "tg_user_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131901"
+}

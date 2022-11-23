@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity OfferFromCostumersLog.
+    -->
+    <changeSet id="20221123131908-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="offer_from_costumers_id"
+                                 baseTableName="offer_from_costumers_log"
+                                 constraintName="fk_offer_from_costumers_log__offer_from_costumers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="offer_from_costumers"/>
+    </changeSet>
+</databaseChangeLog>

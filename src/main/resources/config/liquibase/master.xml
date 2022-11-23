@@ -15,7 +15,42 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131900_added_entity_TGUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131901_added_entity_TGUserLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131902_added_entity_Category.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131903_added_entity_CategoryLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131904_added_entity_Chanell.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131905_added_entity_ChanellLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131906_added_entity_Review.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131907_added_entity_OfferFromCostumers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131908_added_entity_OfferFromCostumersLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131909_added_entity_Pays.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131910_added_entity_LinksByCategoryInTop.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131911_added_entity_LinksByCategoryInTopLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131912_added_entity_TradeShop.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131913_added_entity_TradeShopLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131914_added_entity_MembersTradeDeal.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131915_added_entity_MembersTradeDealLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131916_added_entity_Balance.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131917_added_entity_BalanceLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131918_added_entity_ConfigTable.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20221123131900_added_entity_constraints_TGUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131901_added_entity_constraints_TGUserLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131902_added_entity_constraints_Category.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131903_added_entity_constraints_CategoryLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131904_added_entity_constraints_Chanell.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131905_added_entity_constraints_ChanellLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131906_added_entity_constraints_Review.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131907_added_entity_constraints_OfferFromCostumers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131908_added_entity_constraints_OfferFromCostumersLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131909_added_entity_constraints_Pays.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131910_added_entity_constraints_LinksByCategoryInTop.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131911_added_entity_constraints_LinksByCategoryInTopLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131913_added_entity_constraints_TradeShopLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131914_added_entity_constraints_MembersTradeDeal.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131915_added_entity_constraints_MembersTradeDealLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221123131917_added_entity_constraints_BalanceLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

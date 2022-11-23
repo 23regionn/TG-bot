@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity LinksByCategoryInTop.
+    -->
+    <changeSet id="20221123131910-1" author="jhipster">
+        <createTable tableName="links_by_category_in_top">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="category" type="varchar(255)" remarks="категория">
+                <constraints nullable="true" />
+            </column>
+            <column name="price_diapozon" type="double" remarks="ценовой диапозон">
+                <constraints nullable="true" />
+            </column>
+            <column name="link" type="varchar(255)" remarks="ссылку на канал">
+                <constraints nullable="true" />
+            </column>
+            <column name="chanell_admin_id" type="bigint" remarks="ссылка на админа">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_post_link_start" type="${datetimeType}" remarks="дата размещения ссылки">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_post_link_end" type="${datetimeType}" remarks="дата окончания размещения">
+                <constraints nullable="true" />
+            </column>
+            <column name="position_between_links" type="bigint" remarks="место среди ссылок">
+                <constraints nullable="true" />
+            </column>
+            <column name="show_link" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_delete" type="boolean" remarks="удаленный">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_1" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_2" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="long_1" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="string_1" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="boolean_1" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="chanell_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="links_by_category_in_top" columnName="date_post_link_start" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="links_by_category_in_top" columnName="date_post_link_end" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="links_by_category_in_top" columnName="date_1" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="links_by_category_in_top" columnName="date_2" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20221123131910-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/links_by_category_in_top.csv"
+                  separator=";"
+                  tableName="links_by_category_in_top">
+            <column name="id" type="numeric"/>
+            <column name="category" type="string"/>
+            <column name="price_diapozon" type="numeric"/>
+            <column name="link" type="string"/>
+            <column name="chanell_admin_id" type="numeric"/>
+            <column name="date_post_link_start" type="${datetimeType}"/>
+            <column name="date_post_link_end" type="${datetimeType}"/>
+            <column name="position_between_links" type="numeric"/>
+            <column name="show_link" type="boolean"/>
+            <column name="is_delete" type="boolean"/>
+            <column name="date_1" type="${datetimeType}"/>
+            <column name="date_2" type="${datetimeType}"/>
+            <column name="long_1" type="numeric"/>
+            <column name="string_1" type="string"/>
+            <column name="boolean_1" type="boolean"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

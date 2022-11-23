@@ -1,0 +1,116 @@
+{
+  "name": "Chanell",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "score",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "countSubscribers",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "quailityFromAnotherSources",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "priceDiapozon",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isModerate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "showChanellInTopByCategory",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "region",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "currentDate",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "текущая дата"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "linksByCategoryInTop",
+      "otherEntityRelationshipName": "chanell",
+      "relationshipName": "linksByCategoryInTop"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "chanellLog",
+      "otherEntityRelationshipName": "chanell",
+      "relationshipName": "chanellLog"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "chanell",
+      "relationshipName": "tGUser"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "chanellId",
+      "relationshipName": "categoryId",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "chanell",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131904"
+}

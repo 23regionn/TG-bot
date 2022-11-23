@@ -1,0 +1,69 @@
+{
+  "name": "OfferFromCostumers",
+  "fields": [
+    {
+      "fieldName": "text",
+      "fieldType": "String",
+      "javadoc": "текст предложения, обратная связь"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "adminId",
+      "fieldType": "Long",
+      "javadoc": "ссылка на админа, который пропустил отзыв"
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean",
+      "javadoc": "предложение = обработали или нет"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "offerFromCostumersLog",
+      "otherEntityRelationshipName": "offerFromCostumers",
+      "relationshipName": "offerFromCostumersLog"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "offerFromCostumers",
+      "relationshipName": "tGUser"
+    }
+  ],
+  "entityTableName": "offer_from_costumers",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131907"
+}

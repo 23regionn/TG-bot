@@ -1,0 +1,73 @@
+{
+  "name": "Pays",
+  "fields": [
+    {
+      "fieldName": "datePaysSubscriptions",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "дата оплаты подписки"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String",
+      "javadoc": "за какой канал он оплатил, за ссылку на какой канал"
+    },
+    {
+      "fieldName": "sumForPays",
+      "fieldType": "Double",
+      "javadoc": "сумма оплаты"
+    },
+    {
+      "fieldName": "typeBuy",
+      "fieldType": "String",
+      "javadoc": "тип покупки"
+    },
+    {
+      "fieldName": "category",
+      "fieldType": "String",
+      "javadoc": "категория"
+    },
+    {
+      "fieldName": "typeBuyLong",
+      "fieldType": "Long",
+      "javadoc": "тип покупки long"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "pays",
+      "relationshipName": "tGUser"
+    }
+  ],
+  "entityTableName": "pays",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131909"
+}

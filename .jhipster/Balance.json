@@ -1,0 +1,71 @@
+{
+  "name": "Balance",
+  "fields": [
+    {
+      "fieldName": "balace",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "userId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "frostSum",
+      "fieldType": "Double",
+      "javadoc": "сумма заморозки для торгов"
+    },
+    {
+      "fieldName": "dateLastAddBalance",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "dateLastMinusFromBalance",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "balanceLog",
+      "otherEntityRelationshipName": "balance",
+      "relationshipName": "balanceLog"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "tGUser",
+      "otherEntityRelationshipName": "balance",
+      "relationshipName": "tGUser",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "balance",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131916"
+}

@@ -1,0 +1,111 @@
+{
+  "name": "TGUser",
+  "fields": [
+    {
+      "fieldName": "idTgUser",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "registrationDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "userRole",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isAdmin",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "score",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isBlocked",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "chatId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "balance",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "balance",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "chanell",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "chanell"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "offerFromCostumers",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "offerFromCostumers"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "review",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "review"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "pays",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "pays"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "tGUserLog",
+      "otherEntityRelationshipName": "tGUser",
+      "relationshipName": "tGUserLog"
+    }
+  ],
+  "entityTableName": "tg_user",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131900"
+}

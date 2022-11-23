@@ -1,0 +1,83 @@
+{
+  "name": "TradeShopLog",
+  "fields": [
+    {
+      "fieldName": "category",
+      "fieldType": "String",
+      "javadoc": "категория"
+    },
+    {
+      "fieldName": "priceDiapozon",
+      "fieldType": "Double",
+      "javadoc": "ценовой диапозон"
+    },
+    {
+      "fieldName": "currentPrice",
+      "fieldType": "Double",
+      "javadoc": "текущая цена"
+    },
+    {
+      "fieldName": "whiceLineFromAllCountLines",
+      "fieldType": "Long",
+      "javadoc": "место- какая строка из пяти"
+    },
+    {
+      "fieldName": "tgUserIdWinner",
+      "fieldType": "Long",
+      "javadoc": "айди текущего победителя"
+    },
+    {
+      "fieldName": "inWhatDateWillPostThisLinks",
+      "fieldType": "Long",
+      "javadoc": "дата размещения"
+    },
+    {
+      "fieldName": "dateFinishTorgs",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "дата окончания торгов"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tradeShop",
+      "otherEntityRelationshipName": "tradeShopLog",
+      "relationshipName": "tradeShop"
+    }
+  ],
+  "entityTableName": "trade_shop_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131913"
+}

@@ -1,0 +1,60 @@
+{
+  "name": "ConfigTable",
+  "fields": [
+    {
+      "fieldName": "dateOne",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "dateTwo",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "longOne",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "stringOne",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "booleanOne",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "booleanTwo",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "config_table",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131918"
+}

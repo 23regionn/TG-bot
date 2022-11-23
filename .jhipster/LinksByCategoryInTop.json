@@ -1,0 +1,100 @@
+{
+  "name": "LinksByCategoryInTop",
+  "fields": [
+    {
+      "fieldName": "category",
+      "fieldType": "String",
+      "javadoc": "категория"
+    },
+    {
+      "fieldName": "priceDiapozon",
+      "fieldType": "Double",
+      "javadoc": "ценовой диапозон"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String",
+      "javadoc": "ссылку на канал"
+    },
+    {
+      "fieldName": "chanellAdminId",
+      "fieldType": "Long",
+      "javadoc": "ссылка на админа"
+    },
+    {
+      "fieldName": "datePostLinkStart",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "дата размещения ссылки"
+    },
+    {
+      "fieldName": "datePostLinkEnd",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "дата окончания размещения"
+    },
+    {
+      "fieldName": "positionBetweenLinks",
+      "fieldType": "Long",
+      "javadoc": "место среди ссылок"
+    },
+    {
+      "fieldName": "showLink",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isDelete",
+      "fieldType": "Boolean",
+      "javadoc": "удаленный"
+    },
+    {
+      "fieldName": "date1",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date2",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "long1",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "string1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "boolean1",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "linksByCategoryInTopLog",
+      "otherEntityRelationshipName": "linksByCategoryInTop",
+      "relationshipName": "linksByCategoryInTopLog"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "chanell",
+      "otherEntityRelationshipName": "linksByCategoryInTop",
+      "relationshipName": "chanell"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "linksByCategoryInTopId",
+      "relationshipName": "categoryId",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "links_by_category_in_top",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20221123131910"
+}
