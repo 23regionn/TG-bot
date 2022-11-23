@@ -1,0 +1,412 @@
+
+entity TGUser{
+    	idTgUser Long,			
+    	firstName String,
+    	registrationDate ZonedDateTime,
+    	userRole String,
+	isAdmin Boolean,
+	score Double,
+	isBlocked Boolean,
+	chatId Long,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+entity TGUserLog{
+    	idTgUser Long,			
+    	firstName String,
+    	registrationDate ZonedDateTime,
+    	userRole String,
+	isAdmin Boolean,
+	score Double,
+	isBlocked Boolean,
+	chatId Long,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+
+entity Category{
+	name String,
+	countChanellInCategory Long,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity CategoryLog{
+	name String,
+	countChanellInCategory Long,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+entity Chanell{
+	name String,
+	link String,
+	score Double,
+	status String,
+	countSubscribers Long,
+	quailityFromAnotherSources Double,
+	priceDiapozon Double,
+	isModerate Boolean,
+	showChanellInTopByCategory Booalean,
+	region String,
+	city String,
+	/** удаленный*/
+	isDelete Boolean,
+	/** текущая дата*/
+	currentDate ZonedDateTime,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity ChanellLog{
+	name String,
+	link String,
+	score Double,
+	status String,
+	countSubscribers Long,
+	quailityFromAnotherSources Double,
+	priceDiapozon Double,
+	isModerate Boolean,
+	showChanellInTopByCategory Booalean,
+	region String,
+	city String,
+	/** удаленный*/
+	isDelete Boolean,
+	/** текущая дата*/
+	currentDate ZonedDateTime,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+
+entity Review{
+	/** отзыв активен или не активен = прошел или не прошел*/
+	isActive Boolean, 
+	/** текст отзыва */
+	text String,
+	/** айди пользователя который написал */
+	userId Long,
+	/** ссылка на канал продавца рекламы от пользователя*/
+	linkToSaller String,
+	/** ссылка на админа, который пропустил отзыв  */
+	adminId Long,
+	/** отзыв положительный или негативный*/
+	isNegative Boolean
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+entity OfferFromCostumers{
+	/** текст предложения, обратная связь*/
+	text String, 
+	/** удаленный*/
+	isDelete Boolean,
+	/** ссылка на админа, который пропустил отзыв  */
+	adminId Long,
+	/** предложение = обработали или нет */
+	isActive Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity OfferFromCostumersLog{
+	/** текст предложения, обратная связь*/
+	text String, 
+	/** удаленный*/
+	isDelete Boolean,
+	/** ссылка на админа, который пропустил отзыв  */
+	adminId Long,
+	/** предложение = обработали или нет */
+	isActive Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+entity Pays{
+	/** дата оплаты подписки*/	
+	datePaysSubscriptions ZonedDateTime,
+	/** за какой канал он оплатил, за ссылку на какой канал*/
+	link String,
+	/** сумма оплаты*/
+	sumForPays Double,
+	/** тип покупки*/
+	typeBuy String,
+	/** категория */
+	category String,
+	/** тип покупки long*/
+	typeBuyLong Long,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity LinksByCategoryInTop{
+	/** категория */
+	category String,
+	/** ценовой диапозон*/
+	priceDiapozon Double,
+	/** ссылку на канал*/
+	link String,
+	/** ссылка на админа*/
+	chanellAdminId 	Long,
+	/** дата размещения ссылки */
+    	datePostLinkStart ZonedDateTime,
+	/** дата окончания размещения */
+    	datePostLinkEnd ZonedDateTime,
+	/** место среди ссылок */
+	positionBetweenLinks,
+	showLink Boolean,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+entity LinksByCategoryInTopLog{
+	/** категория */
+	category String,
+	/** ценовой диапозон*/
+	priceDiapozon Double,
+	/** ссылку на канал*/
+	link String,
+	/** ссылка на админа*/
+	chanellAdminId 	Long,
+	/** дата размещения ссылки */
+    	datePostLinkStart ZonedDateTime,
+	/** дата окончания размещения */
+    	datePostLinkEnd ZonedDateTime,
+	/** место среди ссылок */
+	positionBetweenLinks,
+	showLink Boolean,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+
+
+
+entity TradeShop{
+	/** категория */
+	category String,
+	/** ценовой диапозон*/
+	priceDiapozon Double,
+	/** текущая цена */
+	currentPrice Double,
+	/** место- какая строка из пяти */
+	whiceLineFromAllCountLines Long,
+	/** айди текущего победителя*/
+	tgUserIdWinner Long,
+	/** дата размещения*/
+	inWhatDateWillPostThisLinks Long,
+	/** дата окончания торгов */
+	dateFinishTorgs ZonedDateTime,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+entity TradeShopLog{
+	/** категория */
+	category String,
+	/** ценовой диапозон*/
+	priceDiapozon Double,
+	/** текущая цена */
+	currentPrice Double,
+	/** место- какая строка из пяти */
+	whiceLineFromAllCountLines Long,
+	/** айди текущего победителя*/
+	tgUserIdWinner Long,
+	/** дата размещения*/
+	inWhatDateWillPostThisLinks Long,
+	/** дата окончания торгов */
+	dateFinishTorgs ZonedDateTime,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+
+}
+
+
+entity MembersTradeDeal{
+	/** айди текущего пользователя */
+	tgUserIdCurrent Long,
+	/** предложение цена*/
+	priceOffer Double,
+	/** дата текущая*/
+	currentDate ZonedDateTime,
+	/** победитель? */
+	isWinner Boolean,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity MembersTradeDealLog{
+	/** айди текущего пользователя */
+	tgUserIdCurrent Long,
+	/** предложение цена*/
+	priceOffer Double,
+	/** дата текущая*/
+	currentDate ZonedDateTime,
+	/** победитель? */
+	isWinner Boolean,
+	/** удаленный*/
+	isDelete Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+entity Balance{
+	balace Double,
+	userId Long,
+	/** сумма заморозки для торгов*/
+	frostSum Double,
+	dateLastAddBalance ZonedDateTime,
+	dateLastMinusFromBalance ZonedDateTime,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+entity BalanceLog{
+	balace Double,
+	userId Long,
+	/** сумма заморозки для торгов*/
+	frostSum Double,
+	dateLastAddBalance ZonedDateTime,
+	dateLastMinusFromBalance ZonedDateTime,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+entity ConfigTable{
+	/** поле 1 для проверки статусов*/
+	showInfoByСondition1 Boolean,
+	/** поле 2 для проверки статусов*/
+	showInfoByСondition2 Boolean,
+	/** поле 3 для проверки статусов*/
+	showInfoByСondition3 Boolean,
+	/** поле 4 для проверки статусов*/
+	showInfoByСondition4 Boolean,
+	/** поле 5 для проверки статусов*/
+	showInfoByСondition5 Boolean,
+	date1 ZonedDateTime,
+	date2 ZonedDateTime,
+	long1 Long,
+	string1 String,
+	Boolean1 Boolean
+}
+
+
+
+relationship OneToMany {
+	TGUser to Chanell,
+	TGUser to OfferFromCostumers,
+	TGUser to Review,
+	TGUser to Pays,
+	Chanell to LinksByCategoryInTop,
+	TradeShop to MembersTradeDeal,
+	TGUser to TGUserLog,
+	Chanell to ChanellLog,
+	Category to CategoryLog,
+	Balance to BalanceLog,
+	MembersTradeDeal to MembersTradeDealLog,
+	TradeShop to TradeShopLog,
+	LinksByCategoryInTop to LinksByCategoryInTopLog,
+	OfferFromCostumers to OfferFromCostumersLog	
+}
+
+relationship OneToOne {
+	TGUser to Balance
+}
+
+
+relationship ManyToMany {
+  Category{chanellId} to Chanell{categoryId},
+  Category{linksByCategoryInTopId} to 	LinksByCategoryInTop{categoryId}
+}
+
+
+
+
+
