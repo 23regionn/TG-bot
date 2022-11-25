@@ -2,7 +2,6 @@ package com.mycompany.myapp.service.tg;
 
 import com.mycompany.myapp.config.tg.BotConfig;
 import com.vdurmont.emoji.EmojiParser;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,7 +10,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -21,7 +19,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +38,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static final String YES_BUTTON = "YES_BUTTON";
     static final String NO_BUTTON = "NO_BUTTON";
+    static final String FIND_CHANNEL = "FIND_CHANNEL";
+    static final String ADD_CHANNEL = "ADD_CHANNEL";
+
 
     static final String ERROR_TEXT = "Error occurred: ";
 
@@ -99,17 +99,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                         prepareAndSendMessage(chatId, HELP_TEXT, nameForLog);
                         break;
 
-                    case "weather":
-//                        sendMessage(chatId, "Вы запросили погоду", nameForLog);
-                        prepareAndSendMessage(chatId, "Вы запросили погоду", nameForLog);
-                        break;
-
                     case "/register":
                         register(chatId, nameForLog);
                         break;
+
+                    case "/channel":
+                        checkFindChannelOrAddChannel(chatId, nameForLog);
+                    break;
                     default:
 //                        sendMessage(chatId, "Sorry, command was not recognized", nameForLog);
-                        prepareAndSendMessage(chatId, "Sorry, command was not recognized", nameForLog);
+                        prepareAndSendMessage(chatId, "Извините, команда не распознана", nameForLog);
 
                 }
             }
@@ -117,16 +116,25 @@ public class TelegramBot extends TelegramLongPollingBot {
             String callbackData = update.getCallbackQuery().getData();
             long messageId = update.getCallbackQuery().getMessage().getMessageId(); // айди текущего сообщения
             long chatId = update.getCallbackQuery().getMessage().getChatId();
-            String name = update.getCallbackQuery().getMessage().getChat().getFirstName();
-            log.info("Сообщение от пользователя " + name + ", (нажата кнопка): " +  callbackData);
+            String nameForLog = update.getCallbackQuery().getMessage().getChat().getFirstName();
+            log.info("Сообщение от пользователя " + nameForLog + ", (нажата кнопка): " +  callbackData);
 
             if(callbackData.equals(YES_BUTTON)){
                 String text = "You pressed YES button";
-                executeEditText(chatId, name, text,messageId);
+                executeEditText(chatId, nameForLog, text,messageId);
             }
             else if(callbackData.equals(NO_BUTTON)){
                 String text = "You pressed NO button";
-                executeEditText(chatId, name, text,messageId);
+                executeEditText(chatId, nameForLog, text,messageId);
+            }
+            else if(callbackData.equals(FIND_CHANNEL)){
+                String text = "Вы нажали найти каналы";
+                executeEditText(chatId, nameForLog, text,messageId);
+            }
+            else if(callbackData.equals(ADD_CHANNEL)){
+                String text = "Вы нажали добавить канал";
+                executeEditText(chatId, nameForLog, text,messageId);
+
             }
         }
     }
@@ -164,6 +172,39 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
+    private void checkFindChannelOrAddChannel(long chatId, String name){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите действие");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        // создание списка с кнопками в ответе на сообщение
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        var findChannelButton = new InlineKeyboardButton();
+
+        findChannelButton.setText("Найти каналы"); // Содержимое ответа в кнопке
+        findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
+
+        var addChannelButton = new InlineKeyboardButton();
+
+        addChannelButton.setText("Разместить канал");
+        addChannelButton.setCallbackData(ADD_CHANNEL);
+
+        rowInLine.add(findChannelButton);
+        rowInLine.add(addChannelButton);
+
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+    }
+
     /*private void registerUser(Message msg) {
 
         if(userRepository.findById(msg.getChatId()).isEmpty()){
@@ -188,6 +229,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         String answer = EmojiParser.parseToUnicode("Hi, " + name + ", nice to meet you!" + " :blush:" + " :grinning:");
         sendMessage(chatId, answer, name);
+        sendMessage(chatId, "😊❤", name);
     }
 
     private void sendMessage(long chatId, String textToSend, String nameForLog) {
@@ -249,6 +291,42 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
+        executeMessage(message, nameForLog);
+    }
+
+    private void selectCategory(long chatId, String nameForLog){
+//        SendMessage message = new SendMessage();
+//        message.setChatId(String.valueOf(chatId));
+//        message.setText(textToSend);
+//        executeMessage(message, nameForLog);
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите категорию каналов");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        // создание списка с кнопками в ответе на сообщение
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        var findChannelButton = new InlineKeyboardButton();
+
+        findChannelButton.setText("Найти каналы"); // Содержимое ответа в кнопке
+        findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
+
+        var addChannelButton = new InlineKeyboardButton();
+
+        addChannelButton.setText("Разместить канал");
+        addChannelButton.setCallbackData(ADD_CHANNEL);
+
+        rowInLine.add(findChannelButton);
+        rowInLine.add(addChannelButton);
+
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
         executeMessage(message, nameForLog);
     }
 
