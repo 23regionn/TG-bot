@@ -1,11 +1,11 @@
 id;name;count_chanell_in_category;is_delete;date_1;date_2;long_1;string_1;boolean_1
-1;Table;31264;true;2022-11-23T07:31:55;2022-11-22T14:14:50;18566;ivory Refined metrics;false
-2;Music Internal;88360;true;2022-11-23T04:05:40;2022-11-23T09:34:34;99999;Kentucky Belarussian;false
-3;hacking Chad harness;56011;false;2022-11-23T13:14:16;2022-11-23T09:01:41;52690;Washington;true
-4;Indiana Designer;71047;false;2022-11-22T23:20:58;2022-11-23T09:42:08;69174;Overpass;true
-5;Music Investment;33352;true;2022-11-22T22:50:43;2022-11-23T09:02:53;75834;archive;true
-6;Versatile bypass California;52826;true;2022-11-22T15:13:16;2022-11-23T06:07:11;95034;Berkshire Tonga;true
-7;fresh-thinking Open-source;1281;true;2022-11-22T16:15:53;2022-11-23T01:03:18;54811;invoice Sleek azure;false
-8;Saint Money Fresh;27188;true;2022-11-23T05:00:07;2022-11-22T20:01:19;59930;Lithuania;true
-9;salmon circuit Optimization;40515;false;2022-11-22T15:16:09;2022-11-23T01:50:37;10184;Egypt XML;false
-10;Garden Cambridgeshire Reactive;58066;false;2022-11-23T07:05:00;2022-11-23T11:59:46;30619;UIC-Franc;true
+1;Трейдинг;1;false;;;0;;false
+2;Музыка;1;false;;;0;;false
+3;Психология;1;false;;;0;;false
+4;Философия;1;false;;;0;;false
+5;Автомобили;1;false;;;0;;false
+6;Животные;1;false;;;0;;false
+7;Медицина;1;false;;;0;;false
+8;Литература;1;false;;;0;;false
+9;Инвестиции;1;false;;;0;;false
+10;Програмирование;1;false;;;0;;false
