@@ -1,15 +1,19 @@
 package com.mycompany.myapp.service.tg;
 
 import com.mycompany.myapp.config.tg.BotConfig;
+import com.mycompany.myapp.domain.TGUser;
+import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -19,14 +23,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 //@Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final Logger log = LoggerFactory.getLogger(TelegramBot.class);
+
+    /*@Autowired
+    private TGUserRepository TgUserRepository;*/
+
+    @Autowired
+    private TgUserRepositoryService tgUserRepositoryService;
 
     final BotConfig config;
 
@@ -86,21 +98,26 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendMessage(user.getChatId(), textToSend);
                 }*/
 //                sendMessage(chatId, textToSend, nameForLog);
-                prepareAndSendMessage(chatId, textToSend, nameForLog);
+                sendMessage(chatId, textToSend, nameForLog);
             }
             else {
                 switch (messageText) {
                     case "/start":
+                        registerUser(update.getMessage());
                         startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
                         break;
 
                     case "/help":
 //                        sendMessage(chatId, HELP_TEXT, nameForLog);
-                        prepareAndSendMessage(chatId, HELP_TEXT, nameForLog);
+                        sendMessage(chatId, HELP_TEXT, nameForLog);
                         break;
 
                     case "/register":
                         register(chatId, nameForLog);
+                        break;
+
+                    case "/oleg":
+                        sendMessage(chatId, "Oleg", nameForLog);
                         break;
 
                     case "/channel":
@@ -108,7 +125,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
                     default:
 //                        sendMessage(chatId, "Sorry, command was not recognized", nameForLog);
-                        prepareAndSendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
 
                 }
             }
@@ -205,57 +222,94 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
-    /*private void registerUser(Message msg) {
 
-        if(userRepository.findById(msg.getChatId()).isEmpty()){
 
+    private void registerUser(Message msg) {
+
+        if(tgUserRepositoryService.findAllByChatId(msg.getChatId()).isEmpty()){
             var chatId = msg.getChatId();
             var chat = msg.getChat();
-
-            User user = new User();
+            var userId = msg.getChat().getId();
+            TGUser user = new TGUser();
 
             user.setChatId(chatId);
             user.setFirstName(chat.getFirstName());
-            user.setLastName(chat.getLastName());
-            user.setUserName(chat.getUserName());
-            user.setRegisteredAt(new Timestamp(System.currentTimeMillis()));
+            user.setIdTgUser(userId);
+            user.setRegistrationDate(ZonedDateTime.now());
+            user.setIsDelete(false);
 
-            userRepository.save(user);
-            log.info("user saved: " + user);
+//            TgUserRepository.save(user);
+            tgUserRepositoryService.saveTgUser(user);
+            log.info("Пользователь с имененем " + chat.getFirstName() + " сохранен: " + user);
         }
-    }*/
+        else if (tgUserRepositoryService.findAllByChatId(msg.getChatId()).isPresent()){
+            Set<TGUser> tgUserSet = tgUserRepositoryService.findAllByChatId(msg.getChatId()).get();
+
+            boolean createNewUser = true;
+            for (TGUser user: tgUserSet ) {
+                if(user.getIsDelete().equals(false)){
+                    createNewUser = false;
+                    break;
+                }
+            }
+
+            if (createNewUser == true){
+                var chatId = msg.getChatId();
+                var chat = msg.getChat();
+                var userId = msg.getChat().getId();
+                TGUser user = new TGUser();
+                user.setChatId(chatId);
+                user.setFirstName(chat.getFirstName());
+                user.setIdTgUser(userId);
+                user.setRegistrationDate(ZonedDateTime.now());
+                user.setIsDelete(false);
+                tgUserRepositoryService.saveTgUser(user);
+                log.info("Пользователь с имененем " + chat.getFirstName() + " сохранен: " + user);
+            }
+        }
+    }
 
     private void startCommandReceived(long chatId, String name) {
 
-        String answer = EmojiParser.parseToUnicode("Hi, " + name + ", nice to meet you!" + " :blush:" + " :grinning:");
-        sendMessage(chatId, answer, name);
-        sendMessage(chatId, "😊❤", name);
+        String answer = EmojiParser.parseToUnicode("Добро пожаловать, " + name + " :blush:" + "👌");
+        sendMessageWithBaseKeyBoard(chatId, answer, name);
+        checkFindChannelOrAddChannel(chatId, name);
     }
 
+    // отправить ответное сообщение без клавиатуры
     private void sendMessage(long chatId, String textToSend, String nameForLog) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
 
+        executeMessage(message, nameForLog);
+    }
+
+    // отправить ответное сообщение с базовой  клавиатурой
+    private void sendMessageWithBaseKeyBoard(long chatId, String textToSend, String nameForLog) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(textToSend);
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         keyboardMarkup.setResizeKeyboard(true); // размер кнопок в клавиатуре
 
         List<KeyboardRow> keyboardRows = new ArrayList<>();
 
         KeyboardRow row = new KeyboardRow();
+        row.add("Баланс");
+        row.add("Мои каналы");
 
-        row.add("weather");
-        row.add("get random joke");
+        KeyboardRow row1 = new KeyboardRow();
+        row1.add("Категории");
+        row1.add("Оставить отзыв");
+
+        KeyboardRow row2 = new KeyboardRow();
+        row2.add("Связь со службой поддержки");
+        row2.add("Аукцион");
 
         keyboardRows.add(row);
-
-        row = new KeyboardRow();
-
-        row.add("register");
-        row.add("check my data");
-        row.add("delete my data");
-
-        keyboardRows.add(row);
+        keyboardRows.add(row1);
+        keyboardRows.add(row2);
         keyboardMarkup.setKeyboard(keyboardRows);
         message.setReplyMarkup(keyboardMarkup);
 
@@ -287,18 +341,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void prepareAndSendMessage(long chatId, String textToSend, String nameForLog){
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText(textToSend);
-        executeMessage(message, nameForLog);
-    }
-
     private void selectCategory(long chatId, String nameForLog){
-//        SendMessage message = new SendMessage();
-//        message.setChatId(String.valueOf(chatId));
-//        message.setText(textToSend);
-//        executeMessage(message, nameForLog);
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите категорию каналов");
@@ -337,7 +380,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         var users = userRepository.findAll();
         for(Ads ad: ads) {
             for (User user: users){
-                prepareAndSendMessage(user.getChatId(), ad.getAd());
+                sendMessage(user.getChatId(), ad.getAd());
             }
         }*/
 //        sendMessage(config.getOwnerId(), "textToSend", "Olezhan");
