@@ -1,7 +1,11 @@
 package com.mycompany.myapp.service.tg;
 
 import com.mycompany.myapp.config.tg.BotConfig;
+import com.mycompany.myapp.domain.Category;
+import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.domain.TGUser;
+import com.mycompany.myapp.repository.CategoryRepository;
+import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -24,9 +29,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //@Slf4j
 @Component
@@ -39,6 +42,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private TgUserRepositoryService tgUserRepositoryService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ChanellRepository chanellRepository;
 
     final BotConfig config;
 
@@ -53,6 +62,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String FIND_CHANNEL = "FIND_CHANNEL";
     static final String ADD_CHANNEL = "ADD_CHANNEL";
 
+    static final String CATEGORY = "CATEGORY";
+    static final String PRICE = "PRICE";
+    static final String IDCAT = "IDCAT";
+
+    static final String CHANNEL = "CHANNEL";
 
     static final String ERROR_TEXT = "Error occurred: ";
 
@@ -108,7 +122,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                         break;
 
                     case "/help":
-//                        sendMessage(chatId, HELP_TEXT, nameForLog);
                         sendMessage(chatId, HELP_TEXT, nameForLog);
                         break;
 
@@ -136,6 +149,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             String nameForLog = update.getCallbackQuery().getMessage().getChat().getFirstName();
             log.info("Сообщение от пользователя " + nameForLog + ", (нажата кнопка): " +  callbackData);
 
+//            List<Category> categoryList = categoryRepository.findAll();
+
             if(callbackData.equals(YES_BUTTON)){
                 String text = "You pressed YES button";
                 executeEditText(chatId, nameForLog, text,messageId);
@@ -145,13 +160,43 @@ public class TelegramBot extends TelegramLongPollingBot {
                 executeEditText(chatId, nameForLog, text,messageId);
             }
             else if(callbackData.equals(FIND_CHANNEL)){
-                String text = "Вы нажали найти каналы";
-                executeEditText(chatId, nameForLog, text,messageId);
+                String text = "Выберите каналы";
+                executeEditText(chatId, nameForLog, text, messageId);
+                executeDeleteMessage(chatId, nameForLog, messageId);
+                findCategory(chatId, nameForLog);
             }
             else if(callbackData.equals(ADD_CHANNEL)){
                 String text = "Вы нажали добавить канал";
                 executeEditText(chatId, nameForLog, text,messageId);
 
+            }
+            else if(callbackData.contains(CATEGORY)){
+                String text = "Вы нажали на категоррию " + callbackData.replace(CATEGORY,"");
+                Long categoryId = Long.valueOf(callbackData.replace(CATEGORY,""));
+//                executeEditText(chatId, nameForLog, text,messageId);
+
+                executeDeleteMessage(chatId, nameForLog, messageId);
+                selectPriceDiapozonForGetChanneles(chatId, nameForLog, categoryId);
+
+            }
+            else if(callbackData.contains(PRICE)){
+                String text = "Вы нажали на price " + callbackData.replace(PRICE,"");
+                String[] strings = callbackData.split(IDCAT);
+                Double price = Double.valueOf(strings[0].replace(PRICE,""));
+                Long categoryId = Long.valueOf(strings[1]);
+//                executeEditText(chatId, nameForLog, text, messageId);
+
+                executeDeleteMessage(chatId, nameForLog, messageId);
+                getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
+            }
+
+            else if(callbackData.contains(CHANNEL)){
+                String text = "Вы нажали на channel " + callbackData.replace(CHANNEL,"");
+                Long channelId = Long.valueOf(callbackData.replace(CHANNEL,""));
+                Optional<Chanell> chanell = chanellRepository.findById(channelId);
+                if (chanell.isPresent()){
+                    System.out.println(chanell.get().getLink());
+                }
             }
         }
     }
@@ -222,16 +267,180 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
+    // Найти каналы, потом переписать на найти категории
+    private void findCategory(long chatId, String name){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите категорию ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        // создание списка с кнопками в ответе на сообщение
+        // List<InlineKeyboardButton> rowInLine = new ArrayList<>(); // одна строка // сама строка клавиатуры
+
+        List<Category> categoryList = categoryRepository.findAll();
+
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        for (int i = 0; i < categoryList.size(); i = i +  3) {
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            var button3 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+
+            if(i < categoryList.size()) {
+                button1.setText(categoryList.get(i).getName());
+                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
+                rowInLine.add(button1);
+                if (i + 1 < categoryList.size()) {
+                    button2.setText(categoryList.get(i + 1).getName());
+                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
+                    rowInLine.add(button2);
+                    if (i + 2 < categoryList.size()) {
+                        button3.setText(categoryList.get(i + 2).getName());
+                        button3.setCallbackData(CATEGORY + categoryList.get(i + 2).getId());
+                        rowInLine.add(button3);
+                    }
+                }
+            }
+            rowsInLine.add(rowInLine);
+        }
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+        log.info("Пользователь с имененем " + name + " получил список категорий " );
+    }
+
+
+    private void selectPriceDiapozonForGetChanneles(long chatId, String name, Long categoryId){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите ценовой диапозон каналов");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        Set<Double> doubleSet = new HashSet<>();
+        if (category.isPresent()){
+            for (Chanell chanell: category.get().getChanellIds()) {
+                doubleSet.add(chanell.getPriceDiapozon());
+            }
+        }
+        List<Double> doubleList = new ArrayList<>();
+        for (Double  d: doubleSet) {
+            doubleList.add(d);
+        }
+
+        Collections.sort(doubleList);
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        for (int i = 0; i < doubleList.size(); i = i +  3) {
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            var button3 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+
+            if(i < doubleList.size()) {
+                button1.setText(doubleList.get(i).toString());
+                button1.setCallbackData(PRICE + doubleList.get(i) + IDCAT + categoryId);
+                rowInLine.add(button1);
+                if (i + 1 < doubleList.size()) {
+                    button2.setText(doubleList.get(i + 1).toString());
+                    button2.setCallbackData(PRICE + doubleList.get(i + 1) + IDCAT + categoryId);
+                    rowInLine.add(button2);
+                    if (i + 2 < doubleList.size()) {
+                        button3.setText(doubleList.get(i + 2).toString());
+                        button3.setCallbackData(PRICE + doubleList.get(i + 2) + IDCAT + categoryId);
+                        rowInLine.add(button3);
+                    }
+                }
+            }
+            rowsInLine.add(rowInLine);
+        }
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+        log.info("Пользователь с имененем " + name + " получил список категорий " );
+    }
+
+    private void getChanellByPriceDiapozon(long chatId, String name, Double price, Long categoryId){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите каналы");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        List<Chanell> chanellList = new ArrayList<>();
+        if (category.isPresent()){
+            for (Chanell chanell: category.get().getChanellIds()) {
+                if (chanell.getPriceDiapozon().equals(price)){
+                    chanellList.add(chanell);
+                }
+            }
+        }
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        for (int i = 0; i < chanellList.size(); i = i +  3) {
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            var button3 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+
+            if(i < chanellList.size()) {
+                button1.setText(chanellList.get(i).getName());
+                button1.setCallbackData(CHANNEL + chanellList.get(i).getId());
+                button1.setUrl(chanellList.get(i).getLink());
+                rowInLine.add(button1);
+                if (i + 1 < chanellList.size()) {
+                    button2.setText(chanellList.get(i + 1).getName());
+                    button2.setCallbackData(CHANNEL + chanellList.get(i + 1).getId());
+                    button2.setUrl(chanellList.get(i + 1).getLink());
+                    rowInLine.add(button2);
+                    if (i + 2 < chanellList.size()) {
+                        button3.setText(chanellList.get(i + 2).getName());
+                        button3.setCallbackData(CHANNEL + chanellList.get(i + 2).getId());
+                        button3.setUrl(chanellList.get(i + 2).getLink());
+                        rowInLine.add(button3);
+                    }
+                }
+            }
+            rowsInLine.add(rowInLine);
+        }
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+        log.info("Пользователь с имененем " + name + " получил список категорий " );
+    }
 
 
     private void registerUser(Message msg) {
 
+        var chatId = msg.getChatId();
+        var chat = msg.getChat();
+        var userId = msg.getChat().getId();
         if(tgUserRepositoryService.findAllByChatId(msg.getChatId()).isEmpty()){
-            var chatId = msg.getChatId();
-            var chat = msg.getChat();
-            var userId = msg.getChat().getId();
-            TGUser user = new TGUser();
 
+            TGUser user = new TGUser();
             user.setChatId(chatId);
             user.setFirstName(chat.getFirstName());
             user.setIdTgUser(userId);
@@ -254,9 +463,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
             if (createNewUser == true){
-                var chatId = msg.getChatId();
-                var chat = msg.getChat();
-                var userId = msg.getChat().getId();
                 TGUser user = new TGUser();
                 user.setChatId(chatId);
                 user.setFirstName(chat.getFirstName());
@@ -327,6 +533,22 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(message);
             log.info("Ответ пользователю " + nameForLog + ", answer: "+ message.getText());
+        } catch (TelegramApiException e) {
+            log.error(ERROR_TEXT + e.getMessage());
+        }
+    }
+
+    private void executeDeleteMessage(long chatId, String nameForLog, long messageId){
+        // Вместо отправки ответа ниже на кнопках - удаляется сообщение
+        // в котором был задан вопрос
+
+        DeleteMessage message = new DeleteMessage();
+        message.setChatId(chatId);
+        message.setMessageId((int) messageId);
+
+        try {
+            execute(message);
+            log.info("У пользователя удалилось сообщение в чате" + nameForLog + ", answer: ");
         } catch (TelegramApiException e) {
             log.error(ERROR_TEXT + e.getMessage());
         }

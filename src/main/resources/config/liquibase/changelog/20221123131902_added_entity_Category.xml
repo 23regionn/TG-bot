@@ -95,5 +95,13 @@
             <column name="boolean_1" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
+
+        <loadData
+            file="config/liquibase/fake-data/rel_category__chanell_id.csv"
+            separator=";"
+            tableName="rel_category__chanell_id">
+            <column name="chanell_id_id" type="numeric"/>
+            <column name="category_id" type="numeric"/>
+        </loadData>
     </changeSet>
 </databaseChangeLog>
