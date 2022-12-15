@@ -133,6 +133,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                         sendMessage(chatId, "Oleg", nameForLog);
                         break;
 
+                    case "/category":
+                    case "Категории":
+                        findCategory(chatId, nameForLog);
+                        break;
+
                     case "/channel":
                         checkFindChannelOrAddChannel(chatId, nameForLog);
                     break;
@@ -149,8 +154,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             String nameForLog = update.getCallbackQuery().getMessage().getChat().getFirstName();
             log.info("Сообщение от пользователя " + nameForLog + ", (нажата кнопка): " +  callbackData);
 
-//            List<Category> categoryList = categoryRepository.findAll();
-
             if(callbackData.equals(YES_BUTTON)){
                 String text = "You pressed YES button";
                 executeEditText(chatId, nameForLog, text,messageId);
@@ -161,7 +164,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             else if(callbackData.equals(FIND_CHANNEL)){
                 String text = "Выберите каналы";
-                executeEditText(chatId, nameForLog, text, messageId);
                 executeDeleteMessage(chatId, nameForLog, messageId);
                 findCategory(chatId, nameForLog);
             }
@@ -169,13 +171,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 String text = "Вы нажали добавить канал";
                 executeEditText(chatId, nameForLog, text,messageId);
 
+
             }
             else if(callbackData.contains(CATEGORY)){
                 String text = "Вы нажали на категоррию " + callbackData.replace(CATEGORY,"");
                 Long categoryId = Long.valueOf(callbackData.replace(CATEGORY,""));
 //                executeEditText(chatId, nameForLog, text,messageId);
 
-                executeDeleteMessage(chatId, nameForLog, messageId);
+//                executeDeleteMessage(chatId, nameForLog, messageId);
                 selectPriceDiapozonForGetChanneles(chatId, nameForLog, categoryId);
 
             }
@@ -186,7 +189,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Long categoryId = Long.valueOf(strings[1]);
 //                executeEditText(chatId, nameForLog, text, messageId);
 
-                executeDeleteMessage(chatId, nameForLog, messageId);
+//                executeDeleteMessage(chatId, nameForLog, messageId);
                 getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
             }
 
@@ -267,7 +270,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
-    // Найти каналы, потом переписать на найти категории
+    // Найти категории
     private void findCategory(long chatId, String name){
 
         SendMessage message = new SendMessage();
@@ -322,7 +325,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите ценовой диапозон каналов");
+//        message.setText("Выберите ценовой диапозон каналов");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -335,6 +338,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (Chanell chanell: category.get().getChanellIds()) {
                 doubleSet.add(chanell.getPriceDiapozon());
             }
+            message.setText("Выберите ценовой диапозон каналов в категории: \n" + category.get().getName() + " ⬇⬇⬇");
         }
         List<Double> doubleList = new ArrayList<>();
         for (Double  d: doubleSet) {
@@ -395,41 +399,45 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
         }
+        if (chanellList.isEmpty()){
+            sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
 
-        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        } else{
+            List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
-        for (int i = 0; i < chanellList.size(); i = i +  3) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
+            for (int i = 0; i < chanellList.size(); i = i +  3) {
+                var button1 = new InlineKeyboardButton();
+                var button2 = new InlineKeyboardButton();
+                var button3 = new InlineKeyboardButton();
+                rowInLine = new ArrayList<>();
 
-            if(i < chanellList.size()) {
-                button1.setText(chanellList.get(i).getName());
-                button1.setCallbackData(CHANNEL + chanellList.get(i).getId());
-                button1.setUrl(chanellList.get(i).getLink());
-                rowInLine.add(button1);
-                if (i + 1 < chanellList.size()) {
-                    button2.setText(chanellList.get(i + 1).getName());
-                    button2.setCallbackData(CHANNEL + chanellList.get(i + 1).getId());
-                    button2.setUrl(chanellList.get(i + 1).getLink());
-                    rowInLine.add(button2);
-                    if (i + 2 < chanellList.size()) {
-                        button3.setText(chanellList.get(i + 2).getName());
-                        button3.setCallbackData(CHANNEL + chanellList.get(i + 2).getId());
-                        button3.setUrl(chanellList.get(i + 2).getLink());
-                        rowInLine.add(button3);
+                if(i < chanellList.size()) {
+                    button1.setText(chanellList.get(i).getName());
+                    button1.setCallbackData(CHANNEL + chanellList.get(i).getId());
+                    button1.setUrl(chanellList.get(i).getLink());
+                    rowInLine.add(button1);
+                    if (i + 1 < chanellList.size()) {
+                        button2.setText(chanellList.get(i + 1).getName());
+                        button2.setCallbackData(CHANNEL + chanellList.get(i + 1).getId());
+                        button2.setUrl(chanellList.get(i + 1).getLink());
+                        rowInLine.add(button2);
+                        if (i + 2 < chanellList.size()) {
+                            button3.setText(chanellList.get(i + 2).getName());
+                            button3.setCallbackData(CHANNEL + chanellList.get(i + 2).getId());
+                            button3.setUrl(chanellList.get(i + 2).getLink());
+                            rowInLine.add(button3);
+                        }
                     }
                 }
+                rowsInLine.add(rowInLine);
             }
-            rowsInLine.add(rowInLine);
+
+            markupInLine.setKeyboard(rowsInLine);
+            message.setReplyMarkup(markupInLine);
+
+            executeMessage(message, name);
+            log.info("Пользователь с имененем " + name + " получил список категорий " );
         }
-
-        markupInLine.setKeyboard(rowsInLine);
-        message.setReplyMarkup(markupInLine);
-
-        executeMessage(message, name);
-        log.info("Пользователь с имененем " + name + " получил список категорий " );
     }
 
 

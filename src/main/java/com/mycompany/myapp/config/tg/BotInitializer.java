@@ -17,8 +17,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class BotInitializer {
 
     private final Logger log = LoggerFactory.getLogger(BotInitializer.class);
-
-
     @Autowired
     TelegramBot bot;
 
