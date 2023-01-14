@@ -6,11 +6,13 @@ import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
+import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -28,8 +30,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.nio.channels.Channel;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 //@Slf4j
 @Component
@@ -37,8 +41,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final Logger log = LoggerFactory.getLogger(TelegramBot.class);
 
-    /*@Autowired
-    private TGUserRepository TgUserRepository;*/
+    @Autowired
+    private TGUserRepository TgUserRepository;
 
     @Autowired
     private TgUserRepositoryService tgUserRepositoryService;
@@ -63,12 +67,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String ADD_CHANNEL = "ADD_CHANNEL";
 
     static final String CATEGORY = "CATEGORY";
-    static final String PRICE = "PRICE";
+    static final String PRICEDIAP = "PRICEDIAP";
     static final String IDCAT = "IDCAT";
 
     static final String CHANNEL = "CHANNEL";
 
     static final String ERROR_TEXT = "Error occurred: ";
+    static final String FIND_CAT_FOR_ADD_CHAN = "FIND_CAT_FOR_ADD_CHAN";
+    static final String FIRST_CREATE_CH_WITH_CAT = "FIRST_CREATE_CH_WITH_CAT";
+    static final String ADD_СH_NAME = "ADD_СH_NAME";
+    static final String ADD_СH_LINK = "ADD_СH_LINK";
+    static final String ADD_СH_PRICE = "ADD_СH_PRICE";
+    static final String ADD_COUNT_SUBSCRIBERS = "ADD_COUNT_SUBSCRIBERS";
+
 
     public TelegramBot(BotConfig config) {
         this.config = config;
@@ -103,51 +114,99 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
             String nameForLog = update.getMessage().getChat().getFirstName();
             log.info("Сообщение от пользователя " + nameForLog + ", сообщение: " +  messageText);
+            TGUser tgUser;
+            Optional<TGUser> tgUserOptional = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId());
+            tgUser = tgUserOptional.isPresent() ? tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get() : null;
+
+            if(messageText.equals("/start")){
+                registerUser(update.getMessage());
+                startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+            }
+            else if(messageText.equals("/help")){
+                sendMessage(chatId, HELP_TEXT, nameForLog);
+            }
+            else if(messageText.equals("/register")){
+                register(chatId, nameForLog);
+            }
+            else if(messageText.equals("/oleg")){
+                sendMessage(chatId, "Oleg", nameForLog);
+            }
+            else if(messageText.equals("/category") || messageText.equals("Категории")){
+                findCategory(chatId, nameForLog);
+            }
+            else if(messageText.equals("/channel")){
+                checkFindChannelOrAddChannel(chatId, nameForLog);
+            }
 
             // Рассылка пользователям
-            if(messageText.contains("/send") && config.getOwnerId() == chatId) {
+            else if(messageText.contains("/send") && config.getOwnerId() == chatId) {
                 var textToSend = EmojiParser.parseToUnicode(messageText.substring(messageText.indexOf(" ")));
-                /*var users = userRepository.findAll();
+                /*var users = userRepository.findAll(); ЭТОТ ЗАПРОС НЕ ПОДХОДИТ- НУЖНА РАССЫЛКА ВООБЩЕ ВСЕМ ПОЛЬЗОВАТЕЛЯМ.
                 for (User user: users){
                     sendMessage(user.getChatId(), textToSend);
                 }*/
 //                sendMessage(chatId, textToSend, nameForLog);
                 sendMessage(chatId, textToSend, nameForLog);
             }
-            else {
+
+            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_NAME)){
+                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
+                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_NAME)){
+                    if(currentUser.getIdCurrentChannelAction() != null){
+                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
+                        chanell.setName(messageText);
+                        chanellRepository.save(chanell);
+                        currentUser.setCurrentStep(ADD_СH_LINK);
+                        tgUserRepositoryService.saveTgUser(currentUser);
+                        log.info("В канал с id " + chanell.getId() + ", добавленно название: " +  messageText + ", " + nameForLog);
+                        sendMessage(chatId, "Добавить ссылку на канал (скопируйте и вставьте) ⬇⬇⬇", nameForLog);
+                    }
+                }
+            }
+            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_LINK)){
+                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
+                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_LINK)){
+                    if(currentUser.getIdCurrentChannelAction() != null){
+                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
+                        chanell.setLink(messageText);
+                        chanellRepository.save(chanell);
+                        currentUser.setCurrentStep(ADD_СH_PRICE);
+                        tgUserRepositoryService.saveTgUser(currentUser);
+                        log.info("В канал с id " + chanell.getId() + ", добавленна ссылка : " +  messageText + ", " + nameForLog);
+                        sendMessage(chatId, "Добавить прайс (сумма размещения рекламы) ⬇⬇⬇", nameForLog);
+                    }
+                }
+            }
+            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
+                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_PRICE)){
+                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
+                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_PRICE)){
+                    if(currentUser.getIdCurrentChannelAction() != null){
+                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
+                        chanell.setPriceDiapozon(Double.valueOf(messageText));
+                        chanellRepository.save(chanell);
+                        currentUser.setCurrentStep("");
+                        tgUserRepositoryService.saveTgUser(currentUser);
+                        log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
+                        sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
+                    }
+                }
+            }
+
+            else { // Ради дефолтового ответа
                 switch (messageText) {
-                    case "/start":
-                        registerUser(update.getMessage());
-                        startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-                        break;
-
-                    case "/help":
-                        sendMessage(chatId, HELP_TEXT, nameForLog);
-                        break;
-
-                    case "/register":
-                        register(chatId, nameForLog);
-                        break;
-
-                    case "/oleg":
-                        sendMessage(chatId, "Oleg", nameForLog);
-                        break;
-
-                    case "/category":
-                    case "Категории":
-                        findCategory(chatId, nameForLog);
-                        break;
-
-                    case "/channel":
-                        checkFindChannelOrAddChannel(chatId, nameForLog);
-                    break;
                     default:
-//                        sendMessage(chatId, "Sorry, command was not recognized", nameForLog);
                         sendMessage(chatId, "Извините, команда не распознана", nameForLog);
 
                 }
             }
-        } else if (update.hasCallbackQuery()) {
+        }
+        else if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             long messageId = update.getCallbackQuery().getMessage().getMessageId(); // айди текущего сообщения
             long chatId = update.getCallbackQuery().getMessage().getChatId();
@@ -170,8 +229,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             else if(callbackData.equals(ADD_CHANNEL)){
                 String text = "Вы нажали добавить канал";
                 executeEditText(chatId, nameForLog, text,messageId);
-
-
+                selectCategory(chatId, nameForLog);
             }
             else if(callbackData.contains(CATEGORY)){
                 String text = "Вы нажали на категоррию " + callbackData.replace(CATEGORY,"");
@@ -182,10 +240,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 selectPriceDiapozonForGetChanneles(chatId, nameForLog, categoryId);
 
             }
-            else if(callbackData.contains(PRICE)){
-                String text = "Вы нажали на price " + callbackData.replace(PRICE,"");
+            else if(callbackData.contains(PRICEDIAP)){
+                String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
                 String[] strings = callbackData.split(IDCAT);
-                Double price = Double.valueOf(strings[0].replace(PRICE,""));
+                Double price = Double.valueOf(strings[0].replace(PRICEDIAP,""));
                 Long categoryId = Long.valueOf(strings[1]);
 //                executeEditText(chatId, nameForLog, text, messageId);
 
@@ -193,7 +251,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
             }
 
-            else if(callbackData.contains(CHANNEL)){
+            else if(callbackData.contains(CHANNEL)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 String text = "Вы нажали на channel " + callbackData.replace(CHANNEL,"");
                 Long channelId = Long.valueOf(callbackData.replace(CHANNEL,""));
                 Optional<Chanell> chanell = chanellRepository.findById(channelId);
@@ -201,8 +259,20 @@ public class TelegramBot extends TelegramLongPollingBot {
                     System.out.println(chanell.get().getLink());
                 }
             }
+            else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){
+                Long idCategory = Long.valueOf(callbackData.split(":")[1]);
+                addChannelByCategory(chatId, nameForLog, idCategory);
+
+            }
+            else if(callbackData.contains(ADD_СH_NAME)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
+//                addChannelName(chatId, nameForLog, idChannel, tgUserId);
+            }
         }
     }
+
+
 
     private void register(long chatId, String name){
 
@@ -336,7 +406,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         Set<Double> doubleSet = new HashSet<>();
         if (category.isPresent()){
             for (Chanell chanell: category.get().getChanellIds()) {
-                doubleSet.add(chanell.getPriceDiapozon());
+                if (chanell.getPriceDiapozon() != null){
+                    doubleSet.add(chanell.getPriceDiapozon()); // обработать сценарий с каналами, где отстутствет прайс
+                }
             }
             message.setText("Выберите ценовой диапозон каналов в категории: \n" + category.get().getName() + " ⬇⬇⬇");
         }
@@ -356,15 +428,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if(i < doubleList.size()) {
                 button1.setText(doubleList.get(i).toString());
-                button1.setCallbackData(PRICE + doubleList.get(i) + IDCAT + categoryId);
+                button1.setCallbackData(PRICEDIAP + doubleList.get(i) + IDCAT + categoryId);
                 rowInLine.add(button1);
                 if (i + 1 < doubleList.size()) {
                     button2.setText(doubleList.get(i + 1).toString());
-                    button2.setCallbackData(PRICE + doubleList.get(i + 1) + IDCAT + categoryId);
+                    button2.setCallbackData(PRICEDIAP + doubleList.get(i + 1) + IDCAT + categoryId);
                     rowInLine.add(button2);
                     if (i + 2 < doubleList.size()) {
                         button3.setText(doubleList.get(i + 2).toString());
-                        button3.setCallbackData(PRICE + doubleList.get(i + 2) + IDCAT + categoryId);
+                        button3.setCallbackData(PRICEDIAP + doubleList.get(i + 2) + IDCAT + categoryId);
                         rowInLine.add(button3);
                     }
                 }
@@ -394,8 +466,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<Chanell> chanellList = new ArrayList<>();
         if (category.isPresent()){
             for (Chanell chanell: category.get().getChanellIds()) {
-                if (chanell.getPriceDiapozon().equals(price)){
-                    chanellList.add(chanell);
+                if(chanell.getPriceDiapozon() != null){
+                    if (chanell.getPriceDiapozon().equals(price)){
+                        chanellList.add(chanell);
+                    }
                 }
             }
         }
@@ -571,37 +645,151 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void selectCategory(long chatId, String nameForLog){
+    private void selectCategory(long chatId, String name){
+
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите категорию каналов");
+        message.setText("Выберите категорию ⬇⬇⬇");
 
         // создание клавиатуры с кнопками в ответе на сообщение
-        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
         // создание списка со списками с кнопками в ответе на сообщение
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        // создание списка с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        List<Category> categoryList = categoryRepository.findAll();
+
+
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-        var findChannelButton = new InlineKeyboardButton();
 
-        findChannelButton.setText("Найти каналы"); // Содержимое ответа в кнопке
-        findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
+        for (int i = 0; i < categoryList.size(); i = i +  3) {
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            var button3 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
 
-        var addChannelButton = new InlineKeyboardButton();
-
-        addChannelButton.setText("Разместить канал");
-        addChannelButton.setCallbackData(ADD_CHANNEL);
-
-        rowInLine.add(findChannelButton);
-        rowInLine.add(addChannelButton);
-
-        rowsInLine.add(rowInLine);
+            if(i < categoryList.size()) {
+                button1.setText(categoryList.get(i).getName());
+                button1.setCallbackData(FIND_CAT_FOR_ADD_CHAN + ":" + categoryList.get(i).getId());
+                rowInLine.add(button1);
+                if (i + 1 < categoryList.size()) {
+                    button2.setText(categoryList.get(i + 1).getName());
+                    button2.setCallbackData(FIND_CAT_FOR_ADD_CHAN + ":" + categoryList.get(i + 1).getId());
+                    rowInLine.add(button2);
+                    if (i + 2 < categoryList.size()) {
+                        button3.setText(categoryList.get(i + 2).getName());
+                        button3.setCallbackData(FIND_CAT_FOR_ADD_CHAN + ":" + categoryList.get(i + 2).getId());
+                        rowInLine.add(button3);
+                    }
+                }
+            }
+            rowsInLine.add(rowInLine);
+        }
 
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
-        executeMessage(message, nameForLog);
+        executeMessage(message, name);
+
+        Optional<Set<TGUser>> tgUsers = tgUserRepositoryService.findAllByChatId(chatId);
+        TGUser currentUser = null;
+        if (tgUsers.isPresent()){
+            for (TGUser tgUser: tgUsers.get()) {
+                if (tgUser.getDelete().equals(false)){
+                    currentUser = tgUser;
+                }
+            }
+            currentUser.setCurrentStep(FIND_CAT_FOR_ADD_CHAN);
+            tgUserRepositoryService.saveTgUser(currentUser);
+        }
+        log.info("Пользователь с имененем " + name + " получил список категорий " );
     }
+
+    // Метод первоначального создания каналов
+    private void addChannelByCategory(long chatId, String name, Long idCategory){
+        Chanell chanell = new Chanell();
+        Optional<Set<TGUser>> tgUsers = tgUserRepositoryService.findAllByChatId(chatId);
+        TGUser currentUser = null;
+        if (tgUsers.isPresent()){
+            for (TGUser tgUser: tgUsers.get()) {
+                if (tgUser.getDelete().equals(false)){
+                    currentUser = tgUser;
+                }
+            }
+            chanell.setTGUser(currentUser); //Назначение каналу текущего пользователя
+            chanell.isActive(false);
+            chanell.isDelete(false);
+            chanell.isModerate(false);
+            chanell.setName("Андроид");
+            chanell.setLink("https://t.me/+6sD7JYkJElgxYjMy");
+            chanell.currentDate(ZonedDateTime.now().plusHours(3));
+        }
+        Category category = categoryRepository.findOneWithEagerRelationships(idCategory).get(); // добавление категории
+        chanell = chanellRepository.save(chanell);
+        Set<Chanell> chanellSet = new HashSet<>(category.getChanellIds());
+        chanellSet.add(chanell);
+        category.setChanellIds(chanellSet);
+        categoryRepository.save(category);
+//        currentUser.setCurrentStep(FIRST_CREATE_CH_WITH_CAT);
+        currentUser.setCurrentStep(ADD_СH_NAME);
+        currentUser.setIdCurrentChannelAction(chanell.getId());
+        tgUserRepositoryService.saveTgUser(currentUser);
+        log.info("Пользователь с имененем " + name + " создал канал с категорией " );
+
+        sendMessage(chatId, "Добавить название канала ⬇⬇⬇", name);
+
+  /*      // БЛОК С ОТПРАВКОЙ КНОПКИ НА ЗАПОЛНЕНИЕ ДАННЫХ О КАНАЛЕ
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Добавить название канала ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); // клавиатура
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        var button1 = new InlineKeyboardButton();
+        button1.setText("Добавить название канала ⬇⬇⬇");
+        button1.setCallbackData(ADD_СH_NAME + ":" + chanell.getId() + ":" + currentUser.getId());
+        rowInLine.add(button1);
+        rowsInLine.add(rowInLine);
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+        */
+    }
+
+    /*private void addChannelName(long chatId, String name, Long channelId, Long tgUserId){
+        Optional<TGUser> tgUsers = TgUserRepository.findById(tgUserId);
+        if (tgUsers.isPresent()){
+            tgUsers.get().setCurrentStep(ADD_СH_NAME);
+        }
+
+        chanell = chanellRepository.save(chanell);
+        tgUserRepositoryService.saveTgUser(tgUsers.get());
+        log.info("Пользователь с имененем " + name + " создал канал с категорией " );
+
+        // БЛОК С ОТПРАВКОЙ КНОПКИ НА ЗАПОЛНЕНИЕ ДАННЫХ О КАНАЛЕ
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Добавить название канала ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        var button1 = new InlineKeyboardButton();
+        button1.setText("Добавить название канала ⬇⬇⬇");
+        button1.setCallbackData(ADD_СH_NAME + ":" + chanell.getId());
+        rowInLine.add(button1);
+        rowsInLine.add(rowInLine);
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+    }*/
+
 
     @Scheduled(fixedDelay = 60000)
     private void sendAds(){

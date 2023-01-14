@@ -40,6 +40,11 @@ public class TgUserRepositoryService {
         return tgUsers;
     }
 
+    public Optional<TGUser> getOneChatIdAndDeleteFalse(Long chatId) {
+        Optional<TGUser> tgUser = Optional.ofNullable(tgUserRepository.getOneChatIdAndDeleteFalse(chatId));
+        return tgUser;
+    }
+
     public TGUser saveTgUser(TGUser tgUser){
         return tgUserRepository.save(tgUser);
     }

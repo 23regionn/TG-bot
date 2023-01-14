@@ -26,6 +26,12 @@
             <column name="user_role" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="current_step" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="id_current_channel_action" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="is_admin" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -86,6 +92,8 @@
             <column name="first_name" type="string"/>
             <column name="registration_date" type="${datetimeType}"/>
             <column name="user_role" type="string"/>
+            <column name="current_step" type="string"/>
+            <column name="id_current_channel_action" type="numeric"/>
             <column name="is_admin" type="boolean"/>
             <column name="score" type="numeric"/>
             <column name="is_blocked" type="boolean"/>

@@ -28,6 +28,13 @@ public class BotInitializer {
         }
         catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
+            System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
+            System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
+            System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
+            System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
+            System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
+            // попытка повторного рестарта
+            telegramBotsApi.registerBot(bot);
         }
     }
 }

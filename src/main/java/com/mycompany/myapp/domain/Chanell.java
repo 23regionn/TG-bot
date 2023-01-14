@@ -46,6 +46,9 @@ public class Chanell implements Serializable {
     @Column(name = "is_moderate")
     private Boolean isModerate;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @Column(name = "show_chanell_in_top_by_category")
     private Boolean showChanellInTopByCategory;
 
@@ -416,6 +419,43 @@ public class Chanell implements Serializable {
 
     public Chanell tGUser(TGUser tGUser) {
         this.setTGUser(tGUser);
+        return this;
+    }
+
+    public Boolean getModerate() {
+        return isModerate;
+    }
+
+    public void setModerate(Boolean moderate) {
+        isModerate = moderate;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public TGUser gettGUser() {
+        return tGUser;
+    }
+
+    public void settGUser(TGUser tGUser) {
+        this.tGUser = tGUser;
+    }
+
+    public Chanell isActive(Boolean isActive) {
+        this.setActive(isActive);
         return this;
     }
 

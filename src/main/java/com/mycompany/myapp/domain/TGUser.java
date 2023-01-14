@@ -34,6 +34,12 @@ public class TGUser implements Serializable {
     @Column(name = "user_role")
     private String userRole;
 
+    @Column(name = "current_step")
+    private String currentStep;
+
+    @Column(name = "id_current_channel_action")
+    private Long idCurrentChannelAction;
+
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
@@ -259,6 +265,64 @@ public class TGUser implements Serializable {
         return this;
     }
 
+    public String getCurrentStep() {
+        return currentStep;
+    }
+
+    public void setCurrentStep(String currentStep) {
+        this.currentStep = currentStep;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
+    public Boolean getBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public Set<TGUserLog> gettGUserLogs() {
+        return tGUserLogs;
+    }
+
+    public void settGUserLogs(Set<TGUserLog> tGUserLogs) {
+        this.tGUserLogs = tGUserLogs;
+    }
+
+    public TGUser currentStep(String currentStep) {
+        this.currentStep = currentStep;
+        return this;
+    }
+
+    public Long getIdCurrentChannelAction() {
+        return idCurrentChannelAction;
+    }
+
+    public void setIdCurrentChannelAction(Long idCurrentChannelAction) {
+        this.idCurrentChannelAction = idCurrentChannelAction;
+    }
+
+    public TGUser idCurrentChannelAction(Long idCurrentChannelAction) {
+        this.idCurrentChannelAction = idCurrentChannelAction;
+        return this;
+    }
+
     public void setLong1(Long long1) {
         this.long1 = long1;
     }
@@ -476,25 +540,32 @@ public class TGUser implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "TGUser{" +
-            "id=" + getId() +
-            ", idTgUser=" + getIdTgUser() +
-            ", firstName='" + getFirstName() + "'" +
-            ", registrationDate='" + getRegistrationDate() + "'" +
-            ", userRole='" + getUserRole() + "'" +
-            ", isAdmin='" + getIsAdmin() + "'" +
-            ", score=" + getScore() +
-            ", isBlocked='" + getIsBlocked() + "'" +
-            ", chatId=" + getChatId() +
-            ", isDelete='" + getIsDelete() + "'" +
-            ", date1='" + getDate1() + "'" +
-            ", date2='" + getDate2() + "'" +
-            ", long1=" + getLong1() +
-            ", string1='" + getString1() + "'" +
-            ", boolean1='" + getBoolean1() + "'" +
-            "}";
+            "id=" + id +
+            ", idTgUser=" + idTgUser +
+            ", firstName='" + firstName + '\'' +
+            ", registrationDate=" + registrationDate +
+            ", userRole='" + userRole + '\'' +
+            ", currentStep='" + currentStep + '\'' +
+            ", idCurrentChannelAction=" + idCurrentChannelAction +
+            ", isAdmin=" + isAdmin +
+            ", score=" + score +
+            ", isBlocked=" + isBlocked +
+            ", chatId=" + chatId +
+            ", isDelete=" + isDelete +
+            ", date1=" + date1 +
+            ", date2=" + date2 +
+            ", long1=" + long1 +
+            ", string1='" + string1 + '\'' +
+            ", boolean1=" + boolean1 +
+            ", balance=" + balance +
+            ", chanells=" + chanells +
+            ", offerFromCostumers=" + offerFromCostumers +
+            ", reviews=" + reviews +
+            ", pays=" + pays +
+            ", tGUserLogs=" + tGUserLogs +
+            '}';
     }
 }
