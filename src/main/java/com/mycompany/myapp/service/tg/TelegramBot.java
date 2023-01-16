@@ -12,7 +12,6 @@ import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -30,10 +29,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.nio.channels.Channel;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 //@Slf4j
 @Component
@@ -74,11 +71,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static final String ERROR_TEXT = "Error occurred: ";
     static final String FIND_CAT_FOR_ADD_CHAN = "FIND_CAT_FOR_ADD_CHAN";
-    static final String FIRST_CREATE_CH_WITH_CAT = "FIRST_CREATE_CH_WITH_CAT";
     static final String ADD_СH_NAME = "ADD_СH_NAME";
     static final String ADD_СH_LINK = "ADD_СH_LINK";
     static final String ADD_СH_PRICE = "ADD_СH_PRICE";
-    static final String ADD_COUNT_SUBSCRIBERS = "ADD_COUNT_SUBSCRIBERS";
+
+    static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
+    static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
+    static final String CREATE_BAN_CH = "CREATE_BAN_CH";
 
 
     public TelegramBot(BotConfig config) {
@@ -123,18 +122,33 @@ public class TelegramBot extends TelegramLongPollingBot {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             }
             else if(messageText.equals("/help")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 sendMessage(chatId, HELP_TEXT, nameForLog);
             }
             else if(messageText.equals("/register")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 register(chatId, nameForLog);
             }
             else if(messageText.equals("/oleg")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 sendMessage(chatId, "Oleg", nameForLog);
             }
             else if(messageText.equals("/category") || messageText.equals("Категории")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 findCategory(chatId, nameForLog);
             }
             else if(messageText.equals("/channel")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 checkFindChannelOrAddChannel(chatId, nameForLog);
             }
 
@@ -149,51 +163,40 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMessage(chatId, textToSend, nameForLog);
             }
 
-            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_NAME)){
-                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
-                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_NAME)){
-                    if(currentUser.getIdCurrentChannelAction() != null){
-                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
-                        chanell.setName(messageText);
-                        chanellRepository.save(chanell);
-                        currentUser.setCurrentStep(ADD_СH_LINK);
-                        tgUserRepositoryService.saveTgUser(currentUser);
-                        log.info("В канал с id " + chanell.getId() + ", добавленно название: " +  messageText + ", " + nameForLog);
-                        sendMessage(chatId, "Добавить ссылку на канал (скопируйте и вставьте) ⬇⬇⬇", nameForLog);
-                    }
-                }
-            }
-            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_LINK)){
-                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
-                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_LINK)){
-                    if(currentUser.getIdCurrentChannelAction() != null){
-                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
-                        chanell.setLink(messageText);
-                        chanellRepository.save(chanell);
-                        currentUser.setCurrentStep(ADD_СH_PRICE);
-                        tgUserRepositoryService.saveTgUser(currentUser);
-                        log.info("В канал с id " + chanell.getId() + ", добавленна ссылка : " +  messageText + ", " + nameForLog);
-                        sendMessage(chatId, "Добавить прайс (сумма размещения рекламы) ⬇⬇⬇", nameForLog);
-                    }
-                }
-            }
-            else if(tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).isPresent() &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep() != null &&
-                tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get().getCurrentStep().equals(ADD_СH_PRICE)){
-                TGUser currentUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get();
-                if (currentUser.getChatId() == chatId && currentUser.getCurrentStep().equals(ADD_СH_PRICE)){
-                    if(currentUser.getIdCurrentChannelAction() != null){
-                        Chanell chanell = chanellRepository.findById(currentUser.getIdCurrentChannelAction()).get();
-                        chanell.setPriceDiapozon(Double.valueOf(messageText));
-                        chanellRepository.save(chanell);
-                        currentUser.setCurrentStep("");
-                        tgUserRepositoryService.saveTgUser(currentUser);
-                        log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
-                        sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
+            else if (tgUserOptional.isPresent() ){
+                if(tgUser.getCurrentStep() != null){
+                    if(tgUser.getIdCurrentChannelAction() != null){
+                        if(tgUser.getCurrentStep().equals(ADD_СH_NAME)){
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setName(messageText);
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep(ADD_СH_LINK);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавленно название: " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Добавить ссылку на канал (скопируйте и вставьте) ⬇⬇⬇", nameForLog);
+                        }
+                        else if(tgUser.getCurrentStep().equals(ADD_СH_LINK)) {
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setLink(messageText);
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep(ADD_СH_PRICE);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавленна ссылка : " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Добавить прайс (сумма размещения рекламы) ⬇⬇⬇", nameForLog);
+                        }
+                        else if(tgUser.getCurrentStep().equals(ADD_СH_PRICE)) {
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setPriceDiapozon(Double.valueOf(messageText));
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep("");
+                            tgUser.setIdCurrentChannelAction(null);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
+
+                           // Заменить айди админа
+                            sendChannelToModerate(523559144l, chanell.getId());
+                        }
                     }
                 }
             }
@@ -259,7 +262,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     System.out.println(chanell.get().getLink());
                 }
             }
-            else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){
+            else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
                 Long idCategory = Long.valueOf(callbackData.split(":")[1]);
                 addChannelByCategory(chatId, nameForLog, idCategory);
 
@@ -268,6 +271,22 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
 //                addChannelName(chatId, nameForLog, idChannel, tgUserId);
+            }
+            else if(callbackData.contains(CREATE_APPROVE_СH)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                approveCreateChannel(idChannel);
+                executeDeleteMessage(chatId, nameForLog, messageId);
+
+            }
+            else if(callbackData.contains(CREATE_DISABLE_СH)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                disableCreateChannel(idChannel);
+                executeDeleteMessage(chatId, nameForLog, messageId);
+            }
+            else if(callbackData.contains(CREATE_BAN_CH)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                banCreateChannel(idChannel);
+                executeDeleteMessage(chatId, nameForLog, messageId);
             }
         }
     }
@@ -729,67 +748,91 @@ public class TelegramBot extends TelegramLongPollingBot {
         chanellSet.add(chanell);
         category.setChanellIds(chanellSet);
         categoryRepository.save(category);
-//        currentUser.setCurrentStep(FIRST_CREATE_CH_WITH_CAT);
         currentUser.setCurrentStep(ADD_СH_NAME);
         currentUser.setIdCurrentChannelAction(chanell.getId());
         tgUserRepositoryService.saveTgUser(currentUser);
         log.info("Пользователь с имененем " + name + " создал канал с категорией " );
 
         sendMessage(chatId, "Добавить название канала ⬇⬇⬇", name);
-
-  /*      // БЛОК С ОТПРАВКОЙ КНОПКИ НА ЗАПОЛНЕНИЕ ДАННЫХ О КАНАЛЕ
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Добавить название канала ⬇⬇⬇");
-
-        // создание клавиатуры с кнопками в ответе на сообщение
-        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); // клавиатура
-        // создание списка со списками с кнопками в ответе на сообщение
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
-        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-        var button1 = new InlineKeyboardButton();
-        button1.setText("Добавить название канала ⬇⬇⬇");
-        button1.setCallbackData(ADD_СH_NAME + ":" + chanell.getId() + ":" + currentUser.getId());
-        rowInLine.add(button1);
-        rowsInLine.add(rowInLine);
-        markupInLine.setKeyboard(rowsInLine);
-        message.setReplyMarkup(markupInLine);
-
-        executeMessage(message, name);
-        */
     }
 
-    /*private void addChannelName(long chatId, String name, Long channelId, Long tgUserId){
-        Optional<TGUser> tgUsers = TgUserRepository.findById(tgUserId);
-        if (tgUsers.isPresent()){
-            tgUsers.get().setCurrentStep(ADD_СH_NAME);
-        }
+    private void sendChannelToModerate(long adminId, long channelId){
 
-        chanell = chanellRepository.save(chanell);
-        tgUserRepositoryService.saveTgUser(tgUsers.get());
-        log.info("Пользователь с имененем " + name + " создал канал с категорией " );
+        Chanell chanell = chanellRepository.findById(channelId).get();
+        String msText =  new String( "МОДЕРАЦИЯ КАНАЛА: \n" + "Пользователь: @" + chanell.getTGUser().getFirstName().toString() + "\n" +
+                                            "ID: " + chanell.getTGUser().getChatId().toString() + "\n" +
+                                            "Имя канала: " + chanell.getName().toString() + "\n" +
+                                            "Ссылка: " + chanell.getLink().toString() + "\n" +
+                                            "Рекламный прайс: " + chanell.getPriceDiapozon().toString());
 
-        // БЛОК С ОТПРАВКОЙ КНОПКИ НА ЗАПОЛНЕНИЕ ДАННЫХ О КАНАЛЕ
+        // БЛОК С ОТПРАВКОЙ КНОПКИ НА ОДОБРЕНИЕ АДМИНОМ КАНАЛА
         SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Добавить название канала ⬇⬇⬇");
+        message.setChatId(String.valueOf(adminId));
+        message.setText(msText);
 
-        // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
         var button1 = new InlineKeyboardButton();
-        button1.setText("Добавить название канала ⬇⬇⬇");
-        button1.setCallbackData(ADD_СH_NAME + ":" + chanell.getId());
+        button1.setText("Подтвердить 👍");
+        button1.setCallbackData(CREATE_APPROVE_СH + ":" + chanell.getId());
         rowInLine.add(button1);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Отклонить 👎");
+        button2.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId());
+        rowInLine.add(button2);
         rowsInLine.add(rowInLine);
+
+        var button3 = new InlineKeyboardButton();
+        button3.setText("Бан ❌");
+        button3.setCallbackData(CREATE_BAN_CH + ":" + chanell.getId());
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button3);
+        rowsInLine.add(rowInLine);
+
+
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
-        executeMessage(message, name);
-    }*/
 
+        executeMessage(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+    }
+
+    private void resetStepForUser(TGUser tgUser){
+        tgUser.setCurrentStep("");
+        tgUser.setIdCurrentChannelAction(null);
+        tgUserRepositoryService.saveTgUser(tgUser);
+    }
+
+    private void approveCreateChannel(long channelId){
+        Chanell chanell = chanellRepository.findById(channelId).get();
+        chanell.setModerate(true);
+        chanell.setActive(true);
+        chanellRepository.save(chanell);
+        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
+                     + "- успешно прошёл модерацию ✔✔✔", chanell.getTGUser().getFirstName());
+    }
+
+    private void disableCreateChannel(long channelId){
+        Chanell chanell = chanellRepository.findById(channelId).get();
+        chanell.setModerate(false);
+        chanell.setActive(false);
+        chanellRepository.save(chanell);
+        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
+                    + " -  НЕ прошёл модерацию ❌❌❌", chanell.getTGUser().getFirstName());
+    }
+
+    private void banCreateChannel(long channelId){
+        Chanell chanell = chanellRepository.findById(channelId).get();
+        TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(chanell.gettGUser().getChatId()).get();
+        tgUser.setBlocked(true);
+        tgUserRepositoryService.saveTgUser(tgUser);
+        chanellRepository.delete(chanell);
+        log.info("Пользователь- " + tgUser.getFirstName() + ", был заблокирован");
+    }
 
     @Scheduled(fixedDelay = 60000)
     private void sendAds(){
