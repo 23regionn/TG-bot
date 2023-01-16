@@ -47,6 +47,9 @@
             <column name="city" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="approved_admin" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="is_delete" type="boolean" remarks="удаленный">
                 <constraints nullable="true" />
             </column>
@@ -108,6 +111,7 @@
             <column name="show_chanell_in_top_by_category" type="boolean"/>
             <column name="region" type="string"/>
             <column name="city" type="string"/>
+            <column name="approved_admin" type="numeric"/>
             <column name="is_delete" type="boolean"/>
             <column name="jhi_current_date" type="${datetimeType}"/>
             <column name="date_1" type="${datetimeType}"/>

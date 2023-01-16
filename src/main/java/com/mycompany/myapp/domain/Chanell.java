@@ -58,6 +58,9 @@ public class Chanell implements Serializable {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "approved_admin")
+    private Long approvedAdmin;
+
     /**
      * удаленный
      */
@@ -494,7 +497,19 @@ public class Chanell implements Serializable {
         this.categoryIds = categories;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Long getApprovedAdmin() {
+        return approvedAdmin;
+    }
+
+    public void setApprovedAdmin(Long approvedAdmin) {
+        this.approvedAdmin = approvedAdmin;
+    }
+
+    public Chanell approvedAdmin(Long approvedAdmin) {
+        this.setApprovedAdmin(approvedAdmin);
+        return this;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -513,29 +528,34 @@ public class Chanell implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "Chanell{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", link='" + getLink() + "'" +
-            ", score=" + getScore() +
-            ", status='" + getStatus() + "'" +
-            ", countSubscribers=" + getCountSubscribers() +
-            ", quailityFromAnotherSources=" + getQuailityFromAnotherSources() +
-            ", priceDiapozon=" + getPriceDiapozon() +
-            ", isModerate='" + getIsModerate() + "'" +
-            ", showChanellInTopByCategory='" + getShowChanellInTopByCategory() + "'" +
-            ", region='" + getRegion() + "'" +
-            ", city='" + getCity() + "'" +
-            ", isDelete='" + getIsDelete() + "'" +
-            ", currentDate='" + getCurrentDate() + "'" +
-            ", date1='" + getDate1() + "'" +
-            ", date2='" + getDate2() + "'" +
-            ", long1=" + getLong1() +
-            ", string1='" + getString1() + "'" +
-            ", boolean1='" + getBoolean1() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", link='" + link + '\'' +
+            ", score=" + score +
+            ", status='" + status + '\'' +
+            ", countSubscribers=" + countSubscribers +
+            ", quailityFromAnotherSources=" + quailityFromAnotherSources +
+            ", priceDiapozon=" + priceDiapozon +
+            ", isModerate=" + isModerate +
+            ", isActive=" + isActive +
+            ", showChanellInTopByCategory=" + showChanellInTopByCategory +
+            ", region='" + region + '\'' +
+            ", city='" + city + '\'' +
+            ", approvedAdmin=" + approvedAdmin +
+            ", isDelete=" + isDelete +
+            ", currentDate=" + currentDate +
+            ", date1=" + date1 +
+            ", date2=" + date2 +
+            ", long1=" + long1 +
+            ", string1='" + string1 + '\'' +
+            ", boolean1=" + boolean1 +
+            ", linksByCategoryInTops=" + linksByCategoryInTops +
+            ", chanellLogs=" + chanellLogs +
+            ", tGUser=" + tGUser +
+            ", categoryIds=" + categoryIds +
+            '}';
     }
 }

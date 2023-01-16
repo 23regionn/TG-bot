@@ -1,7 +1,7 @@
-id;name;link;score;status;count_subscribers;quaility_from_another_sources;price_diapozon;is_moderate;show_chanell_in_top_by_category;region;city;is_delete;jhi_current_date;date_1;date_2;long_1;string_1;boolean_1;is_active
-1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-2;Егоров Олег💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-4;Бабки💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-5;Музло💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-6;Психотерапия💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+id;name;link;score;status;count_subscribers;quaility_from_another_sources;price_diapozon;is_moderate;show_chanell_in_top_by_category;region;city;approved_admin;is_delete;jhi_current_date;date_1;date_2;long_1;string_1;boolean_1;is_active
+1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+2;Егоров Олег💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+4;Бабки💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+5;Музло💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+6;Психотерапия💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
