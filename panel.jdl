@@ -1,12 +1,12 @@
 entity MessegePannel{
-    	idMessage Long,			
+    	idMessage Long,
     	idChannel Long,
     	dateCreateMessage ZonedDateTime,
-	textMessage String,
+	    textMessage String,
     	idAdmin Long,
-	comment String,
-	status String,
-	servicóField1 String,
-	servicóField2 String,
-	servicóField3 String	
+	    comment String,
+	    status String,
+	    serviceField1 String,
+	    serviceField2 String,
+	    serviceField3 String
 }

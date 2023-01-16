@@ -1,0 +1,56 @@
+{
+  "name": "MessegePannel",
+  "fields": [
+    {
+      "fieldName": "idMessage",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "idChannel",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "dateCreateMessage",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "textMessage",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "idAdmin",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceField1",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceField2",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceField3",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "messege_pannel",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20230116015622"
+}

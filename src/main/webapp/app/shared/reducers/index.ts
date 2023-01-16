@@ -87,6 +87,10 @@ import balanceLog, {
 import configTable, {
   ConfigTableState
 } from 'app/entities/config-table/config-table.reducer';
+// prettier-ignore
+import messegePannel, {
+  MessegePannelState
+} from 'app/entities/messege-pannel/messege-pannel.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -118,6 +122,7 @@ export interface IRootState {
   readonly balance: BalanceState;
   readonly balanceLog: BalanceLogState;
   readonly configTable: ConfigTableState;
+  readonly messegePannel: MessegePannelState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -151,6 +156,7 @@ const rootReducer = combineReducers<IRootState>({
   balance,
   balanceLog,
   configTable,
+  messegePannel,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });
