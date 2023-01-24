@@ -40,7 +40,7 @@ public class MessegePannel implements Serializable {
     private String status;
 
     @Column(name = "service_field_1")
-    private String serviceField1;
+    private String serviceField1; // чат айди пользователя (ЗАПОЛНЯЕТСЯ ТОЛЬКО КОГДА НЕ ЗАПОЛНЯЕТСЯ КАНАЛ АЙДИ)
 
     @Column(name = "service_field_2")
     private String serviceField2;

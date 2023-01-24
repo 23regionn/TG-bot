@@ -527,35 +527,30 @@ public class Chanell implements Serializable {
         // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
-
+    // prettier-ignore
     @Override
     public String toString() {
         return "Chanell{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", link='" + link + '\'' +
-            ", score=" + score +
-            ", status='" + status + '\'' +
-            ", countSubscribers=" + countSubscribers +
-            ", quailityFromAnotherSources=" + quailityFromAnotherSources +
-            ", priceDiapozon=" + priceDiapozon +
-            ", isModerate=" + isModerate +
-            ", isActive=" + isActive +
-            ", showChanellInTopByCategory=" + showChanellInTopByCategory +
-            ", region='" + region + '\'' +
-            ", city='" + city + '\'' +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", link='" + getLink() + "'" +
+            ", score=" + getScore() +
+            ", status='" + getStatus() + "'" +
+            ", countSubscribers=" + getCountSubscribers() +
+            ", quailityFromAnotherSources=" + getQuailityFromAnotherSources() +
+            ", priceDiapozon=" + getPriceDiapozon() +
+            ", isModerate='" + getIsModerate() + "'" +
+            ", showChanellInTopByCategory='" + getShowChanellInTopByCategory() + "'" +
+            ", region='" + getRegion() + "'" +
+            ", city='" + getCity() + "'" +
             ", approvedAdmin=" + approvedAdmin +
-            ", isDelete=" + isDelete +
-            ", currentDate=" + currentDate +
-            ", date1=" + date1 +
-            ", date2=" + date2 +
-            ", long1=" + long1 +
-            ", string1='" + string1 + '\'' +
-            ", boolean1=" + boolean1 +
-            ", linksByCategoryInTops=" + linksByCategoryInTops +
-            ", chanellLogs=" + chanellLogs +
-            ", tGUser=" + tGUser +
-            ", categoryIds=" + categoryIds +
-            '}';
+            ", isDelete='" + getIsDelete() + "'" +
+            ", currentDate='" + getCurrentDate() + "'" +
+            ", date1='" + getDate1() + "'" +
+            ", date2='" + getDate2() + "'" +
+            ", long1=" + getLong1() +
+            ", string1='" + getString1() + "'" +
+            ", boolean1='" + getBoolean1() + "'" +
+            "}";
     }
 }

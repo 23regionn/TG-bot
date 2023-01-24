@@ -28,6 +28,9 @@ public class TGUser implements Serializable {
     @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "registration_date")
     private ZonedDateTime registrationDate;
 
@@ -223,6 +226,19 @@ public class TGUser implements Serializable {
 
     public TGUser isDelete(Boolean isDelete) {
         this.isDelete = isDelete;
+        return this;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public TGUser userName(String userName) {
+        this.userName = userName;
         return this;
     }
 
@@ -540,11 +556,13 @@ public class TGUser implements Serializable {
         return getClass().hashCode();
     }
 
+
     @Override
     public String toString() {
         return "TGUser{" +
             "id=" + id +
             ", idTgUser=" + idTgUser +
+            ", userName='" + userName + '\'' +
             ", firstName='" + firstName + '\'' +
             ", registrationDate=" + registrationDate +
             ", userRole='" + userRole + '\'' +
@@ -561,7 +579,6 @@ public class TGUser implements Serializable {
             ", string1='" + string1 + '\'' +
             ", boolean1=" + boolean1 +
             ", balance=" + balance +
-            ", chanells=" + chanells +
             ", offerFromCostumers=" + offerFromCostumers +
             ", reviews=" + reviews +
             ", pays=" + pays +

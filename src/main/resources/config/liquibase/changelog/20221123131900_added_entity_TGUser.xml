@@ -20,6 +20,9 @@
             <column name="first_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="user_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="registration_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
@@ -90,6 +93,7 @@
             <column name="id" type="numeric"/>
             <column name="id_tg_user" type="numeric"/>
             <column name="first_name" type="string"/>
+            <column name="user_name" type="string"/>
             <column name="registration_date" type="${datetimeType}"/>
             <column name="user_role" type="string"/>
             <column name="current_step" type="string"/>

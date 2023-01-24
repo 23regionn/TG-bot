@@ -3,9 +3,11 @@ package com.mycompany.myapp.service.tg;
 import com.mycompany.myapp.config.tg.BotConfig;
 import com.mycompany.myapp.domain.Category;
 import com.mycompany.myapp.domain.Chanell;
+import com.mycompany.myapp.domain.MessegePannel;
 import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
+import com.mycompany.myapp.repository.MessegePannelRepository;
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.vdurmont.emoji.EmojiParser;
@@ -45,6 +47,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     private TgUserRepositoryService tgUserRepositoryService;
 
     @Autowired
+    private MessegePannelRepository messegePannelRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
@@ -78,6 +83,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
     static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
     static final String CREATE_BAN_CH = "CREATE_BAN_CH";
+    private static final String MODERATION = "Модерация канала";
+    private static final String SVYAZ_S_ADMINAMI = "SVYAZ_S_ADMINAMI";
+    private static final String SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU = "SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU";
+    private static final String TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN = "TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN";
+    private static final String REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK = "REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK";
+
+    private static final String TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU = "TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU";
+    private static final String REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU = "REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU";
+    private static final String SEND_ADMIN_CHAT_TO_USER = "SEND_ADMIN_CHAT_TO_USER";
+    private static final String SEND_ADMIN_LINK_TO_USER_FROM_MENU = "SEND_ADMIN_LINK_TO_USER_FROM_MENU";
+
+    private static final String В_НАЧАЛО = "В начало";
+    private static final String V_NACHALO = "V_NACHALO";
+    private static final String TEX_PODDERSHKA = "Связаться с тех поддержкой";
 
 
     public TelegramBot(BotConfig config) {
@@ -119,7 +138,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if(messageText.equals("/start")){
                 registerUser(update.getMessage());
-                startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+                startCommandReceived(chatId, update.getMessage().getChat().getFirstName() != null ? update.getMessage().getChat().getFirstName() : "");
             }
             else if(messageText.equals("/help")){
                 if (tgUserOptional.isPresent()){
@@ -145,11 +164,24 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 findCategory(chatId, nameForLog);
             }
+            else if(messageText.equals("Связь со службой поддержки")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                sendMessageToTehPoddershkaFromMenu(523559144l, chatId);
+                sendMessageToTehPoddershkaFromMenu(1376429566l, chatId);
+            }
             else if(messageText.equals("/channel")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }
                 checkFindChannelOrAddChannel(chatId, nameForLog);
+            }
+            else if(messageText.equals(В_НАЧАЛО)){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                vNachaloCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             }
 
             // Рассылка пользователям
@@ -196,6 +228,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                            // Заменить айди админа
                             sendChannelToModerate(523559144l, chanell.getId());
+                            sendChannelToModerate(1376429566l, chanell.getId());
                         }
                     }
                 }
@@ -267,7 +300,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 addChannelByCategory(chatId, nameForLog, idCategory);
 
             }
-            else if(callbackData.contains(ADD_СH_NAME)){
+            else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
 //                addChannelName(chatId, nameForLog, idChannel, tgUserId);
@@ -275,18 +308,120 @@ public class TelegramBot extends TelegramLongPollingBot {
             else if(callbackData.contains(CREATE_APPROVE_СH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 approveCreateChannel(idChannel);
-                executeDeleteMessage(chatId, nameForLog, messageId);
-
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
             }
             else if(callbackData.contains(CREATE_DISABLE_СH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                disableCreateChannel(idChannel);
-                executeDeleteMessage(chatId, nameForLog, messageId);
+                String whyFailureINT = null;
+                switch (String.valueOf(callbackData.split(":")[2])) {
+                    case "2": whyFailureINT = (" не совпадение админа канала и вас "); break;
+                    case "3": whyFailureINT = (" не корректное название "); break;
+                    case "4": whyFailureINT = (" не правильная ссылка "); break;
+                    case "5": whyFailureINT = (" не верно указана цена "); break;
+                    case "6": whyFailureINT = (" канал относится к запретным "); break;
+                    default: whyFailureINT = (""); break;
+                }
+                disableCreateChannel(idChannel, whyFailureINT);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
             }
             else if(callbackData.contains(CREATE_BAN_CH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 banCreateChannel(idChannel);
-                executeDeleteMessage(chatId, nameForLog, messageId);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            }
+            else if(callbackData.equals(V_NACHALO)){
+                vNachaloCommandReceived(chatId, nameForLog);
+            }
+            else if(callbackData.contains(TEX_PODDERSHKA)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                // Заменить айди админа
+                // Рассылка админам сообщения о необходимости связаться с участником процесса
+                sendMessageToTehPoddershkaAfterOtkonitKanal(523559144l, idChannel);
+                sendMessageToTehPoddershkaAfterOtkonitKanal(1376429566l, idChannel);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                vNachaloCommandReceived(chatId, nameForLog);
+            }
+
+            else if(callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN)){ //
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                    if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
+                        continue;
+                    }
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
+                Chanell chanell = chanellRepository.findById(idChannel).get();
+                chanell.setApprovedAdmin(chatId);
+                chanellRepository.save(chanell);
+
+            }
+            else if(callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK)){ // При нажатии на Отклонить
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                    if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
+                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    }
+                }
+            }
+            else if(callbackData.contains(SEND_ADMIN_CHAT_TO_USER)){ //
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
+                Chanell chanell = chanellRepository.findById(idChannel).get();
+                sendMessage(chanell.gettGUser().getChatId(), "Не смогли найти ссылку на чат с Вами \n"
+                                                + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin , nameForLog);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            }
+
+            //////////////// СВЯЗЬ СО СЛУЖБОЙ ПОДДЕРЖКИ
+            else if(callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU)){ //
+                Long userChatId = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatId.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                    if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
+                        continue;
+                    }
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
+            }
+            else if(callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU)){ // При нажатии на Отклонить
+                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                    /*if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
+                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    }*/
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            }
+            else if(callbackData.contains(SEND_ADMIN_LINK_TO_USER_FROM_MENU)){ //
+                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
+                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
+                sendMessage(userChatID, "Не смогли найти ссылку на чат с Вами \n"
+                    + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin , nameForLog);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
             }
         }
     }
@@ -539,11 +674,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         var chatId = msg.getChatId();
         var chat = msg.getChat();
         var userId = msg.getChat().getId();
-        if(tgUserRepositoryService.findAllByChatId(msg.getChatId()).isEmpty()){
+        if(tgUserRepositoryService.findAllByChatId(msg.getChatId()).isEmpty()){ // ЧТО_ТО ни так с работой Метода
 
             TGUser user = new TGUser();
             user.setChatId(chatId);
-            user.setFirstName(chat.getFirstName());
+            user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
+            user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
             user.setIdTgUser(userId);
             user.setRegistrationDate(ZonedDateTime.now());
             user.setIsDelete(false);
@@ -566,7 +702,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (createNewUser == true){
                 TGUser user = new TGUser();
                 user.setChatId(chatId);
-                user.setFirstName(chat.getFirstName());
+                user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
+                user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
                 user.setIdTgUser(userId);
                 user.setRegistrationDate(ZonedDateTime.now());
                 user.setIsDelete(false);
@@ -580,6 +717,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         String answer = EmojiParser.parseToUnicode("Добро пожаловать, " + name + " :blush:" + "👌");
         sendMessageWithBaseKeyBoard(chatId, answer, name);
+        checkFindChannelOrAddChannel(chatId, name);
+    }
+
+    private void vNachaloCommandReceived(long chatId, String name) {
         checkFindChannelOrAddChannel(chatId, name);
     }
 
@@ -662,6 +803,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error(ERROR_TEXT + e.getMessage());
         }
+    }
+
+    private int executeMessageReturnMessageID(SendMessage message, String nameForLog){
+        try {
+            var method = execute(message);
+            log.info("Ответ пользователю " + nameForLog + ", answer: "+ message.getText());
+            return method.getMessageId();
+        } catch (TelegramApiException e) {
+            log.error(ERROR_TEXT + e.getMessage());
+        }
+        return 0;
     }
 
     private void selectCategory(long chatId, String name){
@@ -779,26 +931,186 @@ public class TelegramBot extends TelegramLongPollingBot {
         button1.setText("Подтвердить 👍");
         button1.setCallbackData(CREATE_APPROVE_СH + ":" + chanell.getId());
         rowInLine.add(button1);
+        rowsInLine.add(rowInLine);
 
         var button2 = new InlineKeyboardButton();
-        button2.setText("Отклонить 👎");
-        button2.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId());
+        button2.setText("Отклонить - неверный админ 👎");
+        button2.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId() + ":2");
+        rowInLine = new ArrayList<>();
         rowInLine.add(button2);
         rowsInLine.add(rowInLine);
 
         var button3 = new InlineKeyboardButton();
-        button3.setText("Бан ❌");
-        button3.setCallbackData(CREATE_BAN_CH + ":" + chanell.getId());
+        button3.setText("Отклонить - не корректное название 👎");
+        button3.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId() + ":3");
         rowInLine = new ArrayList<>();
         rowInLine.add(button3);
         rowsInLine.add(rowInLine);
 
+        var button4 = new InlineKeyboardButton();
+        button4.setText("Отклонить - не правильная ссылка 👎");
+        button4.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId() + ":4");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button4);
+        rowsInLine.add(rowInLine);
+
+        var button5 = new InlineKeyboardButton();
+        button5.setText("Отклонить - неверная цена 👎");
+        button5.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId() + ":5");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button5);
+        rowsInLine.add(rowInLine);
+
+        var button6 = new InlineKeyboardButton();
+        button6.setText("Отклонить - канал относится к запретным 👎");
+        button6.setCallbackData(CREATE_DISABLE_СH + ":" + chanell.getId() + ":6");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button6);
+        rowsInLine.add(rowInLine);
+
+        var button7 = new InlineKeyboardButton();
+        button7.setText("Бан ❌");
+        button7.setCallbackData(CREATE_BAN_CH + ":" + chanell.getId());
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button7);
+        rowsInLine.add(rowInLine);
 
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
 
-        executeMessage(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+        int msId = executeMessageReturnMessageID(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+
+        MessegePannel msPan = new MessegePannel();
+        msPan.setIdAdmin(adminId);
+        if(msId != 0){
+            msPan.setIdMessage(Long.valueOf(msId)); // УБЕДИТЬСЯ ЧТО ЭТО ТОТ САМЫЙ АЙДИШНИК
+        }
+        msPan.setTextMessage(message.getText());
+        msPan.setDateCreateMessage(ZonedDateTime.now());
+        msPan.setIdChannel(channelId);
+        msPan.setStatus(MODERATION);
+        messegePannelRepository.save(msPan);
+    }
+
+    private void sendMessageToTehPoddershkaAfterOtkonitKanal(long adminId, long channelId){
+
+        TGUser admin = tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get();
+        Chanell chanell = chanellRepository.findById(channelId).get();
+        String msText =  new String( "Запрос на переписку от пользователя: \n" +
+            "Пользователь: @" + (chanell.getTGUser().getUserName() != null
+                                 ? chanell.getTGUser().getUserName() != ""
+                                 ? chanell.getTGUser().getUserName() : null : null) + "\n" +
+            "(После того как отклонили канал)" + "\n" +
+            "ID: " + chanell.getTGUser().getChatId().toString() + "\n" +
+            "Имя канала: " + chanell.getName().toString() + "\n" +
+            "Ссылка: " + chanell.getLink().toString() + "\n" +
+            "Рекламный прайс: " + chanell.getPriceDiapozon().toString());
+
+        // БЛОК С КНОПАКАМИ - ОТВЕТ на СВЯЗЬ с поддержкой
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(adminId));
+        message.setText(msText);
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        button1.setText("Взять в работу👍");
+        button1.setCallbackData(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN + ":" + chanell.getId());
+        /*if(chanell.getTGUser().getUserName() != null || chanell.getTGUser().getUserName() != ""){
+            button1.setUrl("https://t.me/" + chanell.getTGUser().getUserName());
+        }*/
+        rowInLine.add(button1);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Отклонить/Завершить (удалить у меня) 👎");
+        button2.setCallbackData(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK + ":" + chanell.getId());
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+        var button3 = new InlineKeyboardButton();
+        button3.setText("Отправить пользователю ссылку на админа");
+        button3.setCallbackData(SEND_ADMIN_CHAT_TO_USER + ":" + chanell.getId() + ":" + admin.getUserName());
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button3);
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        int msId = executeMessageReturnMessageID(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+
+        MessegePannel msPan = new MessegePannel();
+        msPan.setIdAdmin(adminId);
+        if(msId != 0){
+            msPan.setIdMessage(Long.valueOf(msId));
+        }
+        msPan.setTextMessage(message.getText());
+        msPan.setDateCreateMessage(ZonedDateTime.now());
+        msPan.setIdChannel(channelId);
+        msPan.setStatus(SVYAZ_S_ADMINAMI);
+        messegePannelRepository.save(msPan);
+    }
+
+    private void sendMessageToTehPoddershkaFromMenu(long adminId, long userId){
+        TGUser admin = tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get();
+        TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(userId).get();
+        String msText =  new String( "Запрос на переписку от пользователя: \n" +
+            "Пользователь: @" + (tgUser.getUserName() != null
+            ? tgUser.getUserName() != ""
+            ? tgUser.getUserName() : null : null) + "\n" +
+            "(Вызов кнопки из меню)" + "\n" +
+            "ID: " + tgUser.getChatId().toString());
+
+        // БЛОК С КНОПАКАМИ - ОТВЕТ на СВЯЗЬ с поддержкой
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(adminId));
+        message.setText(msText);
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        button1.setText("Взять в работу👍");
+        button1.setCallbackData(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU + ":" + tgUser.getChatId());
+        /*if(tgUser.getUserName() != null || tgUser.getUserName() != ""){
+            button1.setUrl("https://t.me/" + tgUser.getUserName());
+        }*/
+        rowInLine.add(button1);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Отклонить/Завершить (удалить у меня) 👎");
+        button2.setCallbackData(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU + ":" + tgUser.getChatId());
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+        var button3 = new InlineKeyboardButton();
+        button3.setText("Отправить пользователю ссылку на админа");
+        button3.setCallbackData(SEND_ADMIN_LINK_TO_USER_FROM_MENU + ":" + tgUser.getChatId() + ":" + admin.getUserName());
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button3);
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        int msId = executeMessageReturnMessageID(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+
+        MessegePannel msPan = new MessegePannel();
+        msPan.setIdAdmin(adminId);
+        if(msId != 0){
+            msPan.setIdMessage(Long.valueOf(msId));
+        }
+        msPan.setTextMessage(message.getText());
+        msPan.setDateCreateMessage(ZonedDateTime.now());
+        msPan.setServiceField1(tgUser.getChatId().toString());
+        msPan.setStatus(SVYAZ_S_ADMINAMI);
+        messegePannelRepository.save(msPan);
     }
 
     private void resetStepForUser(TGUser tgUser){
@@ -813,16 +1125,43 @@ public class TelegramBot extends TelegramLongPollingBot {
         chanell.setActive(true);
         chanellRepository.save(chanell);
         sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
-                     + "- успешно прошёл модерацию ✔✔✔", chanell.getTGUser().getFirstName());
+                     + "- успешно прошёл модерацию ✔✔✔ \n "+ " (Далее можете работать с ним в разделе \"Мои каналы\")",
+                     chanell.getTGUser().getFirstName());
     }
 
-    private void disableCreateChannel(long channelId){
+    private void disableCreateChannel(long channelId, String whyFailure){
         Chanell chanell = chanellRepository.findById(channelId).get();
         chanell.setModerate(false);
         chanell.setActive(false);
         chanellRepository.save(chanell);
-        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
-                    + " -  НЕ прошёл модерацию ❌❌❌", chanell.getTGUser().getFirstName());
+//        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
+//                    + " -  НЕ прошёл модерацию ❌❌❌", chanell.getTGUser().getFirstName());
+
+        SendMessage message = new SendMessage();
+        message.setChatId(chanell.getTGUser().getChatId());
+        message.setText("Канал \"" + chanell.getName() + "\""  + " -  НЕ прошёл модерацию \n" +
+                        "по причине: " + whyFailure + "❌❌❌");
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        button1.setText("В начало ⬆⬆⬆");
+        button1.setCallbackData(V_NACHALO);
+        rowInLine.add(button1);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Связаться с тех поддержкой 🔔");
+        button2.setCallbackData(TEX_PODDERSHKA + ":" + chanell.getId());
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, chanell.getTGUser().getFirstName());
     }
 
     private void banCreateChannel(long channelId){
@@ -832,6 +1171,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         tgUserRepositoryService.saveTgUser(tgUser);
         chanellRepository.delete(chanell);
         log.info("Пользователь- " + tgUser.getFirstName() + ", был заблокирован");
+    }
+
+    private Set<MessegePannel> getAllWhatWeWantDeleteByChannelID(long channelId, String action){
+        Set<MessegePannel> messegePannels = messegePannelRepository.getByChannelIdAndStatus(channelId, action);
+        return messegePannels;
+    }
+    private Set<MessegePannel> getAllWhatWeWantDeleteByChatId(String chatId, String action){
+        Set<MessegePannel> messegePannels = messegePannelRepository.getByChatIdAndStatus(chatId, action);
+        return messegePannels;
     }
 
     @Scheduled(fixedDelay = 60000)
