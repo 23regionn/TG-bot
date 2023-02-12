@@ -73,13 +73,17 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String IDCAT = "IDCAT";
 
     static final String CHANNEL = "CHANNEL";
+    static final String MY_CHNS = "MY_CHNS";
 
     static final String ERROR_TEXT = "Error occurred: ";
     static final String FIND_CAT_FOR_ADD_CHAN = "FIND_CAT_FOR_ADD_CHAN";
     static final String ADD_СH_NAME = "ADD_СH_NAME";
+    static final String EDIT_СH_NAME = "EDIT_СH_NAME";
     static final String ADD_СH_LINK = "ADD_СH_LINK";
+    static final String EDIT_СH_LINK = "EDIT_СH_LINK";
     static final String ADD_СH_PRICE = "ADD_СH_PRICE";
 
+    static final String WORK_WITH_MY_CHANNEL = "WORK_WITH_MY_CHANNEL";
     static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
     static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
     static final String CREATE_BAN_CH = "CREATE_BAN_CH";
@@ -97,6 +101,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String В_НАЧАЛО = "В начало";
     private static final String V_NACHALO = "V_NACHALO";
     private static final String TEX_PODDERSHKA = "Связаться с тех поддержкой";
+    private static final String МОИ_КАНАЛЫ = "Мои каналы";
 
 
     public TelegramBot(BotConfig config) {
@@ -138,6 +143,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if(messageText.equals("/start")){
                 registerUser(update.getMessage());
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName() != null ? update.getMessage().getChat().getFirstName() : "");
             }
             else if(messageText.equals("/help")){
@@ -164,6 +172,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 findCategory(chatId, nameForLog);
             }
+            else if(messageText.equals(МОИ_КАНАЛЫ)){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                getMyChannels(chatId, nameForLog);
+            }
             else if(messageText.equals("Связь со службой поддержки")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
@@ -177,7 +191,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 checkFindChannelOrAddChannel(chatId, nameForLog);
             }
-            else if(messageText.equals(В_НАЧАЛО)){
+            else if(messageText.equals(В_НАЧАЛО) || messageText.equals("Вернуться назад")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }
@@ -230,7 +244,26 @@ public class TelegramBot extends TelegramLongPollingBot {
                             sendChannelToModerate(523559144l, chanell.getId());
                             sendChannelToModerate(1376429566l, chanell.getId());
                         }
+                        else if(tgUser.getCurrentStep().equals(WORK_WITH_MY_CHANNEL)){ // Менюшка
+                            if(messageText.equals("Изменить название")){
+                                tgUser.setCurrentStep(EDIT_СH_NAME);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое название канала ⬇⬇⬇", nameForLog);
+                            }
+                        }
+                        else if(tgUser.getCurrentStep().equals(EDIT_СH_NAME)){ // Редактирование имени канала
+
+                        }
+                        else{
+                            sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                        }
                     }
+                    else{
+                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                    }
+                }
+                else{
+                    sendMessage(chatId, "Извините, команда не распознана", nameForLog);
                 }
             }
 
@@ -238,7 +271,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 switch (messageText) {
                     default:
                         sendMessage(chatId, "Извините, команда не распознана", nameForLog);
-
                 }
             }
         }
@@ -300,11 +332,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 addChannelByCategory(chatId, nameForLog, idCategory);
 
             }
-            else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
+            /*else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
 //                addChannelName(chatId, nameForLog, idChannel, tgUserId);
-            }
+            }*/
             else if(callbackData.contains(CREATE_APPROVE_СH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 approveCreateChannel(idChannel);
@@ -422,6 +454,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                 for (MessegePannel ms: messegePannels) {
                     executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
                 }
+            }
+            else if(callbackData.contains(MY_CHNS)){
+                Long channelID = Long.valueOf(callbackData.split(":")[1]);
+                String channelName = chanellRepository.findById(channelID).get().getName();
+                String answer = "Выберите действие в меню : " + channelName;
+                TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getCallbackQuery().getMessage().getChatId()).get();
+                tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
+                tgUser.setIdCurrentChannelAction(channelID);
+                tgUserRepositoryService.saveTgUser(tgUser);
+                sendMessageWithKeyBoardWithAllMyChannels(chatId, answer, nameForLog, channelID);
             }
         }
     }
@@ -722,6 +764,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void vNachaloCommandReceived(long chatId, String name) {
         checkFindChannelOrAddChannel(chatId, name);
+        sendMessageWithBaseKeyBoard(chatId, "☝☝☝☝☝", name);
     }
 
     // отправить ответное сообщение без клавиатуры
@@ -1174,12 +1217,95 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private Set<MessegePannel> getAllWhatWeWantDeleteByChannelID(long channelId, String action){
-        Set<MessegePannel> messegePannels = messegePannelRepository.getByChannelIdAndStatus(channelId, action);
-        return messegePannels;
+        Set<MessegePannel> messagePannels = messegePannelRepository.getByChannelIdAndStatus(channelId, action);
+        return messagePannels;
     }
     private Set<MessegePannel> getAllWhatWeWantDeleteByChatId(String chatId, String action){
         Set<MessegePannel> messegePannels = messegePannelRepository.getByChatIdAndStatus(chatId, action);
         return messegePannels;
+    }
+
+    // Метод даёт список каналов для конкретного пользователя
+    private void getMyChannels(long chatId, String name){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+//        message.setText("Список Ваших каналов ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        // создание списка с кнопками в ответе на сообщение
+        // List<InlineKeyboardButton> rowInLine = new ArrayList<>(); // одна строка // сама строка клавиатуры
+
+        TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(chatId).get();
+        List<Chanell> channelList = chanellRepository.getAllByTGUser(tgUser);
+        List<Chanell> listWithNotModerateChannels = new ArrayList<>();
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        for (Chanell chanell: channelList){
+            if (chanell.getIsModerate().equals(true)){
+                rowInLine = new ArrayList<>();
+                var button1 = new InlineKeyboardButton();
+                button1.setText(chanell.getName());
+                button1.setCallbackData(MY_CHNS + ":" + chanell.getId());
+                rowInLine.add(button1);
+                rowsInLine.add(rowInLine);
+            }
+            else{
+                listWithNotModerateChannels.add(chanell);
+            }
+        }
+        /*for (int i = 0; i < channelList.size(); i++) {
+            rowInLine = new ArrayList<>();
+            var button1 = new InlineKeyboardButton();
+            button1.setText(channelList.get(i).getName());
+            button1.setCallbackData(MY_CHNS + channelList.get(i).getId());
+            rowInLine.add(button1);
+            rowsInLine.add(rowInLine);
+        }*/
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+        message.setText(
+        rowsInLine.size() > 0 ? "Список Ваших каналов ⬇⬇⬇" :
+            listWithNotModerateChannels.size()>0 ?
+                " Добавленные вами каналы пока что проходят модерацию, ожидайте" +
+                ", Вам поступит оповещение" : "  У вас пока нет добавленных каналов");
+
+        executeMessage(message, name);
+        log.info("Пользователь с имененем " + name + " получил список своих каналов " );
+    }
+
+    private void sendMessageWithKeyBoardWithAllMyChannels(long chatId, String textToSend, String nameForLog, Long channelID) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(textToSend);
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        keyboardMarkup.setResizeKeyboard(true); // размер кнопок в клавиатуре
+
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+
+        KeyboardRow row1 = new KeyboardRow();
+        row1.add("Изменить ценовой диапазон");
+        row1.add("Изменить название");
+
+        KeyboardRow row2 = new KeyboardRow();
+        row2.add("Изменить ссылку");
+        row2.add("Добавить описание");
+
+        KeyboardRow row3 = new KeyboardRow();
+        row3.add("Вернуться назад");
+        row3.add("Удалить");
+
+        keyboardRows.add(row1);
+        keyboardRows.add(row2);
+        keyboardRows.add(row3);
+        keyboardMarkup.setKeyboard(keyboardRows);
+        message.setReplyMarkup(keyboardMarkup);
+
+        executeMessage(message, nameForLog);
     }
 
     @Scheduled(fixedDelay = 60000)

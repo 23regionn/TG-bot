@@ -23,4 +23,7 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
     @Query("select c from Chanell c " + " where c.categoryIds = :categoryId")
     Set<Chanell> getByCategoryId(@Param("categoryId") Set<Category> categoryId);
 //    Set<Chanell> getByCategoryId(@Param("categoryId") Long categoryId);
+
+    @Query("select c from Chanell c " + " where c.tGUser = :tgUser")
+    List<Chanell> getAllByTGUser(@Param("tgUser") TGUser tgUser);
 }

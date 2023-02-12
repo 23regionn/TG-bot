@@ -29,4 +29,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         "select category from Category category left join fetch category.chanellIds left join fetch category.linksByCategoryInTopIds where category.id =:id"
     )
     Optional<Category> findOneWithEagerRelationships(@Param("id") Long id);
+
 }
