@@ -23,7 +23,7 @@
             <column name="date_create_message" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="text_message" type="varchar(255)">
+            <column name="text_message" type="varchar(10000)">
                 <constraints nullable="true" />
             </column>
             <column name="id_admin" type="bigint">

@@ -1,14 +1,8 @@
 package com.mycompany.myapp.service.tg;
 
 import com.mycompany.myapp.config.tg.BotConfig;
-import com.mycompany.myapp.domain.Category;
-import com.mycompany.myapp.domain.Chanell;
-import com.mycompany.myapp.domain.MessegePannel;
-import com.mycompany.myapp.domain.TGUser;
-import com.mycompany.myapp.repository.CategoryRepository;
-import com.mycompany.myapp.repository.ChanellRepository;
-import com.mycompany.myapp.repository.MessegePannelRepository;
-import com.mycompany.myapp.repository.TGUserRepository;
+import com.mycompany.myapp.domain.*;
+import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
@@ -53,6 +47,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     private CategoryRepository categoryRepository;
 
     @Autowired
+    private EditChannelsRepository editChannelsRepository;
+
+    @Autowired
     private ChanellRepository chanellRepository;
 
     final BotConfig config;
@@ -82,12 +79,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String ADD_СH_LINK = "ADD_СH_LINK";
     static final String EDIT_СH_LINK = "EDIT_СH_LINK";
     static final String ADD_СH_PRICE = "ADD_СH_PRICE";
+    static final String EDIT_СH_PRICE = "EDIT_СH_PRICE";
+    static final String ADD_EDIT_DESCRIPTION = "ADD_EDIT_DESCRIPTION";
+
 
     static final String WORK_WITH_MY_CHANNEL = "WORK_WITH_MY_CHANNEL";
     static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
     static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
     static final String CREATE_BAN_CH = "CREATE_BAN_CH";
+
+    static final String EDIT_APPROVE_СH = "EDIT_APPROVE_СH";
+    static final String EDIT_DISABLE_СH = "EDIT_DISABLE_СH";
+    static final String EDIT_BAN_CH = "EDIT_BAN_CH";
     private static final String MODERATION = "Модерация канала";
+    private static final String EDITING_CHANNEL = "Редактирование канала";
     private static final String SVYAZ_S_ADMINAMI = "SVYAZ_S_ADMINAMI";
     private static final String SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU = "SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU";
     private static final String TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN = "TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN";
@@ -240,19 +245,60 @@ public class TelegramBot extends TelegramLongPollingBot {
                             log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
                             sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
 
+
                            // Заменить айди админа
                             sendChannelToModerate(523559144l, chanell.getId());
                             sendChannelToModerate(1376429566l, chanell.getId());
                         }
                         else if(tgUser.getCurrentStep().equals(WORK_WITH_MY_CHANNEL)){ // Менюшка
-                            if(messageText.equals("Изменить название")){
+                            if(messageText.equals("Изменить название") || messageText.equals("Изменить ценовой диапазон")
+                                || messageText.equals("Изменить ссылку") || messageText.equals("Добавить описание")){
                                 tgUser.setCurrentStep(EDIT_СH_NAME);
                                 tgUserRepositoryService.saveTgUser(tgUser);
-                                sendMessage(chatId, "Введите новое название канала ⬇⬇⬇", nameForLog);
+                                sendMessage(chatId, "Введите новое значение для канала ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Изменить ценовой диапазон")){
+                                tgUser.setCurrentStep(EDIT_СH_PRICE);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое значение для цены ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Изменить ссылку")){
+                                tgUser.setCurrentStep(EDIT_СH_LINK);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новую ссылку на канал ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Добавить описание")){
+                                tgUser.setCurrentStep(ADD_EDIT_DESCRIPTION);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое описание канала ⬇⬇⬇", nameForLog);
                             }
                         }
-                        else if(tgUser.getCurrentStep().equals(EDIT_СH_NAME)){ // Редактирование имени канала
+                        else if(tgUser.getCurrentStep().equals(EDIT_СH_NAME)
+                                || tgUser.getCurrentStep().equals(EDIT_СH_LINK)
+                                || tgUser.getCurrentStep().equals(EDIT_СH_PRICE)
+                                || tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION)){
+                            // Редактирование имени канала
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            EditChannels editChannels = new EditChannels();
+                            editChannels.setIdChannel(chanell.getId());
+                            editChannels.setLastNameChannel(chanell.getName());
+                            editChannels.setNewNameChannel(tgUser.getCurrentStep().equals(EDIT_СH_NAME) ? messageText : chanell.getName());
+                            editChannels.setLastLinkToChannel(chanell.getLink());
+                            editChannels.setNewlastLinkToChannel(tgUser.getCurrentStep().equals(EDIT_СH_LINK) ? messageText : chanell.getLink());
+                            editChannels.setUserName(chanell.getTGUser().getUserName());
+                            editChannels.setNewPriceChannel(tgUser.getCurrentStep().equals(EDIT_СH_PRICE) ? Double.valueOf(messageText) : chanell.getPriceDiapozon());
+                            editChannels.setAddDescriptionAboutChannel(tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION) ? messageText : chanell.getString1());
+                            editChannels.setDateCreateMessage(ZonedDateTime.now());
+                            editChannels.setIsApprovedChanhes(false);
+                            editChannels = editChannelsRepository.save(editChannels);
 
+                            tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
+                            tgUser.setIdCurrentChannelAction(chanell.getId());
+                            tgUserRepositoryService.saveTgUser(tgUser);
+
+                            // Заменить айди админа
+                            sendEditChannelToModerate(523559144l, editChannels.getId());
+                            sendEditChannelToModerate(1376429566l, editChannels.getId());
                         }
                         else{
                             sendMessage(chatId, "Извините, команда не распознана", nameForLog);
@@ -343,6 +389,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
                 for (MessegePannel ms: messegePannels) {
                     executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
                 }
             }
             else if(callbackData.contains(CREATE_DISABLE_СH)){
@@ -360,9 +407,47 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
                 for (MessegePannel ms: messegePannels) {
                     executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
                 }
             }
             else if(callbackData.contains(CREATE_BAN_CH)){
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                banCreateChannel(idChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            }
+            else if(callbackData.contains(EDIT_APPROVE_СH)){
+                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
+                approveEditingChannel(idEditChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            }
+            else if(callbackData.contains(EDIT_DISABLE_СH)){
+                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
+                String whyFailureINT = null;
+                switch (String.valueOf(callbackData.split(":")[2])) {
+                    case "2": whyFailureINT = (" не совпадение админа канала и вас "); break;
+                    case "3": whyFailureINT = (" не корректное название "); break;
+                    case "4": whyFailureINT = (" не правильная ссылка "); break;
+                    case "5": whyFailureINT = (" не верно указана цена "); break;
+                    case "6": whyFailureINT = (" канал относится к запретным "); break;
+                    case "8": whyFailureINT = (" не корректное описание "); break;
+                    default: whyFailureINT = (""); break;
+                }
+                disableEditChannel(idEditChannel, whyFailureINT);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
+                for (MessegePannel ms: messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            }
+            else if(callbackData.contains(EDIT_BAN_CH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 banCreateChannel(idChannel);
                 Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
@@ -1021,7 +1106,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
-
         int msId = executeMessageReturnMessageID(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
 
         MessegePannel msPan = new MessegePannel();
@@ -1033,6 +1117,106 @@ public class TelegramBot extends TelegramLongPollingBot {
         msPan.setDateCreateMessage(ZonedDateTime.now());
         msPan.setIdChannel(channelId);
         msPan.setStatus(MODERATION);
+        messegePannelRepository.save(msPan);
+    }
+
+    private void sendEditChannelToModerate(long adminId, long editChannelId){
+
+        EditChannels editChannels =  editChannelsRepository.findById(editChannelId).get();
+        Chanell chanell = chanellRepository.findById(editChannels.getIdChannel()).get();
+        String msText =  new String
+            ( "МОДЕРАЦИЯ КАНАЛА: \n" + "Пользователь: @" + chanell.getTGUser().getFirstName().toString() + "\n" +
+                "ID: " + chanell.getTGUser().getChatId().toString() + "\n" +
+                "Текущее Имя канала: " + chanell.getName().toString() + "\n" +
+                "Пользователь хочет изменить имя на " + editChannels.getNewNameChannel() + "\n" +
+                "Ссылка: " + chanell.getLink() + "\n" +
+                "Пользователь хочет изменить ссылку на " + editChannels.getNewlastLinkToChannel() + "\n" +
+                "Описание: " + chanell.getString1()+ "\n" +
+                "Пользователь хочет изменить описание на " + editChannels.getAddDescriptionAboutChannel() + "\n" +
+                "Рекламный прайс: " + chanell.getPriceDiapozon().toString()) + "\n" +
+                "Пользователь хочет изменить прайс на " + editChannels.getNewPriceChannel();
+
+        // БЛОК С ОТПРАВКОЙ КНОПКИ НА ОДОБРЕНИЕ АДМИНОМ КАНАЛА
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(adminId));
+        message.setText(msText);
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        button1.setText("Подтвердить 👍");
+        button1.setCallbackData(EDIT_APPROVE_СH + ":" + editChannels.getId());
+        rowInLine.add(button1);
+        rowsInLine.add(rowInLine);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Отклонить - неверный админ 👎");
+        button2.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":2");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+        var button3 = new InlineKeyboardButton();
+        button3.setText("Отклонить - не корректное название 👎");
+        button3.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":3");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button3);
+        rowsInLine.add(rowInLine);
+
+        var button4 = new InlineKeyboardButton();
+        button4.setText("Отклонить - не правильная ссылка 👎");
+        button4.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":4");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button4);
+        rowsInLine.add(rowInLine);
+
+        var button5 = new InlineKeyboardButton();
+        button5.setText("Отклонить - неверная цена 👎");
+        button5.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":5");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button5);
+        rowsInLine.add(rowInLine);
+
+        var button6 = new InlineKeyboardButton();
+        button6.setText("Отклонить - канал относится к запретным 👎");
+        button6.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":6");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button6);
+        rowsInLine.add(rowInLine);
+
+        var button8 = new InlineKeyboardButton();
+        button8.setText("Отклонить - некорректное описание 👎");
+        button8.setCallbackData(EDIT_DISABLE_СH + ":" + editChannels.getId() + ":8");
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button8);
+        rowsInLine.add(rowInLine);
+
+        var button7 = new InlineKeyboardButton();
+        button7.setText("Бан ❌");
+        button7.setCallbackData(EDIT_BAN_CH + ":" + editChannels.getId());
+        rowInLine = new ArrayList<>();
+        rowInLine.add(button7);
+        rowsInLine.add(rowInLine);
+
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        int msId = executeMessageReturnMessageID(message, tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get().getFirstName());
+
+        MessegePannel msPan = new MessegePannel();
+        msPan.setIdAdmin(adminId);
+        if(msId != 0){
+            msPan.setIdMessage(Long.valueOf(msId)); // УБЕДИТЬСЯ ЧТО ЭТО ТОТ САМЫЙ АЙДИШНИК
+        }
+
+        msPan.setTextMessage(message.getText());
+        msPan.setDateCreateMessage(ZonedDateTime.now());
+        msPan.setIdChannel(editChannelId);
+        msPan.setStatus(EDITING_CHANNEL);
         messegePannelRepository.save(msPan);
     }
 
@@ -1170,6 +1354,24 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
                      + "- успешно прошёл модерацию ✔✔✔ \n "+ " (Далее можете работать с ним в разделе \"Мои каналы\")",
                      chanell.getTGUser().getFirstName());
+        vNachaloCommandReceived(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
+    }
+    private void approveEditingChannel(long editingChannelId){
+        EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
+        editChannel.setIsApprovedChanhes(true);
+        editChannelsRepository.save(editChannel);
+        Chanell chanell = chanellRepository.findById(editChannel.getIdChannel()).get();
+        chanell.setModerate(true);
+        chanell.setActive(true);
+        chanell.setString1(editChannel.getAddDescriptionAboutChannel());
+        chanell.setName(editChannel.getNewNameChannel());
+        chanell.setLink(editChannel.getNewlastLinkToChannel());
+        chanell.setPriceDiapozon(editChannel.getNewPriceChannel());
+        chanellRepository.save(chanell);
+        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
+                     + "- успешно прошёл модерацию ✔✔✔ \n "+ " (Далее можете работать с ним в разделе \"Мои каналы\")",
+                     chanell.getTGUser().getFirstName());
+        vNachaloCommandReceived(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
     }
 
     private void disableCreateChannel(long channelId, String whyFailure){
@@ -1206,9 +1408,52 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         executeMessage(message, chanell.getTGUser().getFirstName());
     }
+    private void disableEditChannel(long editingChannelId, String whyFailure){
+        EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
+        editChannel.setIsApprovedChanhes(true);
+        editChannelsRepository.save(editChannel);
+        Chanell chanell = chanellRepository.findById(editChannel.getIdChannel()).get();
+
+        SendMessage message = new SendMessage();
+        message.setChatId(chanell.getTGUser().getChatId());
+        message.setText("Канал \"" + chanell.getName() + "\""  + " -  НЕ прошёл модерацию \n" +
+                        "по причине: " + whyFailure + "❌❌❌");
+
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        button1.setText("В начало ⬆⬆⬆");
+        button1.setCallbackData(V_NACHALO);
+        rowInLine.add(button1);
+
+        var button2 = new InlineKeyboardButton();
+        button2.setText("Связаться с тех поддержкой 🔔");
+        button2.setCallbackData(TEX_PODDERSHKA + ":" + chanell.getId());
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, chanell.getTGUser().getFirstName());
+    }
 
     private void banCreateChannel(long channelId){
         Chanell chanell = chanellRepository.findById(channelId).get();
+        TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(chanell.gettGUser().getChatId()).get();
+        tgUser.setBlocked(true);
+        tgUserRepositoryService.saveTgUser(tgUser);
+        chanellRepository.delete(chanell);
+        log.info("Пользователь- " + tgUser.getFirstName() + ", был заблокирован");
+    }
+    private void banEditChannel(long editingChannelId){
+        EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
+        editChannel.setIsApprovedChanhes(true);
+        editChannelsRepository.save(editChannel);
+        Chanell chanell = chanellRepository.findById(editChannel.getIdChannel()).get();
         TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(chanell.gettGUser().getChatId()).get();
         tgUser.setBlocked(true);
         tgUserRepositoryService.saveTgUser(tgUser);
@@ -1297,7 +1542,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         KeyboardRow row3 = new KeyboardRow();
         row3.add("Вернуться назад");
-        row3.add("Удалить");
+        row3.add("Скрыть канал");
 
         keyboardRows.add(row1);
         keyboardRows.add(row2);

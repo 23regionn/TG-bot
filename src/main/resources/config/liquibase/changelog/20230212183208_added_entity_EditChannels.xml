@@ -44,10 +44,10 @@
             <column name="new_price_channel" type="double">
                 <constraints nullable="true" />
             </column>
-            <column name="add_description_about_channel" type="varchar(255)">
+            <column name="add_description_about_channel" type="varchar(10000)">
                 <constraints nullable="true" />
             </column>
-            <column name="current_description_channel" type="varchar(255)">
+            <column name="current_description_channel" type="varchar(10000)">
                 <constraints nullable="true" />
             </column>
             <column name="add_region_channel" type="varchar(255)">

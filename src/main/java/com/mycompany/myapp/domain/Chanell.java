@@ -85,7 +85,7 @@ public class Chanell implements Serializable {
     private Long long1;
 
     @Column(name = "string_1")
-    private String string1;
+    private String string1; // ОПИСАНИЕ КАНАЛА
 
     @Column(name = "boolean_1")
     private Boolean boolean1;
