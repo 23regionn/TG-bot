@@ -251,8 +251,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                             sendChannelToModerate(1376429566l, chanell.getId());
                         }
                         else if(tgUser.getCurrentStep().equals(WORK_WITH_MY_CHANNEL)){ // Менюшка
-                            if(messageText.equals("Изменить название") || messageText.equals("Изменить ценовой диапазон")
-                                || messageText.equals("Изменить ссылку") || messageText.equals("Добавить описание")){
+                            if(messageText.equals("Изменить название")){
                                 tgUser.setCurrentStep(EDIT_СH_NAME);
                                 tgUserRepositoryService.saveTgUser(tgUser);
                                 sendMessage(chatId, "Введите новое значение для канала ⬇⬇⬇", nameForLog);
@@ -449,7 +448,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             else if(callbackData.contains(EDIT_BAN_CH)){
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                banCreateChannel(idChannel);
+                banEditChannel(idChannel);
                 Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
                 for (MessegePannel ms: messegePannels) {
                     executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
@@ -770,16 +769,32 @@ public class TelegramBot extends TelegramLongPollingBot {
                     button1.setText(chanellList.get(i).getName());
                     button1.setCallbackData(CHANNEL + chanellList.get(i).getId());
                     button1.setUrl(chanellList.get(i).getLink());
+                    try {
+                        button1.setUrl(chanellList.get(i).getLink());
+                    } catch (Exception e){
+                        log.info("При записи ссылки возникла ошибка == " + e.getMessage());
+                        button1.setUrl("https://t.me/" + chanellList.get(i).getLink());
+                    }
                     rowInLine.add(button1);
                     if (i + 1 < chanellList.size()) {
                         button2.setText(chanellList.get(i + 1).getName());
                         button2.setCallbackData(CHANNEL + chanellList.get(i + 1).getId());
-                        button2.setUrl(chanellList.get(i + 1).getLink());
+                        try {
+                            button2.setUrl(chanellList.get(i + 1).getLink());
+                        } catch (Exception e){
+                            log.info("При записи ссылки возникла ошибка == " + e.getMessage());
+                            button2.setUrl("https://t.me/" + chanellList.get(i + 1).getLink());
+                        }
                         rowInLine.add(button2);
                         if (i + 2 < chanellList.size()) {
                             button3.setText(chanellList.get(i + 2).getName());
                             button3.setCallbackData(CHANNEL + chanellList.get(i + 2).getId());
-                            button3.setUrl(chanellList.get(i + 2).getLink());
+                            try {
+                                button3.setUrl(chanellList.get(i + 2).getLink());
+                            }catch (Exception e){
+                                log.info("При записи ссылки возникла ошибка == " + e.getMessage());
+                                button3.setUrl("https://t.me/" + chanellList.get(i + 2).getLink());
+                            }
                             rowInLine.add(button3);
                         }
                     }
@@ -850,6 +865,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void vNachaloCommandReceived(long chatId, String name) {
         checkFindChannelOrAddChannel(chatId, name);
         sendMessageWithBaseKeyBoard(chatId, "☝☝☝☝☝", name);
+    }
+
+    private void vNachaloCommandReceivedWithOutBaseKeyBoard(long chatId, String name) {
+        checkFindChannelOrAddChannel(chatId, name);
     }
 
     // отправить ответное сообщение без клавиатуры
@@ -1018,7 +1037,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             chanell.isActive(false);
             chanell.isDelete(false);
             chanell.isModerate(false);
-            chanell.setName("Андроид");
+            chanell.setName("Отстутствует");
             chanell.setLink("https://t.me/+6sD7JYkJElgxYjMy");
             chanell.currentDate(ZonedDateTime.now().plusHours(3));
         }
@@ -1039,10 +1058,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void sendChannelToModerate(long adminId, long channelId){
 
         Chanell chanell = chanellRepository.findById(channelId).get();
-        String msText =  new String( "МОДЕРАЦИЯ КАНАЛА: \n" + "Пользователь: @" + chanell.getTGUser().getFirstName().toString() + "\n" +
+        String msText =  new String( "МОДЕРАЦИЯ КАНАЛА: \n" + "Пользователь: @" + chanell.getTGUser().getFirstName() + "\n" +
                                             "ID: " + chanell.getTGUser().getChatId().toString() + "\n" +
-                                            "Имя канала: " + chanell.getName().toString() + "\n" +
-                                            "Ссылка: " + chanell.getLink().toString() + "\n" +
+                                            "Имя канала: " + chanell.getName() + "\n" +
+                                            "Ссылка: " + chanell.getLink() + "\n" +
                                             "Рекламный прайс: " + chanell.getPriceDiapozon().toString());
 
         // БЛОК С ОТПРАВКОЙ КНОПКИ НА ОДОБРЕНИЕ АДМИНОМ КАНАЛА
@@ -1132,7 +1151,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "Ссылка: " + chanell.getLink() + "\n" +
                 "Пользователь хочет изменить ссылку на " + editChannels.getNewlastLinkToChannel() + "\n" +
                 "Описание: " + chanell.getString1()+ "\n" +
-                "Пользователь хочет изменить описание на " + editChannels.getAddDescriptionAboutChannel() + "\n" +
+                "Пользователь хочет изменить описание на: " + editChannels.getAddDescriptionAboutChannel() + "\n" +
                 "Рекламный прайс: " + chanell.getPriceDiapozon().toString()) + "\n" +
                 "Пользователь хочет изменить прайс на " + editChannels.getNewPriceChannel();
 
@@ -1354,7 +1373,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
                      + "- успешно прошёл модерацию ✔✔✔ \n "+ " (Далее можете работать с ним в разделе \"Мои каналы\")",
                      chanell.getTGUser().getFirstName());
-        vNachaloCommandReceived(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
+        vNachaloCommandReceivedWithOutBaseKeyBoard(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
     }
     private void approveEditingChannel(long editingChannelId){
         EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
@@ -1371,7 +1390,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
                      + "- успешно прошёл модерацию ✔✔✔ \n "+ " (Далее можете работать с ним в разделе \"Мои каналы\")",
                      chanell.getTGUser().getFirstName());
-        vNachaloCommandReceived(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
+        vNachaloCommandReceivedWithOutBaseKeyBoard(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
     }
 
     private void disableCreateChannel(long channelId, String whyFailure){
@@ -1379,8 +1398,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         chanell.setModerate(false);
         chanell.setActive(false);
         chanellRepository.save(chanell);
-//        sendMessage(chanell.getTGUser().getChatId(), "Канал \"" + chanell.getName() + "\""
-//                    + " -  НЕ прошёл модерацию ❌❌❌", chanell.getTGUser().getFirstName());
 
         SendMessage message = new SendMessage();
         message.setChatId(chanell.getTGUser().getChatId());
