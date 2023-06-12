@@ -26,4 +26,13 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
 
     @Query("select c from Chanell c " + " where c.tGUser = :tgUser")
     List<Chanell> getAllByTGUser(@Param("tgUser") TGUser tgUser);
+
+    @Query("select c from Chanell c " + " where c.city is not null")
+    List<Chanell> getChannelsWithCities();
+
+    @Query("select c from Chanell c " + " where c.city = :city")
+    List<Chanell> findAllByCity(@Param("city") String city);
+
+    @Query("select c.city from Chanell c " + " where c.city is not null")
+    Set<String> getCitiesNames();
 }
