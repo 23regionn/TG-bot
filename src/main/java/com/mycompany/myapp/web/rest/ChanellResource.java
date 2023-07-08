@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -226,5 +228,18 @@ public class ChanellResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+
+    @GetMapping("/city-names")
+    public Set<String> getAllCityNames() {
+        log.debug("REST request to get all City Names");
+        return chanellRepository.getCitiesNames();
+    }
+
+    @GetMapping("/city-names-by-first-letter")
+    public Set<String> getAllCitiesByFirstLetter() {
+        log.debug("REST request to get all City Names");
+        return chanellRepository.getCitiesByFirstLetter("С");
     }
 }

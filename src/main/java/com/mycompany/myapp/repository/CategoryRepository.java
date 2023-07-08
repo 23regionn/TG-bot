@@ -32,8 +32,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     )
     Optional<Category> findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query( "select category from Category category where size(category.chanellIds) > 0 and category.boolean1 = true  ")
-    List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True();
+    @Query( "select category from Category category where size(category.chanellIds) > 0 " +
+        "   and category.boolean1 = true   and  category.string1 =:city")
+    List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True(@Param("city") String city);
 
 
 }

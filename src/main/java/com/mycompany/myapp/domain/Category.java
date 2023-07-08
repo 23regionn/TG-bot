@@ -42,7 +42,7 @@ public class Category implements Serializable {
     private ZonedDateTime date2;
 
     @Column(name = "long_1")
-    private Long long1;
+    private Long long1;      // Рейтинг
 
     @Column(name = "string_1")
     private String string1;

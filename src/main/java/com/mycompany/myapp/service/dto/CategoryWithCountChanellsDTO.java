@@ -8,6 +8,8 @@ public class CategoryWithCountChanellsDTO {
 
     String name;
     long id;
+
+    Long long1 = 10000l;
 //    long countChannelsInCategory;
 
 
@@ -20,6 +22,10 @@ public class CategoryWithCountChanellsDTO {
         }
         if(category.getId() != null){
             this.id = category.getId();
+        }
+
+        if(category.getLong1() != null){
+            this.long1 = category.getLong1();
         }
     }
 
@@ -39,17 +45,25 @@ public class CategoryWithCountChanellsDTO {
         this.id = id;
     }
 
+    public Long getLong1() {
+        return long1;
+    }
+
+    public void setLong1(Long long1) {
+        this.long1 = long1;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryWithCountChanellsDTO that = (CategoryWithCountChanellsDTO) o;
-        return id == that.id && Objects.equals(name, that.name);
+        return id == that.id && long1 == that.long1 && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id);
+        return Objects.hash(name, id, long1);
     }
 
     @Override
@@ -57,6 +71,7 @@ public class CategoryWithCountChanellsDTO {
         return "CategoryWithCountChanellsDTO{" +
             "name='" + name + '\'' +
             ", id=" + id +
+            ", long1=" + long1 +
             '}';
     }
 }

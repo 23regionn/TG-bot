@@ -35,4 +35,7 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
 
     @Query("select c.city from Chanell c " + " where c.city is not null")
     Set<String> getCitiesNames();
+
+    @Query("select c.city from Chanell c where SUBSTRING(c.city, 1, 1) = :firstLetter")
+    Set<String> getCitiesByFirstLetter(@Param("firstLetter") String firstLetter);
 }
