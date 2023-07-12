@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.Category;
 import java.util.List;
 import java.util.Optional;
 
+import com.mycompany.myapp.service.dto.CategoryNameAndIdDTO;
 import com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,5 +37,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         "   and category.boolean1 = true   and  category.string1 =:city")
     List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True(@Param("city") String city);
 
+    @Query( "select category from Category category where size(category.chanellIds) > 0 " +
+        "   and category.boolean1 = true")
+    List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True();
 
 }

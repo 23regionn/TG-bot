@@ -48,7 +48,7 @@ public class Category implements Serializable {
     private String string1;
 
     @Column(name = "boolean_1")
-    private Boolean boolean1;
+    private Boolean boolean1; // отображать или нет
 
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
