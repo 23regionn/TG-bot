@@ -33,9 +33,15 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
     @Query("select c from Chanell c " + " where c.city = :city")
     List<Chanell> findAllByCity(@Param("city") String city);
 
-    @Query("select c.city from Chanell c " + " where c.city is not null")
+    @Query("select c.city from Chanell c JOIN c.categoryIds cat" + " where c.city is not null and size(cat.chanellIds) > 0")
     Set<String> getCitiesNames();
 
-    @Query("select c.city from Chanell c where SUBSTRING(c.city, 1, 1) = :firstLetter")
+    @Query("select c.city from Chanell c JOIN c.categoryIds cat where SUBSTRING(c.city, 1, 1) = :firstLetter and size(cat.chanellIds) > 0")
     Set<String> getCitiesByFirstLetter(@Param("firstLetter") String firstLetter);
+
+    @Query("SELECT DISTINCT ch FROM Chanell ch " +
+        "JOIN ch.categoryIds cat " +
+        "WHERE ch.city = :city AND cat.id = :category")
+    List<Chanell> findChannelsByCityAndCategory(@Param("city") String city, @Param("category") Long category);
+
 }

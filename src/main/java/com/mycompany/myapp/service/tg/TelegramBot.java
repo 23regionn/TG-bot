@@ -4,6 +4,7 @@ import com.mycompany.myapp.config.tg.BotConfig;
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.TgUserRepositoryService;
+import com.mycompany.myapp.service.dto.CategoryNameAndIdDTO;
 import com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO;
 import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
@@ -85,6 +86,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static final String CATEGORY = "CATEGORY";
     static final String CITY = "CITY";
+    static final String TEMA_GOROD = "TEMA_GOROD";
     static final String PRICEDIAP = "PRICEDIAP";
     static final String IDCAT = "IDCAT";
 
@@ -103,9 +105,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static final String NEXT_PAGE_CAT = "NEXT_PAGE_CAT";
     static final String ANY_PAGE_IN_CAT = "ANY_PAGE_IN_CAT";
-    static final String GORODA_FIRST_LETTER = "GORODA_FIRST_LETTER";
 
+    static final String NEXT_PAGE_GOROD_CAT = "NEXT_PAGE_GOROD_CAT";
+    static final String ANY_PAGE_GOROD_IN_CAT = "ANY_PAGE_GOROD_IN_CAT";
+    static final String GORODA_FIRST_LETTER = "GORODA_FIRST_LETTER";
     static final String ALL_LIST_CH = "ALL_LIST_CH";
+    static final String ALL_LIST_GOROD_CH = "ALL_LIST_GOROD_CH";
     static final String WORK_WITH_MY_CHANNEL = "WORK_WITH_MY_CHANNEL";
     static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
     static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
@@ -219,11 +224,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             else if(messageText.equals("Связь с админом")){
                 sendAdminLink(chatId, nameForLog);
             }
-            else if(messageText.equals("Текстовый поиск категорий 🌍🌍🌍")){
+            // Вроде не работает
+            /*else if(messageText.equals("Текстовый поиск категорий 🌍🌍🌍")){
 
                     // ЛОГИКа в случае нажатия на текст поиск из общего меню с клавиатурой
                 sendAdminLink(chatId, nameForLog);
-            }
+            }*/
             else if(messageText.equals("/channel")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
@@ -366,14 +372,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             String query = inlineQuery.getQuery();
             List<InlineQueryResult> results = new ArrayList<>();
 
-
             var categories = categoryRepository.findCategoriesHaveChanellsAndBool1True().stream()
                 .filter(cat-> !cat.getName().isEmpty())
                 .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
                 .collect(Collectors.toList());
 
             InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setMessageText("Кликните на категорию ниже"  + query); // Текст в двух местах
+            messageContent.setMessageText("Кликните на категорию ниже ⬇⬇⬇"); // Текст в двух местах
+//            messageContent.setMessageText("Кликните на категорию ниже"  + query); // Текст в двух местах
 
             for (int i = 0; i < categories.size(); i++) {
                 System.out.println(categories);
@@ -412,7 +418,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
         else if (update.hasCallbackQuery()) {
-            System.out.println("ВНИМАНИЕ === " + update.hasCallbackQuery());
             String callbackData = update.getCallbackQuery().getData();
 //            Integer messageId = Optional.ofNullable(update.getCallbackQuery().getMessage().getMessageId()).orElse(null);
             Integer messageId = currentMessageId;
@@ -448,14 +453,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 String text = "You pressed NO button";
                 executeEditText(chatId, nameForLog, text,messageId);
             }
-            else if(callbackData.equals(FIND_CHANNEL)){
+            /*else if(callbackData.equals(FIND_CHANNEL)){
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 findCategory(chatId, nameForLog);
             }
             else if(callbackData.equals(FIND_CITIES)){
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 findCityNamesByFirstLetter(chatId, nameForLog);
-            }
+            }*/
             else if(callbackData.contains(FIND_CHANNEL)){
                 findCategory(chatId, nameForLog); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
             }
@@ -489,6 +494,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 getChanellByCategoryIdBigButtons(chatId, nameForLog, categoryId);
             }
 
+            else if(callbackData.contains(ALL_LIST_GOROD_CH)){
+                String text = "Вы нажали на категоррию " + callbackData.replace(ALL_LIST_GOROD_CH,"");
+                Long categoryId = Long.valueOf(callbackData.split(":")[1]);
+                String nameCity = String.valueOf(callbackData.split(":")[2]);
+                getChanellByCategoryIdByCityBigButtons(chatId, nameForLog, categoryId, nameCity);
+            }
+
             else if(callbackData.contains(NEXT_PAGE_CAT)){
                 String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT,"");
                 Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
@@ -500,7 +512,24 @@ public class TelegramBot extends TelegramLongPollingBot {
                 String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT,"");
                 Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
                 Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                getAllPagesButtonsByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pagesCount, messageId);
+                getAllPagesButtonsByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pagesCount);
+            }
+
+            // Для городов
+            else if(callbackData.contains(NEXT_PAGE_GOROD_CAT)){
+                Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                String nameCity = String.valueOf(callbackData.split(":")[3]);
+                getChanellByCityNameByCategoryIdAndPageNumber(chatId, nameForLog, nameCity,
+                                                              categoryId, pageNumber, messageId);
+            }
+
+            // Для городов _______
+            else if(callbackData.contains(ANY_PAGE_GOROD_IN_CAT)){
+                Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                String nameCity = String.valueOf(callbackData.split(":")[3]);
+                getAllPagesButtonsByCategoryIdAndPageNumberByCity(chatId, nameForLog, categoryId, pagesCount, nameCity);
             }
 
             else if(callbackData.contains(GORODA_FIRST_LETTER)){
@@ -512,11 +541,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
             else if(callbackData.contains(CITY)){
-                String cityName = callbackData.replace(CITY,"");
-                getChanellByCityName(chatId, nameForLog, cityName);
-
+                String cityName = String.valueOf(callbackData.split(":")[1]);
+                getCategoriesByCityName(chatId, nameForLog, cityName);
             }
-            else if(callbackData.contains(PRICEDIAP)){
+            else if(callbackData.contains(TEMA_GOROD)){
+                String cityName = String.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                getChanellByCityNameByCategoryId(chatId, nameForLog, cityName, categoryId);
+            }
+
+
+            /*else if(callbackData.contains(PRICEDIAP)){
                 String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
                 String[] strings = callbackData.split(IDCAT);
                 Double price = Double.valueOf(strings[0].replace(PRICEDIAP,""));
@@ -525,7 +560,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
-            }
+            }*/
 
             else if(callbackData.contains(CHANNEL)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 String text = "Вы нажали на channel " + callbackData.replace(CHANNEL,"");
@@ -536,13 +571,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
 
-            else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
+            /*else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
                 Long idCategory = Long.valueOf(callbackData.split(":")[1]);
                 addChannelByCategory(chatId, nameForLog, idCategory);
 
-            }
+            }*/
 
-            else if(callbackData.contains("Кликните на категорию ниже ⬇⬇⬇")){
+            else if(callbackData.contains("Кликните на категорию ниже")){
                 currentChatId = chatId;
                 // ничего не должно происходить
             }
@@ -855,9 +890,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         // List<InlineKeyboardButton> rowInLine = new ArrayList<>(); // одна строка // сама строка клавиатуры
 
 //        List<CategoryWithCountChanellsDTO> categoryList = categoryRepository.findCategoriesHaveChanellsAndBool1True("");
-        List<CategoryWithCountChanellsDTO> categoryList = categoryRepository.findCategoriesHaveChanellsAndBool1True();
+        List<CategoryNameAndIdDTO> categoryList = categoryRepository.findCategoriesHaveChanellsAndBool1True();
 
-        categoryList.sort(Comparator.comparing(CategoryWithCountChanellsDTO::getLong1));
+        categoryList.sort(Comparator.comparing(CategoryNameAndIdDTO::getLong1));
 
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
@@ -882,177 +917,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
             }*/
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
-
-        for (int i = 0; i < categoryList.size(); i = i +  2) {
-            var button1 = new InlineKeyboardButton();
-            var button2 = new InlineKeyboardButton();
-            var button3 = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-
-            if(i < categoryList.size()) {
-                button1.setText(categoryList.get(i).getName());
-                button1.setCallbackData(CATEGORY + categoryList.get(i).getId());
-                rowInLine.add(button1);
-                if (i + 1 < categoryList.size()) {
-                    button2.setText(categoryList.get(i + 1).getName());
-                    button2.setCallbackData(CATEGORY + categoryList.get(i + 1).getId());
-                    rowInLine.add(button2);
-                }
-            }
-            rowsInLine.add(rowInLine);
-        }
 
         for (int i = 0; i < categoryList.size(); i = i +  2) {
             var button1 = new InlineKeyboardButton();
@@ -1237,13 +1101,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             if(i < finalList.size()) {
                 if (finalList.get(i)!= null && !finalList.get(i).isEmpty()){
                     button1.setText(finalList.get(i));
-                    button1.setCallbackData(CITY + finalList.get(i));
+                    button1.setCallbackData(CITY + ":" + finalList.get(i));
                     rowInLine.add(button1);
                 }
                 if (i + 1 < finalList.size()) {
                     if (finalList.get(i + 1) != null && !finalList.get(i + 1).isEmpty()){
                         button2.setText(finalList.get(i + 1));
-                        button2.setCallbackData(CITY + finalList.get(i + 1));
+                        button2.setCallbackData(CITY + ":" + finalList.get(i + 1));
                         rowInLine.add(button2);
                     }
                     /*if (i + 2 < finalList.size()) {
@@ -1266,6 +1130,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
+/*
     private void selectPriceDiapozonForGetChanneles(long chatId, String name, Long categoryId){
 
         SendMessage message = new SendMessage();
@@ -1325,6 +1190,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
         log.info("Пользователь с имененем " + name + " получил список категорий " );
     }
+*/
 
     // Возвращает список каналов по категории кликабельными кнопками - СТАРЫЙ ВАРИАНТ С 3 кнопками
     /*private void getChanellByCategoryId(long chatId, String name, Long categoryId){
@@ -1414,7 +1280,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите каналы");
+        message.setText("Выберите каналы ⬇⬇⬇");
 
 
 
@@ -1500,9 +1366,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button1.setCallbackData(FIND_CHANNEL);
                 rowInLine.add(button1);
             }
-
-            //НАПИСАТЬ ЛОГИКУ ПОЯВЛЕНИЯ ВСЕХ НОМЕРОВ СТРАНИЦ В КАТЕГОРИИ И КНОПКУ ДЛЯ ПОЛУЧЕНИЯ ВСЕХ КАНАЛОВ
-
 
             rowsInLine.add(rowInLine);
 
@@ -1631,14 +1494,15 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Метод отдает все кнопки со страницами на эту категорию, плюс кнопку со всеми каналами в категории
-    private void getAllPagesButtonsByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageCount, long messageId){
+    private void getAllPagesButtonsByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageCount){
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
-            message.setText("Категория: " + category.get().getName().toUpperCase() + "\n\nКаналов в категории: " + category.get().getChanellIds().size() +
-                "\n\n" + "Всего страниц: " + pageCount + "\n\n" + "Выберите одну из страниц⬇⬇⬇ \nИли получите все каналы🔑🔑🔑 " +
+//        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithoutCity(categoryId);
+            message.setText("Категория: " + category.getName().toUpperCase() + "\nКаналов в категории: " + category.getCountChannelsInCategory() +
+                "\n" + "Всего страниц: " + pageCount + "\n\n" + "Выберите одну из страниц ⬇⬇⬇ \nИли получите все  🔑🔑🔑 " +
                 " \n\n");
 
             message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
@@ -1653,7 +1517,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             var button1 = new InlineKeyboardButton();
             rowInLine = new ArrayList<>();
-            button1.setText("Все каналы " + category.get().getName().toUpperCase() + " 👁👁‍");
+            button1.setText("Все каналы " + category.getName().toUpperCase() + " 👁👁‍");
             button1.setCallbackData(ALL_LIST_CH + ":" + categoryId); // ЗАГЛУШКА НА ПОЛУЧЕНИЕ ВСЕХ КАНАЛОВ
             rowInLine.add(button1);
 
@@ -1686,7 +1550,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 rowsInLine.add(rowInLine);
                 rowInLine = new ArrayList<>();
                 button2.setText("Каналы по городам 🏘🏙");
-                button2.setCallbackData(FIND_CITIES+":");
+                button2.setCallbackData(FIND_CITIES + ":");
                 rowInLine.add(button2);
                 rowsInLine.add(rowInLine);
 
@@ -1695,7 +1559,79 @@ public class TelegramBot extends TelegramLongPollingBot {
             message.setReplyMarkup(markupInLine);
 
 //        executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
-        executeMessageWithKeybord(name, chatId, message.getText(),markupInLine);
+        executeMessageWithKeybord(name, chatId, message.getText(), markupInLine);
+        log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
+
+    }
+
+    private void getAllPagesButtonsByCategoryIdAndPageNumberByCity(long chatId, String name, Long categoryId, Long pageCount, String cityName){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+
+//        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithCity(categoryId, cityName);
+        message.setText("Город: " + cityName + "\nКатегория: " + category.getName().toUpperCase() +
+            "\nКаналов в категории: " + category.getCountChannelsInCategory() +
+            "\n\n" + "Всего страниц: " + pageCount + "\n\n" + "Выберите одну из страниц ⬇⬇⬇ \nИли получите все каналы 🔑🔑🔑 " +
+            " \n\n");
+
+        message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var button1 = new InlineKeyboardButton();
+        rowInLine = new ArrayList<>();
+        button1.setText(cityName + ": " + category.getName() + " 👁👁‍");
+        button1.setCallbackData(ALL_LIST_GOROD_CH + ":" + categoryId + ":" + cityName); // ЗАГЛУШКА НА ПОЛУЧЕНИЕ ВСЕХ КАНАЛОВ
+        rowInLine.add(button1);
+
+        rowsInLine.add(rowInLine);
+        rowInLine = new ArrayList<>();
+
+        for (int i = 1; i <= pageCount.intValue(); i++) {
+            if(rowInLine.size() == 5){
+                rowsInLine.add(rowInLine);
+                rowInLine = new ArrayList<>();
+            }
+
+            var button = new InlineKeyboardButton();
+            button.setText("cтр. " + i );
+            button.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (i-1) + ":" + categoryId +
+                                                         ":" + cityName); // ДЕЙСТВИЕ ПО ЗАМЕНЕ ТЕКУЩЕГО СООБЩЕНИЯ
+            rowInLine.add(button);
+
+            if(i == pageCount.intValue()){
+                rowsInLine.add(rowInLine);
+                break;
+            }
+        }
+
+        var button = new InlineKeyboardButton();
+        var button2 = new InlineKeyboardButton();
+        rowInLine = new ArrayList<>();
+        button.setText("Каналы по категориям 👁‍👁‍");
+        button.setCallbackData(FIND_CHANNEL+":");
+        rowInLine.add(button);
+        rowsInLine.add(rowInLine);
+        rowInLine = new ArrayList<>();
+        button2.setText("Каналы по городам 🏘🏙");
+        button2.setCallbackData(FIND_CITIES + ":");
+        rowInLine.add(button2);
+        rowsInLine.add(rowInLine);
+
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+//        executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
+        executeMessageWithKeybord(name, chatId, message.getText(), markupInLine);
         log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
 
     }
@@ -1704,7 +1640,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите каналы");
+        message.setText("Выберите каналы ⬇⬇⬇");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -1784,45 +1720,50 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void getChanellByCityName(long chatId, String name, String nameCity){
+    private void getChanellByCategoryIdByCityBigButtons(long chatId, String name, Long categoryId, String cityName) {
 
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите каналы");
+//        message.setText(cityName + ": каналы "  + + "⬇⬇⬇");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-//        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
-
-        List<Chanell> chanellsByCities = chanellRepository.findAllByCity(nameCity);
-
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, cityName);
         List<Chanell> chanellList = new ArrayList<>();
-        if (!chanellsByCities.isEmpty()){
-            chanellsByCities.stream().filter(c -> c.getScore() != null ).forEach(c-> chanellList.add(c));
-            chanellList.sort((o1, o2) -> o1.getScore().compareTo(o2.getScore()));
+        if (category.isPresent()) {
+            message.setText(cityName + ": " + category.get().getName().toUpperCase() + "⬇⬇⬇");
+            for (Chanell chanell : category.get().getChanellIds()) {
+                chanellList.add(chanell);
+            }
+
+            chanellList.sort((Chanell o1, Chanell o2) -> {
+                if (o1.getScore() != null && o2.getScore() != null) {
+                    return o1.getScore().compareTo(o2.getScore());
+                }
+                return o1.getName().compareTo(o2.getName());
+            });
         }
-        if (chanellList.isEmpty()){
+        if (chanellList.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
 
-        } else{
+        } else {
             List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
-            for (int i = 0; i < chanellList.size(); i = i +  3) {
+            for (int i = 0; i < chanellList.size(); i = i + 2) {
                 var button1 = new InlineKeyboardButton();
                 var button2 = new InlineKeyboardButton();
-                var button3 = new InlineKeyboardButton();
                 rowInLine = new ArrayList<>();
 
-                if(i < chanellList.size()) {
+                if (i < chanellList.size()) {
                     button1.setText(chanellList.get(i).getName());
                     button1.setCallbackData(CHANNEL + chanellList.get(i).getId());
                     button1.setUrl(chanellList.get(i).getLink());
                     try {
                         button1.setUrl(chanellList.get(i).getLink());
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         log.info("При записи ссылки возникла ошибка == " + e.getMessage());
                         button1.setUrl("https://t.me/" + chanellList.get(i).getLink());
                     }
@@ -1832,20 +1773,259 @@ public class TelegramBot extends TelegramLongPollingBot {
                         button2.setCallbackData(CHANNEL + chanellList.get(i + 1).getId());
                         try {
                             button2.setUrl(chanellList.get(i + 1).getLink());
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             log.info("При записи ссылки возникла ошибка == " + e.getMessage());
                             button2.setUrl("https://t.me/" + chanellList.get(i + 1).getLink());
                         }
                         rowInLine.add(button2);
-                        if (i + 2 < chanellList.size()) {
-                            button3.setText(chanellList.get(i + 2).getName());
-                            button3.setCallbackData(CHANNEL + chanellList.get(i + 2).getId());
-                            try {
-                                button3.setUrl(chanellList.get(i + 2).getLink());
-                            }catch (Exception e){
-                                log.info("При записи ссылки возникла ошибка == " + e.getMessage());
-                                button3.setUrl("https://t.me/" + chanellList.get(i + 2).getLink());
-                            }
+                    }
+                }
+                rowsInLine.add(rowInLine);
+            }
+
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+            button1.setText("Каналы по категориям 👁‍👁‍");
+            button1.setCallbackData(FIND_CHANNEL + ":");
+            rowInLine.add(button1);
+            rowsInLine.add(rowInLine);
+            rowInLine = new ArrayList<>();
+            button2.setText("Каналы по городам 🏘🏙");
+            button2.setCallbackData(FIND_CITIES + ":");
+            rowInLine.add(button2);
+            rowsInLine.add(rowInLine);
+
+            markupInLine.setKeyboard(rowsInLine);
+            message.setReplyMarkup(markupInLine);
+
+            executeMessage(message, name);
+            log.info("Пользователь с имененем " + name + " получил список городов ");
+        }
+    }
+
+    private void getChanellByCityNameByCategoryId(long chatId, String name, String nameCity, Long categoryId){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        CategoryNameAndIdDTO category = categoryRepository.findCategoryById(categoryId);
+
+        List<Chanell> chanellList = chanellRepository.findChannelsByCityAndCategory(nameCity, categoryId)
+            .stream().filter(c -> c.getScore() != null)
+            .sorted(Comparator.comparing(Chanell::getScore))
+            .collect(Collectors.toList());
+
+        if (chanellList.isEmpty()){
+            sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
+
+        } else{
+
+            List<String> allChanellsInformationList = new ArrayList<>();
+            for (Chanell chanell: chanellList){
+                var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n"
+                    + chanell.getLink() + "\n";
+                allChanellsInformationList.add(chanString);
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            Map<Integer, List<String>> map = IntStream.range(0, allChanellsInformationList.size())
+                .boxed()
+                .collect(Collectors.groupingBy(i -> i / 3,
+                    Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+
+            map.get(0).forEach(str-> stringBuilder.append(str));
+            message.setText("Город: " + nameCity + "\n" + "Категория: " + category.getName() + "\n" +
+                "Каналов в категории: " + chanellList.size() + "\n" +
+                "Всего страниц с каналами: " + map.size() + "\n" +
+                "Текущая страница: 1" +  "\n" +
+                "Выберите каналы: \n " + stringBuilder +
+                " \n\nЕщё каналы ниже⬇⬇⬇");
+
+            message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
+
+            List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+
+            if(map.size() > 1){
+                button1.setText("стр. 1/" + map.size());
+                button2.setText("▶");
+
+                button1.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + nameCity);
+                button2.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + 1 + ":" + categoryId + ":" + nameCity);
+
+                rowInLine.add(button1);
+                rowInLine.add(button2);
+            } else if(map.size() == 1){
+                button1.setText(nameCity + ": другие категории " + " ✏");
+                button1.setCallbackData(CITY + ":" + nameCity);
+                rowInLine.add(button1);
+            }
+
+            rowsInLine.add(rowInLine);
+
+            markupInLine.setKeyboard(rowsInLine);
+            message.setReplyMarkup(markupInLine);
+
+            int msId = executeMessageReturnMessageID(message, name); // Отправка сообщения с текстами каналов
+
+            log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = " + msId);
+        }
+    }
+
+    // Возвращает список каналов текстовым сообщением, подлежащим изменению,
+    // Приняв с кнопки NEXT_GOROD_PAGE_CAT инфу о номере страницы и категории
+    private void getChanellByCityNameByCategoryIdAndPageNumber(long chatId, String name, String nameCity,
+                                                               Long categoryId,
+                                                               Long pageNumberInMap, long messageId){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        CategoryNameAndIdDTO category = categoryRepository.findCategoryById(categoryId);
+
+        List<Chanell> chanellList = chanellRepository.findChannelsByCityAndCategory(nameCity, categoryId)
+            .stream().filter(c -> c.getScore() != null)
+            .sorted(Comparator.comparing(Chanell::getScore))
+            .collect(Collectors.toList());
+
+        if (chanellList.isEmpty()){
+            sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
+
+        } else{
+
+            List<String> allChanellsInformationList = new ArrayList<>();
+
+            for (Chanell chanell: chanellList){
+                var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n"
+                    + chanell.getLink() + "\n";
+                allChanellsInformationList.add(chanString);
+            }
+
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+
+            Map<Integer, List<String>> map = IntStream.range(0, allChanellsInformationList.size())
+                .boxed()
+                .collect(Collectors.groupingBy(i -> i / 3,
+                    Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+
+            map.get(pageNumberInMap.intValue()).forEach(str-> stringBuilder.append(str));
+            message.setText("Город: " + nameCity + "\n" + "Категория: " + category.getName() + "\n" +
+                "Каналов в категории: " + chanellList.size() + "\n" +
+                "Всего страниц с каналами: " + map.size() + "\n" +
+                "Текущая страница: " + (pageNumberInMap + 1) + "\n" +
+                "Выберите каналы: \n " + stringBuilder +
+                " \n\nЕщё каналы ниже⬇⬇⬇");
+
+            message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
+
+            List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+            var button1 = new InlineKeyboardButton();
+            var button2 = new InlineKeyboardButton();
+            var button3 = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+
+            if( (map.size() - 1) > pageNumberInMap && pageNumberInMap != 0 ){
+                button1.setText("◀");
+                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":"
+                                        + categoryId + ":" + nameCity);
+
+                button2.setText("стр. " + (pageNumberInMap + 1) + "/" + map.size());
+                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId
+                                                               + ":" + nameCity);
+                button3.setText("▶");
+                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + categoryId
+                                                                 + ":" + nameCity);
+
+                rowInLine.add(button1);
+                rowInLine.add(button2);
+                rowInLine.add(button3);
+            }
+            else if(map.size() > pageNumberInMap && pageNumberInMap == 0 ){
+                button2.setText("стр. " + (pageNumberInMap + 1) + "/" + map.size());
+                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + nameCity);
+                button3.setText("▶");
+                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + categoryId +
+                                                                                            ":" + nameCity);
+
+                rowInLine.add(button2);
+                rowInLine.add(button3);
+            }
+            else if((map.size() - 1) == pageNumberInMap){
+                button1.setText("◀");
+                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":" + categoryId
+                                         + ":" + nameCity);
+
+                button2.setText("стр. " + (pageNumberInMap + 1) + "/" + map.size());
+                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + nameCity);
+
+                rowInLine.add(button1);
+                rowInLine.add(button2);
+
+            }
+
+            rowsInLine.add(rowInLine);
+
+            markupInLine.setKeyboard(rowsInLine);
+            message.setReplyMarkup(markupInLine);
+
+            executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
+            log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
+        }
+    }
+
+    private void getCategoriesByCityName(long chatId, String name, String nameCity){
+
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Выберите категории по городу - " + nameCity + " ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+
+        List<CategoryNameAndIdDTO> categories = categoryRepository.findCategoriesByCity(nameCity);
+
+        if (categories.isEmpty()){
+            sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
+
+        } else{
+            List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+            for (int i = 0; i < categories.size(); i = i +  3) {
+                var button1 = new InlineKeyboardButton();
+                var button2 = new InlineKeyboardButton();
+                var button3 = new InlineKeyboardButton();
+                rowInLine = new ArrayList<>();
+
+                if(i < categories.size()) {
+                    button1.setText(categories.get(i).getName());
+                    button1.setCallbackData(TEMA_GOROD + ":" + nameCity + ":" + categories.get(i).getId());
+                    rowInLine.add(button1);
+                    if (i + 1 < categories.size()) {
+                        button2.setText(categories.get(i + 1).getName());
+                        button2.setCallbackData(TEMA_GOROD + ":" + nameCity + ":" + categories.get(i + 1).getId());
+                        rowInLine.add(button2);
+                        if (i + 2 < categories.size()) {
+                            button3.setText(categories.get(i + 2).getName());
+                            button3.setCallbackData(TEMA_GOROD + ":" + nameCity + ":" + categories.get(i + 2).getId());
                             rowInLine.add(button3);
                         }
                     }
@@ -1860,6 +2040,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.info("Пользователь с имененем " + name + " получил список категорий " );
         }
     }
+/*
     private void getChanellByPriceDiapozon(long chatId, String name, Double price, Long categoryId){
 
         SendMessage message = new SendMessage();
@@ -1938,6 +2119,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.info("Пользователь с имененем " + name + " получил список категорий " );
         }
     }
+*/
 
 
     private void registerUser(Message msg) {
@@ -2148,6 +2330,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return 0;
     }
 
+/*
     private void selectCategory(long chatId, String name){
 
         SendMessage message = new SendMessage();
@@ -2194,7 +2377,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         executeMessage(message, name);
 
-        /*Optional<Set<TGUser>> tgUsers = tgUserRepositoryService.findAllByChatId(chatId);
+        */
+/*Optional<Set<TGUser>> tgUsers = tgUserRepositoryService.findAllByChatId(chatId);
         TGUser currentUser = null;
         if (tgUsers.isPresent()){
             for (TGUser tgUser: tgUsers.get()) {
@@ -2204,11 +2388,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             currentUser.setCurrentStep(FIND_CAT_FOR_ADD_CHAN);
             tgUserRepositoryService.saveTgUser(currentUser);
-        }*/
+        }*//*
+
         log.info("Пользователь с имененем " + name + " получил список категорий " );
     }
+*/
 
     // Метод первоначального создания каналов
+/*
     private void addChannelByCategory(long chatId, String name, Long idCategory){
         Chanell chanell = new Chanell();
         Optional<Set<TGUser>> tgUsers = tgUserRepositoryService.findAllByChatId(chatId);
@@ -2240,6 +2427,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         sendMessage(chatId, "Добавить название канала ⬇⬇⬇", name);
     }
+*/
 
     private void sendChannelToModerate(long adminId, long channelId){
 

@@ -12,6 +12,8 @@ public class CategoryNameAndIdDTO {
 
     private String name;
 
+    private Long long1 = 10000l;
+
     public CategoryNameAndIdDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -20,6 +22,10 @@ public class CategoryNameAndIdDTO {
         this.id = category.getId();
         // Customize it here if you need, or not, firstName/lastName/etc
         this.name = category.getName();
+
+        if(category.getLong1() != null){
+            this.long1 = category.getLong1();
+        }
     }
 
     public Long getId() {
@@ -38,12 +44,24 @@ public class CategoryNameAndIdDTO {
         this.name = name;
     }
 
-    // prettier-ignore
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getLong1() {
+        return long1;
+    }
+
+    public void setLong1(Long long1) {
+        this.long1 = long1;
+    }
+
     @Override
     public String toString() {
         return "CategoryNameAndIdDTO{" +
-            "id='" + id + '\'' +
+            "id=" + id +
             ", name='" + name + '\'' +
-            "}";
+            ", long1=" + long1 +
+            '}';
     }
 }

@@ -10,7 +10,7 @@ public class CategoryWithCountChanellsDTO {
     long id;
 
     Long long1 = 10000l;
-//    long countChannelsInCategory;
+    long countChannelsInCategory;
 
 
     public CategoryWithCountChanellsDTO(Category category){
@@ -27,6 +27,17 @@ public class CategoryWithCountChanellsDTO {
         if(category.getLong1() != null){
             this.long1 = category.getLong1();
         }
+        if(category.getChanellIds() != null){
+            countChannelsInCategory = category.getChanellIds().size();
+        }
+    }
+
+    public long getCountChannelsInCategory() {
+        return countChannelsInCategory;
+    }
+
+    public void setCountChannelsInCategory(long countChannelsInCategory) {
+        this.countChannelsInCategory = countChannelsInCategory;
     }
 
     public String getName() {
@@ -72,6 +83,7 @@ public class CategoryWithCountChanellsDTO {
             "name='" + name + '\'' +
             ", id=" + id +
             ", long1=" + long1 +
+            ", countChannelsInCategory=" + countChannelsInCategory +
             '}';
     }
 }
