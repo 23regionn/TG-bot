@@ -119,6 +119,7 @@
             <column name="long_1" type="numeric"/>
             <column name="string_1" type="string"/>
             <column name="boolean_1" type="boolean"/>
+            <column name="tguser_id" type="numeric"/>
             <column name="is_active" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

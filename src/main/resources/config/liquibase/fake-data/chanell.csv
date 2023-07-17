@@ -1,7 +1,28 @@
-id;name;link;score;status;count_subscribers;quaility_from_another_sources;price_diapozon;is_moderate;show_chanell_in_top_by_category;region;city;approved_admin;is_delete;jhi_current_date;date_1;date_2;long_1;string_1;boolean_1;is_active
-1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-2;Егоров Олег💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-4;Бабки💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;500;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-5;Музло💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;300;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
-6;Психотерапия💰;https://t.me/+6sD7JYkJElgxYjMy;100;WORK;12168;100;100;true;true;Russia;Moskow;523559144;false;2022-11-22T22:28:17;2022-11-22T17:32:45;2022-11-23T03:04:15;49319;Cambridgeshire;false;true
+id;name;link;score;is_moderate;city;is_delete;is_active
+1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;;false;true
+2;Мой первый канал;https://t.me/first_channe;100;true;Новороссийск;false;true
+3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;Ставраполь;false;true
+4;ЖИВЫЕ ДЕНЬГИ;https://t.me/live_money;100;true;;false;true
+5;МУЗЛОФТ;https://t.me/MUZ_LOFT;100;true;;false;true
+6;Психотерапия💰;https://t.me/attachment_theory;100;true;;false;true
+7;Глав хак;https://t.me/glav_hack;100;true;;false;true
+8;Трезожники;https://t.me/+6sD7JYkJElgxYjM;100;true;;false;true
+9;Тинькофф;https://t.me/tinkoff_invest_official;100;true;;false;true
+10;Хроники Хаоса (Android/iOS);https://t.me/herowarsapp;100;true;;false;true
+11;Андрес  в деле;https://t.me/andresvdele;100;true;;false;true
+12;Java задачи с собеседований;https://t.me/javaquiz;100;true;;false;true
+13;Python Academy;https://t.me/python_academy;100;true;;false;true
+14;Анетта Орлова;https://t.me/anettaorlova;100;true;Новороссийск;false;true
+15;Вечная философия;https://t.me/tim_philosophy;100;true;Ставраполь;false;true
+16;ХК «Автомобилист»;https://t.me/hc_avtomobilist;100;true;;false;true
+17;МИР ЖИВОТНЫХ;https://t.me/mir_animalsss;100;true;;false;true
+18;Медицина | Новости | Здоровье;https://t.me/medic_novosti;100;true;Новороссийск;false;true
+19;АУДИОКНИГИ;https://t.me/samorazvitie_literatura;100;true;Новороссийск;false;true
+20;АУДИОКНИГИ;https://t.me/podkastyb_literaturang;100;true;Краснодар;false;true
+21;ФК «Краснодар»;https://t.me/fckrasnodar;100;true;Краснодар;false;true
+22;Типичный Краснодар;https://t.me/krd_tipich_ru;100;true;Краснодар;false;true
+23;ЧП Сочи 🔞;https://t.me/chp_sochi;100;true;Сочи;false;true
+24;Вести Сочи;https://t.me/novostisochi;100;true;Сочи;false;true
+25;Ставрополье. Официально;https://t.me/stavregion_oficial;100;true;Ставраполь;false;true
+26;Ламповый Екатеринбург;https://t.me/ekaterinburgg;100;true;Екатеринбург;false;true
+27;Хоккейный клуб "Ростов";https://t.me/rostovhc;100;true;Ростов;false;true
