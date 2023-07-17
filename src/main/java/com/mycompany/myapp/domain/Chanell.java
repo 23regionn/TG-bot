@@ -58,6 +58,9 @@ public class Chanell implements Serializable {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "contacts")
+    private String contacts;
+
     @Column(name = "approved_admin")
     private Long approvedAdmin;
 
@@ -509,6 +512,14 @@ public class Chanell implements Serializable {
         this.setApprovedAdmin(approvedAdmin);
         return this;
     }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
 // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -551,6 +562,7 @@ public class Chanell implements Serializable {
             ", long1=" + getLong1() +
             ", string1='" + getString1() + "'" +
             ", boolean1='" + getBoolean1() + "'" +
+            ", contacts='" + getContacts() + "'" +
             "}";
     }
 }

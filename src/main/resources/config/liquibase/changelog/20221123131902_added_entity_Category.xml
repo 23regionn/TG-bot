@@ -38,6 +38,15 @@
             <column name="boolean_1" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="score" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_show" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_first" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="category" columnName="date_1" columnDataType="${datetimeType}"/>
@@ -93,6 +102,9 @@
             <column name="long_1" type="numeric"/>
             <column name="string_1" type="string"/>
             <column name="boolean_1" type="boolean"/>
+            <column name="score" type="numeric"/>
+            <column name="is_first" type="boolean"/>
+            <column name="is_show" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
 

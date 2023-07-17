@@ -48,7 +48,16 @@ public class Category implements Serializable {
     private String string1;
 
     @Column(name = "boolean_1")
-    private Boolean boolean1; // отображать или нет
+    private Boolean boolean1;
+
+    @Column(name = "is_show")
+    private Boolean isShow; // отображать или нет
+
+    @Column(name = "is_first")
+    private Boolean isFirst;
+
+    @Column(name = "score")
+    private Double score;  // Рейтинг
 
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
@@ -290,19 +299,21 @@ public class Category implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "Category{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", countChanellInCategory=" + getCountChanellInCategory() +
-            ", isDelete='" + getIsDelete() + "'" +
-            ", date1='" + getDate1() + "'" +
-            ", date2='" + getDate2() + "'" +
-            ", long1=" + getLong1() +
-            ", string1='" + getString1() + "'" +
-            ", boolean1='" + getBoolean1() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", countChanellInCategory=" + countChanellInCategory +
+            ", isDelete=" + isDelete +
+            ", date1=" + date1 +
+            ", date2=" + date2 +
+            ", long1=" + long1 +
+            ", string1='" + string1 + '\'' +
+            ", boolean1=" + boolean1 +
+            ", isShow=" + isShow +
+            ", isFirst=" + isFirst +
+            ", score=" + score +
+            '}';
     }
 }
