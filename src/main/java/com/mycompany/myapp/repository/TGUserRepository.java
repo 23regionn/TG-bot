@@ -26,4 +26,6 @@ public interface TGUserRepository extends JpaRepository<TGUser, Long> {
     TGUser getOneChatIdAndDeleteFalse(@Param("chatId") Long chatId);
 
 
+    @Query("select t from TGUser t " + " where t.isAdmin = true")
+    Set<TGUser> getAllAdmins();
 }

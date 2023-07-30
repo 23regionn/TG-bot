@@ -2437,6 +2437,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             var button1 = new InlineKeyboardButton();
             var button2 = new InlineKeyboardButton();
+            InlineKeyboardButton button3 = new InlineKeyboardButton();
+            InlineKeyboardButton searchCategory = new InlineKeyboardButton();
             rowInLine = new ArrayList<>();
 
             if(map.size() > 1){
@@ -2452,6 +2454,25 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button1.setText(nameCity + ": другие категории " + " ✏");
                 button1.setCallbackData(CITY + ":" + nameCity);
                 rowInLine.add(button1);
+                rowsInLine.add(rowInLine);
+
+
+                rowInLine = new ArrayList<>();
+                button2.setText("Каналы по категориям 👁‍👁‍");
+                button2.setCallbackData(FIND_CHANNEL + ":");
+                rowInLine.add(button2);
+                rowsInLine.add(rowInLine);
+                rowInLine = new ArrayList<>();
+
+                button3.setText("Каналы по городам 🏘🏙");
+                button3.setCallbackData(FIND_CITIES + ":");
+                rowInLine.add(button3);
+                rowsInLine.add(rowInLine);
+                rowInLine = new ArrayList<>();
+                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+                searchCategory.setSwitchInlineQueryCurrentChat(" ");
+                rowInLine.add(searchCategory);
+                rowsInLine.add(rowInLine);
             }
 
             rowsInLine.add(rowInLine);
@@ -3798,8 +3819,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void sendAdminLink(long chatId, String nameForLog){
-        sendMessage(chatId, "Свяжитесь с администратором по ссылке \n"
-            + " - " + "@" + tgUserRepository.findById(1L).get().getUserName() , nameForLog);
+
+        Set<TGUser> admins = tgUserRepository.getAllAdmins();
+        Set<String> adminsName = admins.stream().map(admin -> admin.getUserName()).collect(Collectors.toSet());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Свяжитесь с администратором по ссылке: \n");
+        adminsName.forEach(adminName -> stringBuilder.append("@" + adminName + " \n\n"));
+        /*admins.forEach(admin ->
+            sendMessage(chatId, "Свяжитесь с администратором по ссылке: \n"
+                + " - " + "@" + admin.getUserName(), nameForLog) );*/
+        sendMessage(chatId, stringBuilder.toString(), nameForLog);
     }
 
     @Scheduled(fixedDelay = 60000)
