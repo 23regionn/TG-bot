@@ -2211,7 +2211,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         rowsInLine.add(rowInLine);
 
 
-
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
