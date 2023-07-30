@@ -11,8 +11,9 @@ public class CategoryNameAndIdDTO {
     private Long id;
 
     private String name;
+    private Double score = 10000.0;
 
-    private Long long1 = 10000l;
+    private Boolean isFirst;
 
     public CategoryNameAndIdDTO() {
         // Empty constructor needed for Jackson.
@@ -23,8 +24,12 @@ public class CategoryNameAndIdDTO {
         // Customize it here if you need, or not, firstName/lastName/etc
         this.name = category.getName();
 
-        if(category.getLong1() != null){
-            this.long1 = category.getLong1();
+        if(category.getScore() != null){
+            this.score = category.getScore();
+        }
+
+        if(category.getFirst() != null){
+            this.isFirst = category.getFirst();
         }
     }
 
@@ -48,12 +53,20 @@ public class CategoryNameAndIdDTO {
         this.name = name;
     }
 
-    public Long getLong1() {
-        return long1;
+    public Double getScore() {
+        return score;
     }
 
-    public void setLong1(Long long1) {
-        this.long1 = long1;
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
+    public Boolean getFirst() {
+        return isFirst;
+    }
+
+    public void setFirst(Boolean first) {
+        isFirst = first;
     }
 
     @Override
@@ -61,7 +74,8 @@ public class CategoryNameAndIdDTO {
         return "CategoryNameAndIdDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", long1=" + long1 +
+            ", score=" + score +
+            ", isFirst=" + isFirst +
             '}';
     }
 }

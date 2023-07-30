@@ -45,13 +45,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True(@Param("city") String city);*/
 
     @Query( "select DISTINCT category from Category category LEFT JOIN FETCH category.chanellIds chan where size(category.chanellIds) > 0 " +
-        "   and category.boolean1 = true AND" +
+        "   and category.isShow = true AND" +
         " (chan.city IS NULL OR chan.city = '')")
-    List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndBool1True();
+    List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue();
 
     @Query("SELECT DISTINCT cat FROM Category cat " +
         "JOIN cat.chanellIds ch " +
-        "WHERE ch.city = :city")
+        "WHERE ch.city = :city and cat.isShow = true")
     List<CategoryNameAndIdDTO> findCategoriesByCity(@Param("city") String city);
 
     @Query("SELECT cat FROM Category cat " +  "WHERE cat.id = :id")
