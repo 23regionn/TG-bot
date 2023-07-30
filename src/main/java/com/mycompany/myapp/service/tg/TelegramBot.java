@@ -2192,6 +2192,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var button = new InlineKeyboardButton();
         var button2 = new InlineKeyboardButton();
+        InlineKeyboardButton searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
         button.setText("Каналы по категориям 👁‍👁‍");
         button.setCallbackData(FIND_CHANNEL+":");
@@ -2202,6 +2203,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         button2.setCallbackData(FIND_CITIES + ":");
         rowInLine.add(button2);
         rowsInLine.add(rowInLine);
+        rowInLine = new ArrayList<>();
+
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        rowInLine.add(searchCategory);
+        rowsInLine.add(rowInLine);
+
 
 
         markupInLine.setKeyboard(rowsInLine);
@@ -2472,7 +2480,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
                 searchCategory.setSwitchInlineQueryCurrentChat(" ");
                 rowInLine.add(searchCategory);
-                rowsInLine.add(rowInLine);
             }
 
             rowsInLine.add(rowInLine);
