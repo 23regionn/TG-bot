@@ -1,0 +1,5 @@
+entity City{
+        cityName String,
+    	dateCreateCity ZonedDateTime,
+	    status String
+}

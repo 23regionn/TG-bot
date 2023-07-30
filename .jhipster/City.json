@@ -1,0 +1,28 @@
+{
+  "name": "City",
+  "fields": [
+    {
+      "fieldName": "cityName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateCreateCity",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "city",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20230730180248"
+}

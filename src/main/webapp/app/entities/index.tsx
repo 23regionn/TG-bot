@@ -25,6 +25,7 @@ import BalanceLog from './balance-log';
 import ConfigTable from './config-table';
 import MessegePannel from './messege-pannel';
 import EditChannels from './edit-channels';
+import City from './city';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -52,6 +53,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}config-table`} component={ConfigTable} />
       <ErrorBoundaryRoute path={`${match.url}messege-pannel`} component={MessegePannel} />
       <ErrorBoundaryRoute path={`${match.url}edit-channels`} component={EditChannels} />
+      <ErrorBoundaryRoute path={`${match.url}city`} component={City} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>
