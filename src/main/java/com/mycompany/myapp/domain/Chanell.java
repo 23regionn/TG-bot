@@ -100,7 +100,7 @@ public class Chanell implements Serializable {
     @ManyToOne
     @JoinColumn(name = "city_id")
     @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
-    private City cityId;
+    private City cityEntity;
     @OneToMany(mappedBy = "chanell")
     @JsonIgnoreProperties(value = {"chanell"}, allowSetters = true)
     private Set<ChanellLog> chanellLogs = new HashSet<>();
@@ -115,12 +115,12 @@ public class Chanell implements Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
 
-    public City getCityId() {
-        return cityId;
+    public City getCityEntity() {
+        return cityEntity;
     }
 
-    public void setCityId(City cityId) {
-        this.cityId = cityId;
+    public void setCityEntity(City cityId) {
+        this.cityEntity = cityId;
     }
 
     public Long getId() {
@@ -577,7 +577,7 @@ public class Chanell implements Serializable {
             ", string1='" + getString1() + "'" +
             ", boolean1='" + getBoolean1() + "'" +
             ", contacts='" + getContacts() + "'" +
-            ", cityId='" + getCityId() + "'" +
+            ", cityId='" + getCityEntity() + "'" +
             "}";
     }
 }

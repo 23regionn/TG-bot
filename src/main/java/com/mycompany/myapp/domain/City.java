@@ -31,8 +31,8 @@ public class City implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "cityId")
-    @JsonIgnoreProperties(value = { "cityId" }, allowSetters = true)
+    @OneToMany(mappedBy = "cityEntity")
+    @JsonIgnoreProperties(value = { "cityEntity" }, allowSetters = true)
     private Set<Chanell> chanells = new HashSet<>();
 
 
