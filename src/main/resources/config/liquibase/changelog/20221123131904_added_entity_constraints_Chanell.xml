@@ -13,5 +13,11 @@
                                  constraintName="fk_chanell__tguser_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tg_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="city_id"
+                                 baseTableName="chanell"
+                                 constraintName="fk_chanell__city_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="city"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,7 +1,11 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -26,6 +30,11 @@ public class City implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @OneToMany(mappedBy = "cityId")
+    @JsonIgnoreProperties(value = { "cityId" }, allowSetters = true)
+    private Set<Chanell> chanells = new HashSet<>();
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -78,6 +87,14 @@ public class City implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<Chanell> getChanells() {
+        return chanells;
+    }
+
+    public void setChanells(Set<Chanell> chanells) {
+        this.chanells = chanells;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

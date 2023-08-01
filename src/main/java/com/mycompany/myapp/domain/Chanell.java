@@ -94,22 +94,35 @@ public class Chanell implements Serializable {
     private Boolean boolean1;
 
     @OneToMany(mappedBy = "chanell")
-    @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"linksByCategoryInTopLogs", "chanell", "categoryIds"}, allowSetters = true)
     private Set<LinksByCategoryInTop> linksByCategoryInTops = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
+    private City cityId;
     @OneToMany(mappedBy = "chanell")
-    @JsonIgnoreProperties(value = { "chanell" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"chanell"}, allowSetters = true)
     private Set<ChanellLog> chanellLogs = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "balance", "chanells", "offerFromCostumers", "reviews", "pays", "tGUserLogs" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"balance", "chanells", "offerFromCostumers", "reviews", "pays", "tGUserLogs"}, allowSetters = true)
     private TGUser tGUser;
-
     @ManyToMany(mappedBy = "chanellIds")
-    @JsonIgnoreProperties(value = { "categoryLogs", "chanellIds", "linksByCategoryInTopIds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"categoryLogs", "chanellIds", "linksByCategoryInTopIds"}, allowSetters = true)
     private Set<Category> categoryIds = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+
+    public City getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(City cityId) {
+        this.cityId = cityId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -538,6 +551,7 @@ public class Chanell implements Serializable {
         // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
+
     // prettier-ignore
     @Override
     public String toString() {
@@ -563,6 +577,7 @@ public class Chanell implements Serializable {
             ", string1='" + getString1() + "'" +
             ", boolean1='" + getBoolean1() + "'" +
             ", contacts='" + getContacts() + "'" +
+            ", cityId='" + getCityId() + "'" +
             "}";
     }
 }
