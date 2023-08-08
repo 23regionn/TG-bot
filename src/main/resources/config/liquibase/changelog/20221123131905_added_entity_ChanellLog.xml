@@ -71,6 +71,24 @@
             <column name="chanell_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="city_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="city_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="chat_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="chan_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="cat_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_log" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="chanell_log" columnName="jhi_current_date" columnDataType="${datetimeType}"/>

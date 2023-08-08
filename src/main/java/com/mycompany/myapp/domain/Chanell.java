@@ -112,8 +112,19 @@ public class Chanell implements Serializable {
     @JsonIgnoreProperties(value = {"categoryLogs", "chanellIds", "linksByCategoryInTopIds"}, allowSetters = true)
     private Set<Category> categoryIds = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @Column(name = "start_date")
+    private ZonedDateTime startDate;
 
+    @Column(name = "last_pay_date")
+    private ZonedDateTime lastPayDate;
+
+    @Column(name = "end_public_date")
+    private ZonedDateTime endPublicDate;
+
+    @Column(name = "comment")
+    private String comment;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public City getCityEntity() {
         return cityEntity;
@@ -530,6 +541,38 @@ public class Chanell implements Serializable {
         return contacts;
     }
 
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getLastPayDate() {
+        return lastPayDate;
+    }
+
+    public void setLastPayDate(ZonedDateTime lastPayDate) {
+        this.lastPayDate = lastPayDate;
+    }
+
+    public ZonedDateTime getEndPublicDate() {
+        return endPublicDate;
+    }
+
+    public void setEndPublicDate(ZonedDateTime endPublicDate) {
+        this.endPublicDate = endPublicDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public void setContacts(String contacts) {
         this.contacts = contacts;
     }
@@ -578,6 +621,10 @@ public class Chanell implements Serializable {
             ", boolean1='" + getBoolean1() + "'" +
             ", contacts='" + getContacts() + "'" +
             ", cityId='" + getCityEntity() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", lastPayDate='" + getLastPayDate() + "'" +
+            ", endPublicDate='" + getEndPublicDate() + "'" +
+            ", comment='" + getComment() + "'" +
             "}";
     }
 }

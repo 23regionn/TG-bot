@@ -41,6 +41,24 @@
             <column name="category_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="city_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="city_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="chat_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="cat_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_log" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="score" type="double">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="category_log" columnName="date_1" columnDataType="${datetimeType}"/>

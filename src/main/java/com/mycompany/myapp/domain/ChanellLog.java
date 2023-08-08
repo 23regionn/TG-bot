@@ -53,6 +53,24 @@ public class ChanellLog implements Serializable {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "city_id")
+    private Long cityId;
+
+    @Column(name = "city_name")
+    private String cityName;
+
+    @Column(name = "chat_id")
+    private Long chatId;
+
+    @Column(name = "chan_id")
+    private Long chanId;
+
+    @Column(name = "cat_id")
+    private Long catId;
+
+    @Column(name = "date_log")
+    private ZonedDateTime dateLog;
+
     /**
      * удаленный
      */
@@ -347,7 +365,70 @@ public class ChanellLog implements Serializable {
         this.chanell = chanell;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Boolean getModerate() {
+        return isModerate;
+    }
+
+    public void setModerate(Boolean moderate) {
+        isModerate = moderate;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Long getChanId() {
+        return chanId;
+    }
+
+    public void setChanId(Long chanId) {
+        this.chanId = chanId;
+    }
+
+    public Long getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Long catId) {
+        this.catId = catId;
+    }
+
+    public ZonedDateTime getDateLog() {
+        return dateLog;
+    }
+
+    public void setDateLog(ZonedDateTime dateLog) {
+        this.dateLog = dateLog;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

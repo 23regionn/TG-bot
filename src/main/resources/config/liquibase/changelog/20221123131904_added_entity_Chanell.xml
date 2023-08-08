@@ -83,6 +83,18 @@
             <column name="is_active" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="start_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_pay_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="end_public_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="comment" type="varchar(10000)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="chanell" columnName="jhi_current_date" columnDataType="${datetimeType}"/>
@@ -129,6 +141,8 @@
             <column name="city_id" type="numeric"/>
             <column name="is_active" type="boolean"/>
             <column name="contacts" type="string"/>
+            <column name="end_public_date" type="${datetimeType}"/>
+            <column name="comment" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

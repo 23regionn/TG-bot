@@ -48,6 +48,23 @@ public class CategoryLog implements Serializable {
     @Column(name = "boolean_1")
     private Boolean boolean1;
 
+    @Column(name = "city_id")
+    private Long cityId;
+
+    @Column(name = "city_name")
+    private String cityName;
+
+    @Column(name = "chat_id")
+    private Long chatId;
+
+    @Column(name = "cat_id")
+    private Long catId;
+
+    @Column(name = "date_log")
+    private ZonedDateTime dateLog;
+
+    @Column(name = "score")
+    private Double score;
     @ManyToOne
     @JsonIgnoreProperties(value = { "categoryLogs", "chanellIds", "linksByCategoryInTopIds" }, allowSetters = true)
     private Category category;
@@ -183,7 +200,62 @@ public class CategoryLog implements Serializable {
         this.category = category;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public ZonedDateTime getDateLog() {
+        return dateLog;
+    }
+
+    public void setDateLog(ZonedDateTime dateLog) {
+        this.dateLog = dateLog;
+    }
+
+    public Long getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Long catId) {
+        this.catId = catId;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -202,19 +274,24 @@ public class CategoryLog implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "CategoryLog{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", countChanellInCategory=" + getCountChanellInCategory() +
-            ", isDelete='" + getIsDelete() + "'" +
-            ", date1='" + getDate1() + "'" +
-            ", date2='" + getDate2() + "'" +
-            ", long1=" + getLong1() +
-            ", string1='" + getString1() + "'" +
-            ", boolean1='" + getBoolean1() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", countChanellInCategory=" + countChanellInCategory +
+            ", isDelete=" + isDelete +
+            ", date1=" + date1 +
+            ", date2=" + date2 +
+            ", long1=" + long1 +
+            ", string1='" + string1 + '\'' +
+            ", boolean1=" + boolean1 +
+            ", cityId=" + cityId +
+            ", cityName='" + cityName + '\'' +
+            ", chatId=" + chatId +
+            ", dateLog=" + dateLog +
+            ", catId=" + catId +
+            ", score=" + score +
+            '}';
     }
 }
