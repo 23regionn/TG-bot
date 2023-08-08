@@ -1,28 +1,28 @@
 id;name;link;score;is_moderate;city;is_delete;is_active;city_id
-1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;;false;true;1
+1;TRAID_INVEST💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;;false;true;null
 2;Мой первый канал;https://t.me/first_channe;100;true;Новороссийск;false;true;1
-3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;Ставраполь;false;true;1
-4;ЖИВЫЕ ДЕНЬГИ;https://t.me/live_money;100;true;;false;true;1
-5;МУЗЛОФТ;https://t.me/MUZ_LOFT;100;true;;false;true;1
-6;Психотерапия💰;https://t.me/attachment_theory;100;true;;false;true;1
-7;Глав хак;https://t.me/glav_hack;100;true;;false;true;1
-8;Трезожники;https://t.me/+6sD7JYkJElgxYjM;100;true;;false;true;1
-9;Тинькофф;https://t.me/tinkoff_invest_official;100;true;;false;true;1
-10;Хроники Хаоса (Android/iOS);https://t.me/herowarsapp;100;true;;false;true;1
-11;Андрес  в деле;https://t.me/andresvdele;100;true;;false;true;1
-12;Java задачи с собеседований;https://t.me/javaquiz;100;true;;false;true;1
-13;Python Academy;https://t.me/python_academy;100;true;;false;true;1
+3;Беседин Андрей💰;https://t.me/+6sD7JYkJElgxYjMy;100;true;Ставраполь;false;true;3
+4;ЖИВЫЕ ДЕНЬГИ;https://t.me/live_money;100;true;;false;true;null
+5;МУЗЛОФТ;https://t.me/MUZ_LOFT;100;true;;false;true;null
+6;Психотерапия💰;https://t.me/attachment_theory;100;true;;false;true;null
+7;Глав хак;https://t.me/glav_hack;100;true;;false;true;null
+8;Трезожники;https://t.me/+6sD7JYkJElgxYjM;100;true;;false;true;null
+9;Тинькофф;https://t.me/tinkoff_invest_official;100;true;;false;true;null
+10;Хроники Хаоса (Android/iOS);https://t.me/herowarsapp;100;true;;false;true;null
+11;Андрес  в деле;https://t.me/andresvdele;100;true;;false;true;null
+12;Java задачи с собеседований;https://t.me/javaquiz;100;true;;false;true;null
+13;Python Academy;https://t.me/python_academy;100;true;;false;true;null
 14;Анетта Орлова;https://t.me/anettaorlova;100;true;Новороссийск;false;true;1
-15;Вечная философия;https://t.me/tim_philosophy;100;true;Ставраполь;false;true;1
-16;ХК «Автомобилист»;https://t.me/hc_avtomobilist;100;true;;false;true;1
-17;МИР ЖИВОТНЫХ;https://t.me/mir_animalsss;100;true;;false;true;1
+15;Вечная философия;https://t.me/tim_philosophy;100;true;Ставраполь;false;true;3
+16;ХК «Автомобилист»;https://t.me/hc_avtomobilist;100;true;;false;true;null
+17;МИР ЖИВОТНЫХ;https://t.me/mir_animalsss;100;true;;false;true;null
 18;Медицина | Новости | Здоровье;https://t.me/medic_novosti;100;true;Новороссийск;false;true;1
 19;АУДИОКНИГИ;https://t.me/samorazvitie_literatura;100;true;Новороссийск;false;true;1
-20;АУДИОКНИГИ;https://t.me/podkastyb_literaturang;100;true;Краснодар;false;true;1
-21;ФК «Краснодар»;https://t.me/fckrasnodar;100;true;Краснодар;false;true;1
-22;Типичный Краснодар;https://t.me/krd_tipich_ru;100;true;Краснодар;false;true;1
-23;ЧП Сочи 🔞;https://t.me/chp_sochi;100;true;Сочи;false;true;1
-24;Вести Сочи;https://t.me/novostisochi;100;true;Сочи;false;true;1
-25;Ставрополье. Официально;https://t.me/stavregion_oficial;100;true;Ставраполь;false;true;1
-26;Ламповый Екатеринбург;https://t.me/ekaterinburgg;100;true;Екатеринбург;false;true;1
-27;Хоккейный клуб "Ростов";https://t.me/rostovhc;100;true;Ростов;false;true;1
+20;АУДИОКНИГИ;https://t.me/podkastyb_literaturang;100;true;Краснодар;false;true;2
+21;ФК «Краснодар»;https://t.me/fckrasnodar;100;true;Краснодар;false;true;2
+22;Типичный Краснодар;https://t.me/krd_tipich_ru;100;true;Краснодар;false;true;2
+23;ЧП Сочи 🔞;https://t.me/chp_sochi;100;true;Сочи;false;true;4
+24;Вести Сочи;https://t.me/novostisochi;100;true;Сочи;false;true;4
+25;Ставрополье. Официально;https://t.me/stavregion_oficial;100;true;Ставраполь;false;true;3
+26;Ламповый Екатеринбург;https://t.me/ekaterinburgg;100;true;Екатеринбург;false;true;5
+27;Хоккейный клуб "Ростов";https://t.me/rostovhc;100;true;Ростов;false;true;6

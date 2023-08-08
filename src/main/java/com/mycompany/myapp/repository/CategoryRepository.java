@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Spring Data SQL repository for the Category entity.
@@ -29,43 +30,91 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllWithEagerRelationships();
 
     @Query(
-        "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
-            " (chan.city IS NULL OR chan.city = '')"
+        "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan LEFT JOIN FETCH chan.cityEntity ce " +
+            "WHERE category.id = :id AND" +
+            " (chan.cityEntity IS NULL )"
     )
     Optional<Category> findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query(
+/*    @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
             " (chan.city = :city)"
     )
-    Optional<Category> findOneWithEagerRelationships(@Param("id") Long id, @Param("city") String city);
+    Optional<Category> findOneWithEagerRelationships(@Param("id") Long id, @Param("city") String city);*/
+
+    @Query(
+        "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan LEFT JOIN FETCH chan.cityEntity ce " +
+            "WHERE category.id = :id AND" +
+            " (ce.id = :cityId) "
+    )
+    Optional<Category> findOneWithEagerRelationshipsWithCityId(@Param("id") Long id, @Param("cityId") Long cityId);
+
+    /*"SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
+        "FROM Category category JOIN category.chanellIds chan JOIN chan.cityEntity ce " +
+        "WHERE category.id = :id AND chan.cityEntity.id = :cityId " +
+        "GROUP BY category"*/
 
     /*@Query( "select category from Category category where size(category.chanellIds) > 0 " +
         "   and category.boolean1 = true   and  category.string1 =:city")
     List<CategoryWithCountChanellsDTO> findCategoriesHaveChanellsAndBool1True(@Param("city") String city);*/
 
-    @Query( "select DISTINCT category from Category category LEFT JOIN FETCH category.chanellIds chan where size(category.chanellIds) > 0 " +
+    /*@Query( "select DISTINCT category from Category category LEFT JOIN FETCH category.chanellIds chan where size(category.chanellIds) > 0 " +
         "   and category.isShow = true AND" +
         " (chan.city IS NULL OR chan.city = '')")
+    List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue();*/
+
+    @Query( "select DISTINCT category from Category category LEFT JOIN FETCH category.chanellIds chan " +
+        " LEFT JOIN FETCH chan.cityEntity ce where size(category.chanellIds) > 0 " +
+        "   and category.isShow = true AND" +
+        " (chan.cityEntity IS NULL )")
     List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue();
 
-    @Query("SELECT DISTINCT cat FROM Category cat " +
+    /*@Query("SELECT DISTINCT cat FROM Category cat " +
         "JOIN cat.chanellIds ch " +
         "WHERE ch.city = :city and cat.isShow = true")
-    List<CategoryNameAndIdDTO> findCategoriesByCity(@Param("city") String city);
+    List<CategoryNameAndIdDTO> findCategoriesByCity(@Param("city") String city);*/
+
+    @Query("SELECT DISTINCT cat FROM Category cat " +
+        "JOIN cat.chanellIds ch join ch.cityEntity ce " +
+        "WHERE ce.id = :cityId and cat.isShow = true")
+    List<CategoryNameAndIdDTO> findCategoriesByCityId(@Param("cityId") Long cityId);
 
     @Query("SELECT cat FROM Category cat " +  "WHERE cat.id = :id")
     CategoryNameAndIdDTO findCategoryById(@Param("id") Long id);
 
-    @Query(
-        "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
+    /*@Query(
+        "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan " +
+            " WHERE category.id = :id AND" +
             " (chan.city IS NULL OR chan.city = '')"
     )
-    CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id);
+    CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id); // глянуть*/
 
     @Query(
+        "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
+            "FROM Category category JOIN category.chanellIds chan " +
+            "WHERE category.id = :id AND chan.cityEntity is null " +
+            "GROUP BY category"
+    )
+    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id);
+
+   /* @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
             " (chan.city = :city)"
     )
-    CategoryWithCountChanellsDTO findCategoryByIdWithCity(@Param("id") Long id, @Param("city") String city);
+    CategoryWithCountChanellsDTO findCategoryByIdWithCity(@Param("id") Long id, @Param("city") String city);*/
+
+    /*@Query(
+        "SELECT category FROM Category category JOIN category.chanellIds chan JOIN chan.cityEntity ce " +
+            "WHERE category.id = :id AND" +
+            " (chan.cityEntity.id = :cityId)"
+    )
+    CategoryWithCountChanellsDTO findCategoryByIdWithCityId(@Param("id") Long id, @Param("cityId") Long cityId);*/
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
+            "FROM Category category JOIN category.chanellIds chan JOIN chan.cityEntity ce " +
+            "WHERE category.id = :id AND chan.cityEntity.id = :cityId " +
+            "GROUP BY category"
+    )
+    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithCityId(@Param("id") Long id, @Param("cityId") Long cityId);
 }

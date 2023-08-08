@@ -44,4 +44,9 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
         "WHERE ch.city = :city AND cat.id = :category")
     List<Chanell> findChannelsByCityAndCategory(@Param("city") String city, @Param("category") Long category);
 
+    @Query("SELECT DISTINCT ch FROM Chanell ch " +
+        "JOIN ch.categoryIds cat join ch.cityEntity ce " +
+        "WHERE ce.id = :cityId AND cat.id = :category")
+    List<Chanell> findChannelsByCityIDAndCategory(@Param("cityId") Long cityId, @Param("category") Long category);
+
 }

@@ -32,6 +32,25 @@ public class CategoryWithCountChanellsDTO {
         }
     }
 
+    public CategoryWithCountChanellsDTO(Category category, long countChan){
+        if(category == null){
+            return;
+        }
+        if(category.getName() != null){
+            this.name = category.getName();
+        }
+        if(category.getId() != null){
+            this.id = category.getId();
+        }
+
+        if(category.getLong1() != null){
+            this.long1 = category.getLong1();
+        }
+        if(category.getChanellIds() != null){
+            this.countChannelsInCategory = countChan;
+        }
+    }
+
     public long getCountChannelsInCategory() {
         return countChannelsInCategory;
     }

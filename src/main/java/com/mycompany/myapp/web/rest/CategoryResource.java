@@ -185,6 +185,13 @@ public class CategoryResource {
         return ResponseUtil.wrapOrNotFound(category);
     }
 
+    @GetMapping("/categorie-demo")
+    public ResponseEntity<Category> getCategoryDemo() {
+        log.debug("REST request to get Category : {}");
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(1l, 1l);
+        return ResponseUtil.wrapOrNotFound(category);
+    }
+
     /**
      * {@code DELETE  /categories/:id} : delete the "id" category.
      *
