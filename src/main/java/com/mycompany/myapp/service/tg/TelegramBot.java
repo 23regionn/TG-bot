@@ -23,7 +23,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.ChosenInlineQuery;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
 import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
@@ -63,6 +62,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     private ChanellRepository chanellRepository;
     @Autowired
     private CityRepository cityRepository;
+
+    @Autowired
+    private ChanellLogRepository chanellLogRepository;
+    @Autowired
+    private CategoryLogRepository categoryLogRepository;
 
     final BotConfig config;
 
@@ -1864,9 +1868,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите каналы ⬇⬇⬇");
 
-
-        // ВОТКНУТЬ АУДИТ ПО НАЖАТИЮ НА КАТЕГОРИИ
-
         Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
         List<Chanell> chanellList = new ArrayList<>();
 
@@ -1970,6 +1971,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             int msId = executeMessageReturnMessageID(message, name); // Отправка сообщения с текстами каналов
 
             log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = " + msId);
+            // АУДИТ ПО НАЖАТИЮ НА КАТЕГОРИИ
+            CategoryLog categoryLog = new CategoryLog();
+            categoryLog.setChatId(chatId);
+            categoryLog.setCatId(categoryId);
+            categoryLog.setName(Optional.ofNullable(category.get().getName()).orElse(null));
+            categoryLog.setScore(Optional.ofNullable(category.get().getScore()).orElse(null));
+            categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
+            categoryLog.setTgBotApi(true);
+            categoryLogRepository.save(categoryLog);
         }
     }
 
@@ -2518,6 +2528,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             int msId = executeMessageReturnMessageID(message, name); // Отправка сообщения с текстами каналов
 
             log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = " + msId);
+            // АУДИТ ПО НАЖАТИЮ НА КАТЕГОРИИ
+            CategoryLog categoryLog = new CategoryLog();
+            categoryLog.setChatId(chatId);
+            categoryLog.setCatId(categoryId);
+            categoryLog.setName(category.getName());
+            categoryLog.setScore(category.getScore());
+            categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
+            categoryLog.setCityName(nameCity);
+            categoryLog.setCityId(cityId);
+            categoryLog.setTgBotApi(true);
+            categoryLogRepository.save(categoryLog);
         }
     }
 

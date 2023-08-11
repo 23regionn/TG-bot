@@ -59,6 +59,12 @@
             <column name="score" type="double">
                 <constraints nullable="true" />
             </column>
+            <column name="tg_bot_api" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="web_api" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="category_log" columnName="date_1" columnDataType="${datetimeType}"/>

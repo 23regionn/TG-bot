@@ -47,6 +47,11 @@ public class CategoryLog implements Serializable {
 
     @Column(name = "boolean_1")
     private Boolean boolean1;
+    @Column(name = "tg_bot_api")
+    private Boolean tgBotApi;
+
+    @Column(name = "web_api")
+    private Boolean webApi;
 
     @Column(name = "city_id")
     private Long cityId;
@@ -255,7 +260,24 @@ public class CategoryLog implements Serializable {
     public void setScore(Double score) {
         this.score = score;
     }
-// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    public Boolean getTgBotApi() {
+        return tgBotApi;
+    }
+
+    public void setTgBotApi(Boolean tgbotApi) {
+        this.tgBotApi = tgbotApi;
+    }
+
+    public Boolean getWebApi() {
+        return webApi;
+    }
+
+    public void setWebApi(Boolean webApi) {
+        this.webApi = webApi;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -292,6 +314,8 @@ public class CategoryLog implements Serializable {
             ", dateLog=" + dateLog +
             ", catId=" + catId +
             ", score=" + score +
+            ", tgbotApi=" + tgBotApi +
+            ", webApi=" + webApi +
             '}';
     }
 }

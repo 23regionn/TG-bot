@@ -89,6 +89,12 @@
             <column name="date_log" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
+            <column name="tg_bot_api" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="web_api" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="chanell_log" columnName="jhi_current_date" columnDataType="${datetimeType}"/>

@@ -71,6 +71,12 @@ public class ChanellLog implements Serializable {
     @Column(name = "date_log")
     private ZonedDateTime dateLog;
 
+    @Column(name = "tg_bot_api")
+    private Boolean tgBotApi;
+
+    @Column(name = "web_api")
+    private Boolean webApi;
+
     /**
      * удаленный
      */
@@ -428,6 +434,22 @@ public class ChanellLog implements Serializable {
     public void setDelete(Boolean delete) {
         isDelete = delete;
     }
+
+    public Boolean getTgBotApi() {
+        return tgBotApi;
+    }
+
+    public void setTgBotApi(Boolean tgBotApi) {
+        this.tgBotApi = tgBotApi;
+    }
+
+    public Boolean getWebApi() {
+        return webApi;
+    }
+
+    public void setWebApi(Boolean webApi) {
+        this.webApi = webApi;
+    }
 // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -470,6 +492,8 @@ public class ChanellLog implements Serializable {
             ", long1=" + getLong1() +
             ", string1='" + getString1() + "'" +
             ", boolean1='" + getBoolean1() + "'" +
+            ", tgbotApi=" + tgBotApi +
+            ", webApi=" + webApi +
             "}";
     }
 }
