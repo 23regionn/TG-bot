@@ -99,6 +99,14 @@ import editChannels, {
 import city, {
   CityState
 } from 'app/entities/city/city.reducer';
+// prettier-ignore
+import manager, {
+  ManagerState
+} from 'app/entities/manager/manager.reducer';
+// prettier-ignore
+import admin, {
+  AdminState
+} from 'app/entities/admin/admin.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -133,6 +141,8 @@ export interface IRootState {
   readonly messegePannel: MessegePannelState;
   readonly editChannels: EditChannelsState;
   readonly city: CityState;
+  readonly manager: ManagerState;
+  readonly admin: AdminState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -169,6 +179,8 @@ const rootReducer = combineReducers<IRootState>({
   messegePannel,
   editChannels,
   city,
+  manager,
+  admin,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

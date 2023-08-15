@@ -1,0 +1,11 @@
+entity Manager{
+        name String,
+    	contact String
+}
+
+entity Admin{
+        name String,
+    	contact String,
+    	link String,
+    	isActive Boolean
+}
