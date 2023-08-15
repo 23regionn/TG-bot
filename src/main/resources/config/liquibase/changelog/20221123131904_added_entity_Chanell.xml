@@ -141,6 +141,8 @@
             <column name="city_id" type="numeric"/>
             <column name="is_active" type="boolean"/>
             <column name="contacts" type="string"/>
+            <column name="start_date" type="${datetimeType}"/>
+            <column name="last_pay_date" type="${datetimeType}"/>
             <column name="end_public_date" type="${datetimeType}"/>
             <column name="comment" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
