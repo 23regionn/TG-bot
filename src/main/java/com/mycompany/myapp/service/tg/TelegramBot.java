@@ -47,6 +47,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     private TGUserRepository tgUserRepository;
 
     @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
     private TgUserRepositoryService tgUserRepositoryService;
 
     @Autowired
@@ -3891,11 +3894,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void sendAdminLink(long chatId, String nameForLog){
 
-        Set<TGUser> admins = tgUserRepository.getAllAdmins();
-        Set<String> adminsName = admins.stream().map(admin -> admin.getUserName()).collect(Collectors.toSet());
+//        Set<TGUser> admins = tgUserRepository.getAllAdmins();
+        List<Admin> admins = adminRepository.findAll();
+        Set<String> adminsName = admins.stream().filter(a-> a.getIsActive())
+                                .map(admin -> admin.getLink()).collect(Collectors.toSet());
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Свяжитесь с администратором по ссылке: \n");
-        adminsName.forEach(adminName -> stringBuilder.append("@" + adminName + " \n\n"));
+        adminsName.forEach(adminName -> stringBuilder.append(adminName + " \n\n"));
         /*admins.forEach(admin ->
             sendMessage(chatId, "Свяжитесь с администратором по ссылке: \n"
                 + " - " + "@" + admin.getUserName(), nameForLog) );*/
