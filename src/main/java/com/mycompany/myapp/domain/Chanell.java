@@ -101,6 +101,11 @@ public class Chanell implements Serializable {
     @JoinColumn(name = "city_id")
     @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
     private City cityEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
+    private Manager manager;
     @OneToMany(mappedBy = "chanell")
     @JsonIgnoreProperties(value = {"chanell"}, allowSetters = true)
     private Set<ChanellLog> chanellLogs = new HashSet<>();
@@ -575,6 +580,14 @@ public class Chanell implements Serializable {
 
     public void setContacts(String contacts) {
         this.contacts = contacts;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

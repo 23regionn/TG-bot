@@ -19,5 +19,12 @@
                                  constraintName="fk_chanell__city_id"
                                  referencedColumnNames="id"
                                  referencedTableName="city"/>
+
+        <addForeignKeyConstraint baseColumnNames="manager_id"
+                                 baseTableName="chanell"
+                                 constraintName="fk_chanell__manager_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="manager"/>
+
     </changeSet>
 </databaseChangeLog>
