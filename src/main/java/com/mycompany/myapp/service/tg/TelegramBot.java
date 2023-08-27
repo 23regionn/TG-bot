@@ -870,6 +870,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var findChannelButton = new InlineKeyboardButton();
 
+        var searchCategory = new InlineKeyboardButton();
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+
         findChannelButton.setText("Найти каналы по категориям 🔑🔑🔑"); // Содержимое ответа в кнопке
         findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
 
@@ -881,16 +885,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         linkToAdmin.setText("Связь с админом ☎☎☎"); // Содержимое ответа в кнопке
         linkToAdmin.setCallbackData(ADMIN_LINK); // Привязка кнопки к реагирование на ADMIN_LINK в сообщении, типо когда ответ не текст а кол-бек
 
-
-        var searchCategory = new InlineKeyboardButton();
-        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
-
-
-        rowInLine.add(findChannelButton);
-        rowInLine2.add(findCitiesButton);
-        rowInLine3.add(linkToAdmin);
-        rowInLine4.add(searchCategory);
+        rowInLine.add(searchCategory);
+        rowInLine2.add(findChannelButton);
+        rowInLine3.add(findCitiesButton);
+        rowInLine4.add(linkToAdmin);
 
         rowsInLine.add(rowInLine);
         rowsInLine.add(rowInLine2);
@@ -1006,13 +1004,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             var button3 = new InlineKeyboardButton();
             var searchCategory = new InlineKeyboardButton();
             rowInLine = new ArrayList<>();
-            button3.setText("Каналы по городам 🏘🏙");
-            button3.setCallbackData(FIND_CITIES + ":");
+            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+            searchCategory.setSwitchInlineQueryCurrentChat(" ");
             rowInLine.add(button3);
             rowsInLine.add(rowInLine);
             rowInLine = new ArrayList<>();
-            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-            searchCategory.setSwitchInlineQueryCurrentChat(" ");
+            button3.setText("Каналы по городам 🏘🏙");
+            button3.setCallbackData(FIND_CITIES + ":");
             rowInLine.add(searchCategory);
             rowsInLine.add(rowInLine);
         }
@@ -1034,13 +1032,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             var button3 = new InlineKeyboardButton();
             var searchCategory = new InlineKeyboardButton();
             rowInLine = new ArrayList<>();
-            button3.setText("Каналы по городам 🏘🏙");
-            button3.setCallbackData(FIND_CITIES + ":");
+            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+            searchCategory.setSwitchInlineQueryCurrentChat(" ");
             rowInLine.add(button3);
             rowsInLine.add(rowInLine);
             rowInLine = new ArrayList<>();
-            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-            searchCategory.setSwitchInlineQueryCurrentChat(" ");
+            button3.setText("Каналы по городам 🏘🏙");
+            button3.setCallbackData(FIND_CITIES + ":");
             rowInLine.add(searchCategory);
             rowsInLine.add(rowInLine);
         }
@@ -1323,9 +1321,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         var button2 = new InlineKeyboardButton();
         var searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
-        button.setText("Каналы по категориям 👁‍👁‍");
-        button.setCallbackData(FIND_CHANNEL+":");
-        rowInLine.add(button);
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        rowInLine.add(searchCategory);
         rowsInLine.add(rowInLine);
         rowInLine = new ArrayList<>();
         button2.setText("Каналы по городам 🏘🏙");
@@ -1333,9 +1331,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         rowInLine.add(button2);
         rowsInLine.add(rowInLine);
         rowInLine = new ArrayList<>();
-        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
-        rowInLine.add(searchCategory);
+        button.setText("Каналы по категориям 👁‍👁‍");
+        button.setCallbackData(FIND_CHANNEL+":");
+        rowInLine.add(button);
         rowsInLine.add(rowInLine);
 
         markupInLine.setKeyboard(rowsInLine);
@@ -1436,9 +1434,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         var button2 = new InlineKeyboardButton();
         var searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
-        button.setText("Каналы по категориям 👁‍👁‍");
-        button.setCallbackData(FIND_CHANNEL+":");
-        rowInLine.add(button);
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        rowInLine.add(searchCategory);
         rowsInLine.add(rowInLine);
         rowInLine = new ArrayList<>();
         button2.setText("Каналы по городам 🏘🏙");
@@ -1446,9 +1444,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         rowInLine.add(button2);
         rowsInLine.add(rowInLine);
         rowInLine = new ArrayList<>();
-        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
-        rowInLine.add(searchCategory);
+        button.setText("Каналы по категориям 👁‍👁‍");
+        button.setCallbackData(FIND_CHANNEL+":");
+        rowInLine.add(button);
         rowsInLine.add(rowInLine);
 
         markupInLine.setKeyboard(rowsInLine);
@@ -1956,14 +1954,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 var button3 = new InlineKeyboardButton();
                 var searchCategory = new InlineKeyboardButton();
                 rowInLine = new ArrayList<>();
-                button3.setText("Каналы по городам 🏘🏙");
-                button3.setCallbackData(FIND_CITIES + ":");
-                rowInLine.add(button3);
-                rowsInLine.add(rowInLine);
-                rowInLine = new ArrayList<>();
                 searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
                 searchCategory.setSwitchInlineQueryCurrentChat(" ");
                 rowInLine.add(searchCategory);
+                rowsInLine.add(rowInLine);
+                rowInLine = new ArrayList<>();
+                button3.setText("Каналы по городам 🏘🏙");
+                button3.setCallbackData(FIND_CITIES + ":");
+                rowInLine.add(button3);
             }
 
             rowsInLine.add(rowInLine);
@@ -2226,20 +2224,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         var button2 = new InlineKeyboardButton();
         InlineKeyboardButton searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        rowInLine.add(searchCategory);
+        rowsInLine.add(rowInLine);
+        rowInLine = new ArrayList<>();
         button.setText("Каналы по категориям 👁‍👁‍");
         button.setCallbackData(FIND_CHANNEL+":");
         rowInLine.add(button);
         rowsInLine.add(rowInLine);
         rowInLine = new ArrayList<>();
+
         button2.setText("Каналы по городам 🏘🏙");
         button2.setCallbackData(FIND_CITIES + ":");
         rowInLine.add(button2);
-        rowsInLine.add(rowInLine);
-        rowInLine = new ArrayList<>();
-
-        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
-        rowInLine.add(searchCategory);
         rowsInLine.add(rowInLine);
 
 
@@ -2317,6 +2315,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             var button1 = new InlineKeyboardButton();
             var button2 = new InlineKeyboardButton();
+
+            var searchCategory = new InlineKeyboardButton();
+            rowInLine = new ArrayList<>();
+            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+            searchCategory.setSwitchInlineQueryCurrentChat(" ");
+            rowInLine.add(searchCategory);
+            rowsInLine.add(rowInLine);
+
             rowInLine = new ArrayList<>();
             button1.setText("Каналы по категориям 👁‍👁‍");
             button1.setCallbackData(FIND_CHANNEL+":");
@@ -2326,13 +2332,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             button2.setText("Каналы по городам 🏘🏙");
             button2.setCallbackData(FIND_CITIES+":");
             rowInLine.add(button2);
-            rowsInLine.add(rowInLine);
-
-            var searchCategory = new InlineKeyboardButton();
-            rowInLine = new ArrayList<>();
-            searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-            searchCategory.setSwitchInlineQueryCurrentChat(" ");
-            rowInLine.add(searchCategory);
             rowsInLine.add(rowInLine);
 
             markupInLine.setKeyboard(rowsInLine);
@@ -2505,6 +2504,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 rowInLine.add(button1);
                 rowsInLine.add(rowInLine);
 
+                rowInLine = new ArrayList<>();
+                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+                searchCategory.setSwitchInlineQueryCurrentChat(" ");
+                rowInLine.add(searchCategory);
 
                 rowInLine = new ArrayList<>();
                 button2.setText("Каналы по категориям 👁‍👁‍");
@@ -2517,10 +2520,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button3.setCallbackData(FIND_CITIES + ":");
                 rowInLine.add(button3);
                 rowsInLine.add(rowInLine);
-                rowInLine = new ArrayList<>();
-                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-                searchCategory.setSwitchInlineQueryCurrentChat(" ");
-                rowInLine.add(searchCategory);
+
             }
 
             rowsInLine.add(rowInLine);
@@ -2747,6 +2747,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 rowInLine.add(button1);
                 rowsInLine.add(rowInLine);*/
                 rowInLine = new ArrayList<>();
+                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+                searchCategory.setSwitchInlineQueryCurrentChat(" ");
+                rowInLine.add(searchCategory);
+                rowsInLine.add(rowInLine);
+
+                rowInLine = new ArrayList<>();
                 button2.setText("Каналы по категориям 👁‍👁‍");
                 button2.setCallbackData(FIND_CHANNEL + ":");
                 rowInLine.add(button2);
@@ -2756,11 +2762,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button3.setCallbackData(FIND_CITIES + ":");
                 rowInLine.add(button3);
                 rowsInLine.add(rowInLine);
-                rowInLine = new ArrayList<>();
-                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-                searchCategory.setSwitchInlineQueryCurrentChat(" ");
-                rowInLine.add(searchCategory);
-                rowsInLine.add(rowInLine);
+
             }
 
             else if(categoriesFirst.size() == 0 && groupedCategories.size() > 1){
@@ -2789,6 +2791,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 rowInLine.add(button1);
                 rowsInLine.add(rowInLine);*/
                 rowInLine = new ArrayList<>();
+                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+                searchCategory.setSwitchInlineQueryCurrentChat(" ");
+                rowInLine.add(searchCategory);
+                rowsInLine.add(rowInLine);
+
+                rowInLine = new ArrayList<>();
                 button2.setText("Каналы по категориям 👁‍👁‍");
                 button2.setCallbackData(FIND_CHANNEL + ":");
                 rowInLine.add(button2);
@@ -2797,11 +2805,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button3.setText("Каналы по городам 🏘🏙");
                 button3.setCallbackData(FIND_CITIES + ":");
                 rowInLine.add(button3);
-                rowsInLine.add(rowInLine);
-                rowInLine = new ArrayList<>();
-                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
-                searchCategory.setSwitchInlineQueryCurrentChat(" ");
-                rowInLine.add(searchCategory);
                 rowsInLine.add(rowInLine);
             }
 
