@@ -1,6 +1,9 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.Category;
+
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +34,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan LEFT JOIN FETCH chan.cityEntity ce " +
-            "WHERE category.id = :id AND" +
-            " (chan.cityEntity IS NULL )"
+            "WHERE category.id = :id AND " +
+            " (chan.cityEntity IS NULL )  and chan.endPublicDate > :currentDate "
     )
-    Optional<Category> findOneWithEagerRelationships(@Param("id") Long id);
+    Optional<Category> findOneWithEagerRelationships(@Param("id") Long id, @Param("currentDate") ZonedDateTime currentDate);
 
 /*    @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
@@ -45,9 +48,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan LEFT JOIN FETCH chan.cityEntity ce " +
             "WHERE category.id = :id AND" +
-            " (ce.id = :cityId) "
+            " (ce.id = :cityId)   and chan.endPublicDate > :currentDate "
     )
-    Optional<Category> findOneWithEagerRelationshipsWithCityId(@Param("id") Long id, @Param("cityId") Long cityId);
+    Optional<Category> findOneWithEagerRelationshipsWithCityId(@Param("id") Long id, @Param("cityId") Long cityId,
+                                                               @Param("currentDate") ZonedDateTime currentDate);
 
     /*"SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
         "FROM Category category JOIN category.chanellIds chan JOIN chan.cityEntity ce " +
@@ -64,10 +68,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue();*/
 
     @Query( "select DISTINCT category from Category category LEFT JOIN FETCH category.chanellIds chan " +
-        " LEFT JOIN FETCH chan.cityEntity ce where size(category.chanellIds) > 0 " +
+        " LEFT JOIN FETCH chan.cityEntity ce where size(category.chanellIds) > 0  and chan.endPublicDate > :currentDate " +
         "   and category.isShow = true AND" +
         " (chan.cityEntity IS NULL )")
-    List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue();
+    List<CategoryNameAndIdDTO> findCategoriesHaveChanellsAndIsShowTrue(@Param("currentDate") ZonedDateTime currentDate);
 
     /*@Query("SELECT DISTINCT cat FROM Category cat " +
         "JOIN cat.chanellIds ch " +
@@ -76,8 +80,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT DISTINCT cat FROM Category cat " +
         "JOIN cat.chanellIds ch join ch.cityEntity ce " +
-        "WHERE ce.id = :cityId and cat.isShow = true")
-    List<CategoryNameAndIdDTO> findCategoriesByCityId(@Param("cityId") Long cityId);
+        "WHERE ce.id = :cityId and cat.isShow = true and ch.endPublicDate > :currentDate ")
+    List<CategoryNameAndIdDTO> findCategoriesByCityId(@Param("cityId") Long cityId, @Param("currentDate") ZonedDateTime currentDate);
 
     @Query("SELECT cat FROM Category cat " +  "WHERE cat.id = :id")
     CategoryNameAndIdDTO findCategoryById(@Param("id") Long id);
@@ -92,10 +96,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(
         "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
             "FROM Category category JOIN category.chanellIds chan " +
-            "WHERE category.id = :id AND chan.cityEntity is null " +
+            "WHERE category.id = :id AND chan.cityEntity is null and chan.endPublicDate > :currentDate " +
             "GROUP BY category"
     )
-    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id);
+    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id,
+                        @Param("currentDate") ZonedDateTime currentDate);
 
    /* @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
@@ -113,8 +118,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(
         "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
             "FROM Category category JOIN category.chanellIds chan JOIN chan.cityEntity ce " +
-            "WHERE category.id = :id AND chan.cityEntity.id = :cityId " +
+            "WHERE category.id = :id AND chan.cityEntity.id = :cityId  and chan.endPublicDate > :currentDate " +
             "GROUP BY category"
     )
-    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithCityId(@Param("id") Long id, @Param("cityId") Long cityId);
+    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithCityId(@Param("id") Long id,
+                                                                                            @Param("cityId") Long cityId,
+                                                                                            @Param("currentDate") ZonedDateTime currentDate);
 }

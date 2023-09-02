@@ -91,7 +91,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String FIND_CITIES = "FIND_CITIES";
     static final String ADMIN_LINK = "ADMIN_LINK";
     static final String ADD_CHANNEL = "ADD_CHANNEL";
-
     static final String CATEGORY = "CATEGORY";
     static final String CLICK_TEMA = "CLICK_TEMA";
     static final String CITY = "CITY";
@@ -158,6 +157,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 //        listofCommands.add(new BotCommand("/deletedata", "delete my data"));
         listofCommands.add(new BotCommand("/help", "Информация о боте"));
 //        listofCommands.add(new BotCommand("/settings", "set your preferences"));
+        listofCommands.add(new BotCommand("/search", "Текстовый поиск категории"));
         listofCommands.add(new BotCommand("/category", "Выберите каналы по категориям"));
         listofCommands.add(new BotCommand("/cities", "Выберите каналы по городам"));
         try {
@@ -204,7 +204,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }*/
                 sendMessage(chatId, HELP_TEXT, nameForLog);
             }
-            else if(messageText.equals("/register")){
+            /*else if(messageText.equals("/register")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }
@@ -215,19 +215,26 @@ public class TelegramBot extends TelegramLongPollingBot {
                     resetStepForUser(tgUser);
                 }
                 sendMessage(chatId, "Oleg", nameForLog);
-            }
+            }*/
             else if(messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям") ){
                 /*if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }*/
+                registerUser(update.getMessage());
                 findCategoryFirstPage(chatId, nameForLog, false, 0l);
             }
             else if(messageText.equals("Города") || messageText.equals("Каналы по городам") || messageText.equals("/cities")){
                 /*if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }*/
+                registerUser(update.getMessage());
                 findCityNamesByFirstLetter(chatId, nameForLog);
             }
+            else if(messageText.equals("/search") || messageText.equals("Текстовый поиск категорий")){
+                registerUser(update.getMessage());
+                sendSearchCategoriesButton(chatId, nameForLog);
+            }
+
             /*else if(messageText.equals(МОИ_КАНАЛЫ)){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
@@ -393,7 +400,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             String query = inlineQuery.getQuery();
             List<InlineQueryResult> results = new ArrayList<>();
 
-            var categories = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue().stream()
+            var categories = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1)).stream()
                 .filter(cat-> !cat.getName().isEmpty())
                 .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
                 .collect(Collectors.toList());
@@ -426,9 +433,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             AnswerInlineQuery answer = new AnswerInlineQuery();
             answer.setInlineQueryId(inlineQuery.getId());
             answer.setResults(results);
-
-            System.out.println("Ансер: " + answer);
-            System.out.println("КЕШ - тайм: " + answer.getCacheTime());
 
             try {
                 execute(answer); // Отправка ответа на inline-запрос
@@ -946,11 +950,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(); //categoryListFirstPage
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1)); //categoryListFirstPage
         List<CategoryNameAndIdDTO>  categoryListFirstPage = categoryListFromDB.stream().filter(CategoryNameAndIdDTO::getFirst)
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
 
-        List<CategoryNameAndIdDTO>  categoryListNotFirst = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue().stream()
+        List<CategoryNameAndIdDTO>  categoryListNotFirst = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1)).stream()
             .filter(cat -> cat.getFirst().equals(false))
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
 
@@ -1071,7 +1075,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue();
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO>  categoryListFirstPage = categoryListFromDB.stream().filter(CategoryNameAndIdDTO::getFirst)
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
@@ -1252,7 +1256,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue();
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO>  categoryListFirstPage = categoryListFromDB.stream().filter(CategoryNameAndIdDTO::getFirst)
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
@@ -1362,7 +1366,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 //        String nameCity = cityRepository.findById(cityId).get().getCityName();
 
         List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository
-            .findCategoriesByCityId(cityId);
+            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO>  categoriesFirst = categoryListFromDB.stream().filter(c -> c.getFirst().equals(true))
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
@@ -1869,7 +1873,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите каналы ⬇⬇⬇");
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
         List<Chanell> chanellList = new ArrayList<>();
 
         if (category.isPresent()){
@@ -1991,7 +1995,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
         List<Chanell> chanellList = new ArrayList<>();
 
         if (category.isPresent()){
@@ -2104,7 +2108,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
 
 //        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
-        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithoutCity(categoryId);
+        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithoutCity(categoryId, ZonedDateTime.now().minusDays(1));
             message.setText("Категория: " + category.getName().toUpperCase() + "\nКаналов в категории: " + category.getCountChannelsInCategory() +
                 "\n" + "Всего страниц: " + pageCount + "\n\n" + "Выберите одну из страниц ⬇⬇⬇ \nИли получите все  🔑🔑🔑 " +
                 " \n\n");
@@ -2145,8 +2149,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                  }
             }
 
+                var searchCategory = new InlineKeyboardButton();
                 var button = new InlineKeyboardButton();
                 var button2 = new InlineKeyboardButton();
+
+                rowInLine = new ArrayList<>();
+                searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+                searchCategory.setSwitchInlineQueryCurrentChat(" ");
+                rowInLine.add(searchCategory);
+                rowsInLine.add(rowInLine);
+
                 rowInLine = new ArrayList<>();
                 button.setText("Каналы по категориям 👁‍👁‍");
                 button.setCallbackData(FIND_CHANNEL+":");
@@ -2176,7 +2188,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         String cityName = cityRepository.findById(cityId).get().getCityName();
 
 //        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithCity(categoryId, cityName);
-        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithCityId(categoryId, cityId);
+        CategoryWithCountChanellsDTO category = categoryRepository.findCategoryByIdWithCityId(categoryId, cityId,
+                                                                                              ZonedDateTime.now().minusDays(1));
 
         message.setText("Город: " + cityName + "\nКатегория: " + category.getName().toUpperCase() +
             "\nКаналов в категории: " + category.getCountChannelsInCategory() +
@@ -2261,7 +2274,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
         List<Chanell> chanellList = new ArrayList<>();
         if (category.isPresent()) {
             message.setText("Выберите каналы категории: " + category.get().getName().toUpperCase());
@@ -2356,7 +2369,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         String cityName = cityRepository.findById(cityId).get().getCityName();
 
 //        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, cityName);
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(categoryId, cityId);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(categoryId, cityId, ZonedDateTime.now().minusDays(1));
         List<Chanell> chanellList = new ArrayList<>();
         if (category.isPresent()) {
             message.setText(cityName + ": " + category.get().getName().toUpperCase() + "⬇⬇⬇");
@@ -2447,7 +2460,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             .stream().filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());*/
-        List<Chanell> chanellList = chanellRepository.findChannelsByCityIDAndCategory(cityId, categoryId)
+        List<Chanell> chanellList = chanellRepository.findChannelsByCityIDAndCategory(cityId, categoryId,
+                ZonedDateTime.now().minusDays(1))
             .stream().filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());
@@ -2519,7 +2533,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button3.setText("Каналы по городам 🏘🏙");
                 button3.setCallbackData(FIND_CITIES + ":");
                 rowInLine.add(button3);
-                rowsInLine.add(rowInLine);
+//                rowsInLine.add(rowInLine);
 
             }
 
@@ -2568,7 +2582,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());*/
 
-        List<Chanell> chanellList = chanellRepository.findChannelsByCityIDAndCategory(cityId, categoryId)
+        List<Chanell> chanellList = chanellRepository.findChannelsByCityIDAndCategory(cityId, categoryId, ZonedDateTime.now().minusDays(1))
             .stream().filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());
@@ -2678,7 +2692,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         /*List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository
             .findCategoriesByCity(nameCity);*/
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityId(cityId);
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO>  categoriesFirst = categoryListFromDB.stream().filter(c -> c.getFirst().equals(true))
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore)).collect(Collectors.toList());
@@ -2837,7 +2851,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
         List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository
-            .findCategoriesByCityId(cityId);
+            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO>  categoryListFirst = categoryListFromDB.stream()
             .filter(cat -> cat.getFirst().equals(true))
@@ -3156,7 +3170,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         row1.add("Каналы по городам");
         row1.add("Связь с админом");
 
+        KeyboardRow row2 = new KeyboardRow();
+        row2.add("Текстовый поиск категорий");
+
         keyboardRows.add(row1);
+        keyboardRows.add(row2);
         keyboardMarkup.setKeyboard(keyboardRows);
         message.setReplyMarkup(keyboardMarkup);
 
@@ -3908,6 +3926,36 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMessage(chatId, "Свяжитесь с администратором по ссылке: \n"
                 + " - " + "@" + admin.getUserName(), nameForLog) );*/
         sendMessage(chatId, stringBuilder.toString(), nameForLog);
+    }
+
+    private void sendSearchCategoriesButton(long chatId, String name){
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText("Кликните на кнопку для поиска категорий ⬇⬇⬇");
+
+        // создание клавиатуры с кнопками в ответе на сообщение
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
+        // создание списка со списками с кнопками в ответе на сообщение
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
+        // создание списка с кнопками в ответе на сообщение
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+
+        var searchCategory = new InlineKeyboardButton();
+        rowInLine = new ArrayList<>();
+        searchCategory.setText("Текстовый поиск категорий 🌍🌍🌍"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        rowInLine.add(searchCategory);
+        rowsInLine.add(rowInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        markupInLine.setKeyboard(rowsInLine);
+        message.setReplyMarkup(markupInLine);
+
+        executeMessage(message, name);
+        log.info("Пользователь с имененем " + name + " получил кнопку для текстового поиска категорий " );
     }
 
     @Scheduled(fixedDelay = 60000)

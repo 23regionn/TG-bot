@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -181,14 +182,14 @@ public class CategoryResource {
     @GetMapping("/categories/{id}")
     public ResponseEntity<Category> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(id);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(id, ZonedDateTime.now().minusDays(1));
         return ResponseUtil.wrapOrNotFound(category);
     }
 
     @GetMapping("/categorie-demo")
     public ResponseEntity<Category> getCategoryDemo() {
         log.debug("REST request to get Category : {}");
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(1l, 1l);
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(1l, 1l, ZonedDateTime.now().minusDays(1));
         return ResponseUtil.wrapOrNotFound(category);
     }
 

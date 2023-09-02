@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +47,8 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
 
     @Query("SELECT DISTINCT ch FROM Chanell ch " +
         "JOIN ch.categoryIds cat join ch.cityEntity ce " +
-        "WHERE ce.id = :cityId AND cat.id = :category")
-    List<Chanell> findChannelsByCityIDAndCategory(@Param("cityId") Long cityId, @Param("category") Long category);
+        "WHERE ce.id = :cityId AND cat.id = :category and ch.endPublicDate > :currentDate ")
+    List<Chanell> findChannelsByCityIDAndCategory(@Param("cityId") Long cityId,
+                                                  @Param("category") Long category, @Param("currentDate") ZonedDateTime currentDate);
 
 }
