@@ -81,7 +81,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String HELP_TEXT = "Этот бот предоставляет ссылки \n" +
             "на телеграмм каналы по выбранным категориям. \n\n" +
             "После команды /start кликните на одну из кнопок \n\n" +
-            " \"Найти каналы по категориям\" или \"Найти каналы по городам\".\n\n" +
+            " \"Найти каналы по категориям\", \"Найти каналы по городам\".\n\n" +
+            " \"Текстовый поиск категорий\".\n\n" +
             "И далее переходите по ссылкам на каналы.";
 
     static final String YES_BUTTON = "YES_BUTTON";
@@ -199,6 +200,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName() != null ? update.getMessage().getChat().getFirstName() : "");
             }
             else if(messageText.equals("/help")){
+                registerUser(update.getMessage());
                 /*if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }*/
