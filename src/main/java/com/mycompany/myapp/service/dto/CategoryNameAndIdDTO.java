@@ -1,7 +1,6 @@
 package com.mycompany.myapp.service.dto;
 
 import com.mycompany.myapp.domain.Category;
-import com.mycompany.myapp.domain.User;
 
 /**
  * A DTO CategoryNameAndIdDTO.
@@ -24,12 +23,12 @@ public class CategoryNameAndIdDTO {
         // Customize it here if you need, or not, firstName/lastName/etc
         this.name = category.getName();
 
-        if(category.getScore() != null){
+        if (category.getScore() != null) {
             this.score = category.getScore();
         }
 
-        if(category.getFirst() != null){
-            this.isFirst = category.getFirst();
+        if (category.getIsFirst() != null) {
+            this.isFirst = category.getIsFirst();
         }
     }
 
@@ -61,21 +60,16 @@ public class CategoryNameAndIdDTO {
         this.score = score;
     }
 
-    public Boolean getFirst() {
+    public Boolean getIsFirst() {
         return isFirst;
     }
 
-    public void setFirst(Boolean first) {
-        isFirst = first;
+    public void setIsFirst(Boolean isFirst) {
+        this.isFirst = isFirst;
     }
 
     @Override
     public String toString() {
-        return "CategoryNameAndIdDTO{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", score=" + score +
-            ", isFirst=" + isFirst +
-            '}';
+        return "CategoryNameAndIdDTO{" + "id=" + id + ", name='" + name + '\'' + ", score=" + score + ", isFirst=" + isFirst + '}';
     }
 }

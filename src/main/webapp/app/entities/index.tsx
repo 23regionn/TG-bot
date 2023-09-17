@@ -28,6 +28,8 @@ import EditChannels from './edit-channels';
 import City from './city';
 import Manager from './manager';
 import Admin from './admin';
+import AllCategories from '../modules/all-categories/index';
+import AllChannels from '../modules/all-channels/index';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -58,6 +60,10 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}city`} component={City} />
       <ErrorBoundaryRoute path={`${match.url}manager`} component={Manager} />
       <ErrorBoundaryRoute path={`${match.url}admin`} component={Admin} />
+      {/* новые*/}
+      <ErrorBoundaryRoute path={`${match.url}all-categories`} component={AllCategories} />
+      <ErrorBoundaryRoute path={`${match.url}all-channels`} component={AllCategories} />
+
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

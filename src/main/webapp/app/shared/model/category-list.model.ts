@@ -3,7 +3,7 @@ import { ICategoryLog } from 'app/shared/model/category-log.model';
 import { IChanell } from 'app/shared/model/chanell.model';
 import { ILinksByCategoryInTop } from 'app/shared/model/links-by-category-in-top.model';
 
-export interface ICategory {
+export interface ICategoryList {
   id?: number;
   name?: string | null;
   countChanellInCategory?: number | null;
@@ -21,7 +21,7 @@ export interface ICategory {
   score?: number | null;
 }
 
-export const defaultValue: Readonly<ICategory> = {
+export const defaultValue: Readonly<ICategoryList> = {
   isDelete: false,
   boolean1: false,
 };

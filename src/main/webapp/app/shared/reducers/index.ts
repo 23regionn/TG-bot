@@ -23,6 +23,7 @@ import tGUserLog, {
 import category, {
   CategoryState
 } from 'app/entities/category/category.reducer';
+import categoryList, { AllCategoriesState } from 'app/modules/all-categories/all-categories.reducer';
 // prettier-ignore
 import categoryLog, {
   CategoryLogState
@@ -122,6 +123,7 @@ export interface IRootState {
   readonly tGUser: TGUserState;
   readonly tGUserLog: TGUserLogState;
   readonly category: CategoryState;
+  readonly categoryList: AllCategoriesState;
   readonly categoryLog: CategoryLogState;
   readonly chanell: ChanellState;
   readonly chanellLog: ChanellLogState;
@@ -160,6 +162,7 @@ const rootReducer = combineReducers<IRootState>({
   tGUser,
   tGUserLog,
   category,
+  categoryList,
   categoryLog,
   chanell,
   chanellLog,

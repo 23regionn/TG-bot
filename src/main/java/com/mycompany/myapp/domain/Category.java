@@ -2,14 +2,13 @@ package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * A Category.
@@ -45,7 +44,7 @@ public class Category implements Serializable {
     private ZonedDateTime date2;
 
     @Column(name = "long_1")
-    private Long long1;      // Рейтинг
+    private Long long1; // Рейтинг
 
     @Column(name = "string_1")
     private String string1;
@@ -60,7 +59,7 @@ public class Category implements Serializable {
     private Boolean isFirst;
 
     @Column(name = "score")
-    private Double score;  // Рейтинг
+    private Double score; // Рейтинг
 
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
@@ -72,7 +71,7 @@ public class Category implements Serializable {
         joinColumns = @JoinColumn(name = "category_id"),
         inverseJoinColumns = @JoinColumn(name = "chanell_id_id")
     )
-//    @Fetch(value = FetchMode.SUBSELECT)
+    //    @Fetch(value = FetchMode.SUBSELECT)
     @JsonIgnoreProperties(value = { "linksByCategoryInTops", "chanellLogs", "tGUser", "categoryIds" }, allowSetters = true)
     private Set<Chanell> chanellIds = new HashSet<>();
 
@@ -292,19 +291,19 @@ public class Category implements Serializable {
         isDelete = delete;
     }
 
-    public Boolean getShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
-    public void setShow(Boolean show) {
+    public void setIsShow(Boolean show) {
         isShow = show;
     }
 
-    public Boolean getFirst() {
+    public Boolean getIsFirst() {
         return isFirst;
     }
 
-    public void setFirst(Boolean first) {
+    public void setIsFirst(Boolean first) {
         isFirst = first;
     }
 
@@ -337,19 +336,35 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "Category{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", countChanellInCategory=" + countChanellInCategory +
-            ", isDelete=" + isDelete +
-            ", date1=" + date1 +
-            ", date2=" + date2 +
-            ", long1=" + long1 +
-            ", string1='" + string1 + '\'' +
-            ", boolean1=" + boolean1 +
-            ", isShow=" + isShow +
-            ", isFirst=" + isFirst +
-            ", score=" + score +
-            '}';
+        return (
+            "Category{" +
+            "id=" +
+            id +
+            ", name='" +
+            name +
+            '\'' +
+            ", countChanellInCategory=" +
+            countChanellInCategory +
+            ", isDelete=" +
+            isDelete +
+            ", date1=" +
+            date1 +
+            ", date2=" +
+            date2 +
+            ", long1=" +
+            long1 +
+            ", string1='" +
+            string1 +
+            '\'' +
+            ", boolean1=" +
+            boolean1 +
+            ", isShow=" +
+            isShow +
+            ", isFirst=" +
+            isFirst +
+            ", score=" +
+            score +
+            '}'
+        );
     }
 }

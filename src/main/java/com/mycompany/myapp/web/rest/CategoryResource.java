@@ -6,9 +6,11 @@ import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,7 +106,7 @@ public class CategoryResource {
      * or with status {@code 500 (Internal Server Error)} if the category couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/categories/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/categories/{id}")
     public ResponseEntity<Category> partialUpdateCategory(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Category category
@@ -148,6 +150,15 @@ public class CategoryResource {
                     }
                     if (category.getBoolean1() != null) {
                         existingCategory.setBoolean1(category.getBoolean1());
+                    }
+                    if (category.getIsFirst() != null) {
+                        existingCategory.setIsFirst(category.getIsFirst());
+                    }
+                    if (category.getIsShow() != null) {
+                        existingCategory.setIsShow(category.getIsShow());
+                    }
+                    if (category.getScore() != null) {
+                        existingCategory.setScore(category.getScore());
                     }
 
                     return existingCategory;
@@ -207,5 +218,47 @@ public class CategoryResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/only-categories")
+    public List<Category> getOnlyCategories() {
+        log.debug("REST request to get only all Categories");
+        return categoryRepository
+            .findAll()
+            .stream()
+            .sorted(
+                new Comparator<Category>() {
+                    @Override
+                    public int compare(Category c1, Category c2) {
+                        if (c1.getIsFirst() != null && c1.getIsFirst() && c2.getIsFirst() != null && c2.getIsFirst()) {
+                            if (c1.getScore() != null && c2.getScore() != null) {
+                                return c2.getScore().compareTo(c1.getScore());
+                            } else if (c1.getScore() == null) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        } else if (c1.getIsFirst() != null && c1.getIsFirst()) {
+                            return -1;
+                        } else if (c2.getIsFirst() != null && c2.getIsFirst()) {
+                            return 1;
+                        } else {
+                            if (c1.getScore() != null && c2.getScore() != null) {
+                                int scoreCompare = c2.getScore().compareTo(c1.getScore());
+                                if (scoreCompare != 0) {
+                                    return scoreCompare;
+                                } else {
+                                    return c1.getIsFirst().compareTo(c2.getIsFirst());
+                                }
+                            } else if (c1.getScore() == null) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        }
+                    }
+                }
+            )
+            .collect(Collectors.toList());
     }
 }

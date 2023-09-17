@@ -28,3 +28,12 @@ export const Home = props => (
     </NavLink>
   </NavItem>
 );
+
+export const AllCategoriesHeader = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/all-categories" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="book" />
+      <span>Все категории</span>
+    </NavLink>
+  </NavItem>
+);
