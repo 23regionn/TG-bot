@@ -165,7 +165,7 @@ export const getOnlyCategories: ICrudGetAllAction<ICategoryList> = (page, size, 
   payload: axios.get<ICategoryList>(`${apiOnlyCategories}?cacheBuster=${new Date().getTime()}`),
 });
 
-export const getEntityCategory: ICrudGetAction<ICategoryList> = id => {
+export const getEntityCategory: any = id => {
   const requestUrl = `${apiUrlCategories}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_ALL_CATEGORIES,
@@ -189,4 +189,12 @@ export const createCategory: any = entity => async dispatch => {
   });
   dispatch(getOnlyCategories());
   return result;
+};
+
+export const getEntityCategoryById: any = id => {
+  const requestUrl = `${apiUrlCategories}/by-id/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_ALL_CATEGORIES,
+    payload: axios.get<ICategoryList>(requestUrl),
+  };
 };

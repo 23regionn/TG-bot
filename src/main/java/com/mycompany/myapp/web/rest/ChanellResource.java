@@ -2,6 +2,8 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.repository.ChanellRepository;
+import com.mycompany.myapp.service.ChannelService;
+import com.mycompany.myapp.service.dto.ChanellPostDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +37,11 @@ public class ChanellResource {
     private String applicationName;
 
     private final ChanellRepository chanellRepository;
+    private final ChannelService channelService;
 
-    public ChanellResource(ChanellRepository chanellRepository) {
+    public ChanellResource(ChanellRepository chanellRepository, ChannelService channelService) {
         this.chanellRepository = chanellRepository;
+        this.channelService = channelService;
     }
 
     /**
@@ -103,7 +107,7 @@ public class ChanellResource {
      * or with status {@code 500 (Internal Server Error)} if the chanell couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/chanells/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/chanells/{id}")
     public ResponseEntity<Chanell> partialUpdateChanell(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Chanell chanell
@@ -178,6 +182,27 @@ public class ChanellResource {
                     if (chanell.getBoolean1() != null) {
                         existingChanell.setBoolean1(chanell.getBoolean1());
                     }
+                    if (chanell.getIsPay() != null) {
+                        existingChanell.setIsPay(chanell.getIsPay());
+                    }
+                    if (chanell.getPriceForPay() != null) {
+                        existingChanell.setPriceForPay(chanell.getPriceForPay());
+                    }
+                    if (chanell.getStartDate() != null) {
+                        existingChanell.setStartDate(chanell.getStartDate());
+                    }
+                    if (chanell.getLastPayDate() != null) {
+                        existingChanell.setLastPayDate(chanell.getLastPayDate());
+                    }
+                    if (chanell.getEndPublicDate() != null) {
+                        existingChanell.setEndPublicDate(chanell.getEndPublicDate());
+                    }
+                    if (chanell.getComment() != null) {
+                        existingChanell.setComment(chanell.getComment());
+                    }
+                    if (chanell.getContacts() != null) {
+                        existingChanell.setContacts(chanell.getContacts());
+                    }
 
                     return existingChanell;
                 }
@@ -214,6 +239,13 @@ public class ChanellResource {
         return ResponseUtil.wrapOrNotFound(chanell);
     }
 
+    @GetMapping("/chanells/by-category-id/{id}")
+    public ResponseEntity<List<Chanell>> getChannelsByCategoryId(@PathVariable Long id) {
+        log.debug("REST request to get Chanell : {}", id);
+        List<Chanell> chanells = channelService.getChannelsByCategoryId(id);
+        return new ResponseEntity<>(chanells, HttpStatus.OK);
+    }
+
     /**
      * {@code DELETE  /chanells/:id} : delete the "id" chanell.
      *
@@ -230,7 +262,6 @@ public class ChanellResource {
             .build();
     }
 
-
     @GetMapping("/city-names")
     public Set<String> getAllCityNames() {
         log.debug("REST request to get all City Names");
@@ -241,5 +272,16 @@ public class ChanellResource {
     public Set<String> getAllCitiesByFirstLetter() {
         log.debug("REST request to get all City Names");
         return chanellRepository.getCitiesByFirstLetter("С");
+    }
+
+    @PostMapping("/chanells/with-category-id")
+    public ResponseEntity<Chanell> createChannelWithCategoryId(@RequestBody ChanellPostDTO chanellPostDTO) throws URISyntaxException {
+        log.debug("REST request to save ChanellPostDTO from page with channels Category : {}", chanellPostDTO);
+
+        Chanell result = channelService.createChannelByCategory(chanellPostDTO);
+        return ResponseEntity
+            .created(new URI("/api/chanells/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }

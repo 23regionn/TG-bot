@@ -94,27 +94,29 @@ public class Chanell implements Serializable {
     private Boolean boolean1;
 
     @OneToMany(mappedBy = "chanell")
-    @JsonIgnoreProperties(value = {"linksByCategoryInTopLogs", "chanell", "categoryIds"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
     private Set<LinksByCategoryInTop> linksByCategoryInTops = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "chanells" }, allowSetters = true)
     private City cityEntity;
 
     @ManyToOne
     @JoinColumn(name = "manager_id")
-    @JsonIgnoreProperties(value = {"chanells"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "chanells" }, allowSetters = true)
     private Manager manager;
+
     @OneToMany(mappedBy = "chanell")
-    @JsonIgnoreProperties(value = {"chanell"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "chanell" }, allowSetters = true)
     private Set<ChanellLog> chanellLogs = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = {"balance", "chanells", "offerFromCostumers", "reviews", "pays", "tGUserLogs"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "balance", "chanells", "offerFromCostumers", "reviews", "pays", "tGUserLogs" }, allowSetters = true)
     private TGUser tGUser;
+
     @ManyToMany(mappedBy = "chanellIds")
-    @JsonIgnoreProperties(value = {"categoryLogs", "chanellIds", "linksByCategoryInTopIds"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "categoryLogs", "chanellIds", "linksByCategoryInTopIds" }, allowSetters = true)
     private Set<Category> categoryIds = new HashSet<>();
 
     @Column(name = "start_date")
@@ -129,7 +131,29 @@ public class Chanell implements Serializable {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "price_for_pay")
+    private Double priceForPay;
+
+    @Column(name = "is_pay")
+    private Boolean isPay;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Double getPriceForPay() {
+        return priceForPay;
+    }
+
+    public void setPriceForPay(Double priceForPay) {
+        this.priceForPay = priceForPay;
+    }
+
+    public Boolean getIsPay() {
+        return isPay;
+    }
+
+    public void setIsPay(Boolean pay) {
+        isPay = pay;
+    }
 
     public City getCityEntity() {
         return cityEntity;
@@ -457,28 +481,12 @@ public class Chanell implements Serializable {
         return this;
     }
 
-    public Boolean getModerate() {
-        return isModerate;
-    }
-
-    public void setModerate(Boolean moderate) {
-        isModerate = moderate;
-    }
-
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
-    }
-
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
     }
 
     public TGUser gettGUser() {
@@ -490,7 +498,7 @@ public class Chanell implements Serializable {
     }
 
     public Chanell isActive(Boolean isActive) {
-        this.setActive(isActive);
+        this.setIsActive(isActive);
         return this;
     }
 
@@ -589,7 +597,8 @@ public class Chanell implements Serializable {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
-// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

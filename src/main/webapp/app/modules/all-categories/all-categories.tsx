@@ -6,7 +6,6 @@ import { IRootState } from 'app/shared/reducers';
 import { createCategory, getOnlyCategories, partialUpdateCategory } from './all-categories.reducer';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import './passports.scss';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
@@ -114,7 +113,7 @@ export const AllCategories = (props: IAllCategoriesProps) => {
 
   const createCategoryDialogFooter = (
     <React.Fragment>
-      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideCreateDialog} />
       <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={createCategoryButton} />
     </React.Fragment>
   );
@@ -135,7 +134,6 @@ export const AllCategories = (props: IAllCategoriesProps) => {
 
   const pushToChannels = rowData => {
     props.history.push({
-      // pathname: `${match.url}/detail/${rowData.id}`,
       pathname: `all-channels/by-category-id/${rowData.id}`,
     });
   };

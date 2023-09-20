@@ -3,6 +3,8 @@ import { ILinksByCategoryInTop } from 'app/shared/model/links-by-category-in-top
 import { IChanellLog } from 'app/shared/model/chanell-log.model';
 import { ITGUser } from 'app/shared/model/tg-user.model';
 import { ICategory } from 'app/shared/model/category.model';
+import { ICity } from 'app/shared/model/city.model';
+import { IManager } from 'app/shared/model/manager.model';
 
 export interface IChanell {
   id?: number;
@@ -28,6 +30,16 @@ export interface IChanell {
   chanellLogs?: IChanellLog[] | null;
   tGUser?: ITGUser | null;
   categoryIds?: ICategory[] | null;
+  startDate?: string | null;
+  lastPayDate?: string | null;
+  endPublicDate?: string | null;
+  comment?: string | null;
+  contacts?: string | null;
+  cityEntity?: ICity | null;
+  manager?: IManager | null;
+  approvedAdmin?: number | null;
+  priceForPay?: number | null;
+  isPay?: boolean | null;
 }
 
 export const defaultValue: Readonly<IChanell> = {

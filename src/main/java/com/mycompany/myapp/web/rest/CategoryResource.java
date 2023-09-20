@@ -261,4 +261,11 @@ public class CategoryResource {
             )
             .collect(Collectors.toList());
     }
+
+    @GetMapping("/categories/by-id/{id}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
+        log.debug("REST request to get Category : {}", id);
+        Optional<Category> category = categoryRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(category);
+    }
 }

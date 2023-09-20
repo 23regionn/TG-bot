@@ -98,6 +98,12 @@
             <column name="manager_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="price_for_pay" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_pay" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="chanell" columnName="jhi_current_date" columnDataType="${datetimeType}"/>
@@ -149,6 +155,8 @@
             <column name="end_public_date" type="${datetimeType}"/>
             <column name="comment" type="string"/>
             <column name="manager_id" type="numeric"/>
+            <column name="price_for_pay" type="numeric"/>
+            <column name="is_pay" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

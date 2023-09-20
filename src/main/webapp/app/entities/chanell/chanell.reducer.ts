@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IChanell, defaultValue } from 'app/shared/model/chanell.model';
+import { getOnlyCategories } from 'app/modules/all-categories/all-categories.reducer';
 
 export const ACTION_TYPES = {
   FETCH_CHANELL_LIST: 'chanell/FETCH_CHANELL_LIST',
@@ -154,3 +155,57 @@ export const deleteEntity: ICrudDeleteAction<IChanell> = id => async dispatch =>
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+// Новые
+export const getChannelsByCategoryId: any = id => ({
+  type: ACTION_TYPES.FETCH_CHANELL_LIST,
+  payload: axios.get<IChanell>(`${apiUrl}/by-category-id/${id}`),
+});
+
+export const partialUpdateChannelForCategoryPage: any = channel => async dispatch => {
+  const entity = {
+    id: channel?.id,
+    name: channel?.name,
+    score: channel?.score,
+    link: channel?.link,
+    priceForPay: channel?.priceForPay,
+    comment: channel?.comment,
+    contacts: channel?.contacts,
+    isModerate: channel?.isModerate,
+    isPay: channel?.isPay,
+    startDate: channel?.startDate,
+    lastPayDate: channel?.lastPayDate,
+    endPublicDate: channel?.endPublicDate,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_CHANELL,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+
+  dispatch(getChannelsByCategoryId(channel?.idCat));
+  return result;
+};
+
+export const createChannelForCategoryPage: any = channel => async dispatch => {
+  const entity = {
+    idCat: channel?.idCat,
+    name: channel?.name,
+    score: channel?.score,
+    link: channel?.link,
+    priceForPay: channel?.priceForPay,
+    comment: channel?.comment,
+    contacts: channel?.contacts,
+    isModerate: channel?.isModerate,
+    isPay: channel?.isPay,
+    lastPayDate: channel?.lastPayDate,
+    endPublicDate: channel?.endPublicDate,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_CHANELL,
+    payload: axios.post(`${apiUrl}/with-category-id`, cleanEntity(entity)),
+  });
+  dispatch(getChannelsByCategoryId(channel?.idCat));
+  return result;
+};

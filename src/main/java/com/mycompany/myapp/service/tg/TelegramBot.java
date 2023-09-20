@@ -212,7 +212,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     resetStepForUser(tgUser);
                 }*/
                 sendMessage(chatId, HELP_TEXT, nameForLog);
-            }/*else if(messageText.equals("/register")){
+            } /*else if(messageText.equals("/register")){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }
@@ -223,7 +223,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     resetStepForUser(tgUser);
                 }
                 sendMessage(chatId, "Oleg", nameForLog);
-            }*/ else if (messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям")) {
+            }*/else if (messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям")) {
                 /*if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }*/
@@ -238,12 +238,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             } else if (messageText.equals("/search") || messageText.equals("Текстовый поиск категорий")) {
                 registerUser(update.getMessage());
                 sendSearchCategoriesButton(chatId, nameForLog);
-            }/*else if(messageText.equals(МОИ_КАНАЛЫ)){
+            } /*else if(messageText.equals(МОИ_КАНАЛЫ)){
                 if (tgUserOptional.isPresent()){
                     resetStepForUser(tgUser);
                 }
                 getMyChannels(chatId, nameForLog);
-            }*/ else if (messageText.equals("Связь с админом")) {
+            }*/else if (messageText.equals("Связь с админом")) {
                 sendAdminLink(chatId, nameForLog);
             } // Вроде не работает
             /*else if(messageText.equals("Текстовый поиск категорий 🌍🌍🌍")){
@@ -284,7 +284,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }*/
                 //                sendMessage(chatId, textToSend, nameForLog);
                 sendMessage(chatId, textToSend, nameForLog);
-            }/*  else if (tgUserOptional.isPresent() ){  // Функционал раньше использовался для добавления каналов внутри бота
+            } /*  else if (tgUserOptional.isPresent() ){  // Функционал раньше использовался для добавления каналов внутри бота
                 if(tgUser.getCurrentStep() != null){
                     if(tgUser.getIdCurrentChannelAction() != null){
                         if(tgUser.getCurrentStep().equals(ADD_СH_NAME)){
@@ -380,7 +380,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 else{
                     sendMessage(chatId, "Извините, команда не распознана", nameForLog);
                 }
-            }*/ else { // Ради дефолтового ответа
+            }*/else { // Ради дефолтового ответа
                 switch (messageText) {
                     default:
                         sendMessage(chatId, "Извините, команда не распознана", nameForLog);
@@ -467,14 +467,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             } else if (callbackData.equals(NO_BUTTON)) {
                 String text = "You pressed NO button";
                 executeEditText(chatId, nameForLog, text, messageId);
-            }/*else if(callbackData.equals(FIND_CHANNEL)){
+            } /*else if(callbackData.equals(FIND_CHANNEL)){
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 findCategory(chatId, nameForLog);
             }
             else if(callbackData.equals(FIND_CITIES)){
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 findCityNamesByFirstLetter(chatId, nameForLog);
-            }*/ else if (callbackData.contains(FIND_CHANNEL)) {
+            }*/else if (callbackData.contains(FIND_CHANNEL)) {
                 findCategoryFirstPage(chatId, nameForLog, false, messageId); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
             } else if (callbackData.contains(FIND_CITIES)) {
                 findCityNamesByFirstLetter(chatId, nameForLog); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
@@ -572,7 +572,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Long cityId = Long.valueOf(callbackData.split(":")[1]);
                 Long categoryId = Long.valueOf(callbackData.split(":")[2]);
                 getChanellByCityNameByCategoryId(chatId, nameForLog, cityId, categoryId);
-            }/*else if(callbackData.contains(PRICEDIAP)){
+            } /*else if(callbackData.contains(PRICEDIAP)){
                 String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
                 String[] strings = callbackData.split(IDCAT);
                 Double price = Double.valueOf(strings[0].replace(PRICEDIAP,""));
@@ -581,25 +581,25 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 //                executeDeleteMessage(chatId, nameForLog, messageId);
                 getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
-            }*/ else if (callbackData.contains(CHANNEL)) { // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
+            }*/else if (callbackData.contains(CHANNEL)) { // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 String text = "Вы нажали на channel " + callbackData.replace(CHANNEL, "");
                 Long channelId = Long.valueOf(callbackData.replace(CHANNEL, ""));
                 Optional<Chanell> chanell = chanellRepository.findById(channelId);
                 if (chanell.isPresent()) {
                     System.out.println(chanell.get().getLink());
                 }
-            }/*else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
+            } /*else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
                 Long idCategory = Long.valueOf(callbackData.split(":")[1]);
                 addChannelByCategory(chatId, nameForLog, idCategory);
 
-            }*/ else if (callbackData.contains("Кликните на категорию ниже")) {
+            }*/else if (callbackData.contains("Кликните на категорию ниже")) {
                 //                currentChatId = chatId;
                 // ничего не должно происходить
-            }/*else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
+            } /*else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
 //                addChannelName(chatId, nameForLog, idChannel, tgUserId);
-            }*/ else if (callbackData.contains(CREATE_APPROVE_СH)) {
+            }*/else if (callbackData.contains(CREATE_APPROVE_СH)) {
                 Long idChannel = Long.valueOf(callbackData.split(":")[1]);
                 approveCreateChannel(idChannel);
                 Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
@@ -1847,7 +1847,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
-                if (chanell.getModerate() == true) {
+                if (chanell.getIsModerate() != null && chanell.getIsModerate() == true) {
                     if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
                         chanellList.add(chanell);
                     }
@@ -1975,7 +1975,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
-                if (chanell.getModerate() == true) {
+                if (chanell.getIsModerate() == true) {
                     if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
                         chanellList.add(chanell);
                     }
@@ -3777,8 +3777,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void approveCreateChannel(long channelId) {
         Chanell chanell = chanellRepository.findById(channelId).get();
-        chanell.setModerate(true);
-        chanell.setActive(true);
+        chanell.setIsModerate(true);
+        chanell.setIsActive(true);
         chanellRepository.save(chanell);
         sendMessage(
             chanell.getTGUser().getChatId(),
@@ -3797,8 +3797,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         editChannel.setIsApprovedChanhes(true);
         editChannelsRepository.save(editChannel);
         Chanell chanell = chanellRepository.findById(editChannel.getIdChannel()).get();
-        chanell.setModerate(true);
-        chanell.setActive(true);
+        chanell.setIsModerate(true);
+        chanell.setIsActive(true);
         chanell.setString1(editChannel.getAddDescriptionAboutChannel());
         chanell.setName(editChannel.getNewNameChannel());
         chanell.setLink(editChannel.getNewlastLinkToChannel());
@@ -3818,8 +3818,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void disableCreateChannel(long channelId, String whyFailure) {
         Chanell chanell = chanellRepository.findById(channelId).get();
-        chanell.setModerate(false);
-        chanell.setActive(false);
+        chanell.setIsModerate(false);
+        chanell.setIsActive(false);
         chanellRepository.save(chanell);
 
         SendMessage message = new SendMessage();
