@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,7 +102,7 @@ public class CityResource {
      * or with status {@code 500 (Internal Server Error)} if the city couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/cities/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/cities/{id}")
     public ResponseEntity<City> partialUpdateCity(@PathVariable(value = "id", required = false) final Long id, @RequestBody City city)
         throws URISyntaxException {
         log.debug("REST request to partial update City partially : {}, {}", id, city);

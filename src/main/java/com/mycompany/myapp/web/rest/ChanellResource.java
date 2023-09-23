@@ -284,4 +284,11 @@ public class ChanellResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+    @GetMapping("/chanells/by-city-id-and-category-id/{cityId}/{categoryId}")
+    public ResponseEntity<List<Chanell>> getChannelsByCityIdAndCategoryId(@PathVariable Long cityId, @PathVariable Long categoryId) {
+        log.debug("REST request to get Chanells by City and Category : {} {}", cityId, categoryId);
+        List<Chanell> chanells = channelService.getChannelsByCityIdAndCategoryId(cityId, categoryId);
+        return new ResponseEntity<>(chanells, HttpStatus.OK);
+    }
 }

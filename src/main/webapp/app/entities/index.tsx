@@ -30,6 +30,7 @@ import Manager from './manager';
 import Admin from './admin';
 import AllCategories from '../modules/all-categories/index';
 import AllChannels from '../modules/all-channels/index';
+import AllCities from '../modules/all-cities/index';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -63,6 +64,7 @@ const Routes = ({ match }) => (
       {/* новые*/}
       <ErrorBoundaryRoute path={`${match.url}all-categories`} component={AllCategories} />
       <ErrorBoundaryRoute path={`${match.url}all-channels`} component={AllChannels} />
+      <ErrorBoundaryRoute path={`${match.url}all-cities`} component={AllCities} />
 
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>

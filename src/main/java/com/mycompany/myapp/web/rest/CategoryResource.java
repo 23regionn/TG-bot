@@ -1,7 +1,11 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Category;
+import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.repository.CategoryRepository;
+import com.mycompany.myapp.service.CategoryService;
+import com.mycompany.myapp.service.dto.CategoryCityDTO;
+import com.mycompany.myapp.service.dto.InfoCategoryCityDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +18,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +41,11 @@ public class CategoryResource {
     private String applicationName;
 
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public CategoryResource(CategoryRepository categoryRepository) {
+    public CategoryResource(CategoryRepository categoryRepository, CategoryService categoryService) {
         this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -267,5 +274,32 @@ public class CategoryResource {
         log.debug("REST request to get Category : {}", id);
         Optional<Category> category = categoryRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(category);
+    }
+
+    @GetMapping("/categories/by-city-id/{id}")
+    public ResponseEntity<List<Category>> getCategoryByCityId(@PathVariable Long id) {
+        log.debug("REST request to get Category by - city : {}", id);
+        List<Category> categories = categoryRepository.findCategoriesByCityId(id);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    @PostMapping("/categories-add-for-city")
+    public ResponseEntity<Category> addCategoryToCity(@RequestBody CategoryCityDTO dto) {
+        log.debug("REST request to add Category to City : {}", dto);
+        if (dto.getIdCat() == null) {
+            throw new BadRequestAlertException("Category cannot already have an ID", ENTITY_NAME, "id not exists");
+        }
+        if (dto.getIdCity() == null) {
+            throw new BadRequestAlertException("City cannot already have an ID", "City", "id not exists");
+        }
+        Category result = categoryService.addCategoryToCity(dto.getIdCat(), dto.getIdCity());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/categories/info-with-city/{cityId}/{categoryId}")
+    public ResponseEntity<InfoCategoryCityDTO> getInfoAboutCategoryAndCity(@PathVariable Long cityId, @PathVariable Long categoryId) {
+        log.debug("REST request to get info About category by City and Category : {} {}", cityId, categoryId);
+        InfoCategoryCityDTO categoryInfo = categoryService.getInfoAboutCategory(cityId, categoryId);
+        return new ResponseEntity<>(categoryInfo, HttpStatus.OK);
     }
 }

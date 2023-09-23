@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ICity, defaultValue } from 'app/shared/model/city.model';
+import { ICategoryList } from 'app/shared/model/category-list.model';
 
 export const ACTION_TYPES = {
   FETCH_CITY_LIST: 'city/FETCH_CITY_LIST',
@@ -154,3 +155,12 @@ export const deleteEntity: ICrudDeleteAction<ICity> = id => async dispatch => {
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const partialUpdateCity: ICrudPutAction<ICity> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_CITY,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  dispatch(getEntities());
+  return result;
+};

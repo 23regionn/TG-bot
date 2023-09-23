@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ICategory, defaultValue } from 'app/shared/model/category.model';
+import { ICategoryList } from 'app/shared/model/category-list.model';
 
 export const ACTION_TYPES = {
   FETCH_CATEGORY_LIST: 'category/FETCH_CATEGORY_LIST',
@@ -100,6 +101,7 @@ export default (state: CategoryState = initialState, action): CategoryState => {
 };
 
 const apiUrl = 'api/categories';
+const apiOnlyCategories = 'api/only-categories';
 
 // Actions
 
@@ -153,4 +155,9 @@ export const deleteEntity: ICrudDeleteAction<ICategory> = id => async dispatch =
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
+});
+
+export const getOnlyCategories: any = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_CATEGORY_LIST,
+  payload: axios.get<ICategory>(`${apiOnlyCategories}`),
 });

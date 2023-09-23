@@ -104,6 +104,7 @@ export default (state: AllCategoriesState = initialState, action): AllCategories
 const apiUrl = 'api/categories';
 const apiOnlyCategories = 'api/only-categories';
 const apiUrlCategories = 'api/categories';
+const apiUrlAddForCity = 'api/categories-add-for-city';
 
 // Actions
 
@@ -196,5 +197,35 @@ export const getEntityCategoryById: any = id => {
   return {
     type: ACTION_TYPES.FETCH_ALL_CATEGORIES,
     payload: axios.get<ICategoryList>(requestUrl),
+  };
+};
+
+export const getCategoriesByCityId: any = id => {
+  const requestUrlByCityId = `${apiUrlCategories}/by-city-id/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_ALL_CATEGORIES_LIST,
+    payload: axios.get<ICategoryList>(`${requestUrlByCityId}`),
+  };
+};
+
+export const addCategoryToCity: any = entityCat => async dispatch => {
+  const entity = {
+    idCat: entityCat?.idCat,
+    idCity: entityCat?.idCity,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_ALL_CATEGORIES,
+    payload: axios.post(apiUrlAddForCity, cleanEntity(entity)),
+  });
+  dispatch(getCategoriesByCityId(entityCat?.idCity));
+  return result;
+};
+
+export const getInfoAboutCategoryAndCity: any = (cityId: number, categoryId: number) => {
+  const requestUrl = `${apiUrlCategories}/info-with-city/${cityId}/${categoryId}`;
+  return {
+    type: ACTION_TYPES.FETCH_ALL_CATEGORIES,
+    payload: axios.get<any>(requestUrl),
   };
 };

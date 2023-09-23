@@ -3,20 +3,26 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { createCategory, getEntityCategoryById, getOnlyCategories, partialUpdateCategory } from '../all-categories/all-categories.reducer';
+import {
+  createCategory,
+  getEntityCategoryById,
+  getInfoAboutCategoryAndCity,
+  getOnlyCategories,
+  partialUpdateCategory,
+} from '../all-categories/all-categories.reducer';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { SelectButton } from 'primereact/selectbutton';
+
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import {
   createChannelForCategoryPage,
   getChannelsByCategoryId,
-  partialUpdateChannelForCategoryPage,
+  getChannelsByCityIdAndCategoryId,
+  partialUpdateChannelForChannelsByCategoryAndCityPage,
 } from 'app/entities/chanell/chanell.reducer';
 import { NavLink } from 'reactstrap';
 import { ICity } from 'app/shared/model/city.model';
@@ -26,9 +32,16 @@ import { Calendar } from 'primereact/calendar';
 // Primereact
 // Primereact
 // Primereact
-export interface IAllChannelsByCategoryProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IAllChannelsByCityAndCategoryProps
+  extends StateProps,
+    DispatchProps,
+    RouteComponentProps<{
+      idCity: string;
+      id: string;
+      idCat: string;
+    }> {}
 
-export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
+export const AllChannelsByCityAndCategory = (props: IAllChannelsByCityAndCategoryProps) => {
   const [channel, setChannel] = useState(null);
   const [category, setCategory] = useState(null);
   const [editChannelDialog, setEditChannelDialog] = useState(false);
@@ -48,8 +61,8 @@ export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
   const [isShowState, setIsShowState] = useState(false);
 
   useEffect(() => {
-    props.getChannelsByCategoryId(props.match.params.id);
-    props.getEntityCategoryById(props.match.params.id).then(cat => {
+    props.getChannelsByCityIdAndCategoryId(props.match.params.idCity, props.match.params.idCat);
+    props.getInfoAboutCategoryAndCity(props.match.params.idCity, props.match.params.idCat).then(cat => {
       setCategory(cat.value.data);
       window.console.log(cat.value.data, 'cat');
       window.console.log(channel, 'category');
@@ -120,7 +133,8 @@ export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
 
   const editCategoryButton = () => {
     const entity = {
-      idCat: props.match.params.id,
+      idCat: props.match.params.idCat,
+      idCity: props.match.params.idCity,
       id: channel.id,
       name: nameChannelValue.current.value,
       score: scoreValue.current.value,
@@ -135,7 +149,7 @@ export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
       endPublicDate: endPublicDateState,
     };
 
-    props.partialUpdateChannelForCategoryPage(entity);
+    props.partialUpdateChannelForChannelsByCategoryAndCityPage(entity);
 
     setChannel(null);
     nameChannelValue.current.value = null;
@@ -156,6 +170,9 @@ export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
   };
 
   const createCategoryButton = () => {
+    // НУЖЕН ДРУГОЙ МЕТОД, КОТОРЫЙ СОЗДАЁТ КАНАЛ ДЛЯ КАТЕГОРИИ И ГОРОДА
+    // НУЖЕН ДРУГОЙ МЕТОД, КОТОРЫЙ СОЗДАЁТ КАНАЛ ДЛЯ КАТЕГОРИИ И ГОРОДА
+    // НУЖЕН ДРУГОЙ МЕТОД, КОТОРЫЙ СОЗДАЁТ КАНАЛ ДЛЯ КАТЕГОРИИ И ГОРОДА
     const entity = {
       idCat: props.match.params.id,
       name: nameChannelValue.current.value,
@@ -214,7 +231,9 @@ export const AllChannelsByCategory = (props: IAllChannelsByCategoryProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}>Каналы категории: {category?.name}</div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}>
+          {category?.cityName} - Каналы категории: {category?.categoryName}
+        </div>
         <div>
           <Button id="button_basic" label="Создать канал" onClick={createChanFunc} />
         </div>
@@ -466,13 +485,15 @@ const mapStateToProps = ({ chanell }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getChannelsByCategoryId,
-  getEntityCategoryById,
-  partialUpdateChannelForCategoryPage,
+  getChannelsByCityIdAndCategoryId,
+  getInfoAboutCategoryAndCity,
+  // getEntityCategoryById,
+  // partialUpdateChannelForCategoryPage,
+  partialUpdateChannelForChannelsByCategoryAndCityPage,
   createChannelForCategoryPage,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllChannelsByCategory);
+export default connect(mapStateToProps, mapDispatchToProps)(AllChannelsByCityAndCategory);

@@ -37,3 +37,12 @@ export const AllCategoriesHeader = props => (
     </NavLink>
   </NavItem>
 );
+
+export const AllCitiesHeader = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/all-cities" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="search" />
+      <span>Все города</span>
+    </NavLink>
+  </NavItem>
+);
