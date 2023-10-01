@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity RelCategoryChannels.
+    -->
+    <changeSet id="20221123131904-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="rel_category_channels"
+                                 constraintName="fk_chanell__channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="city"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="rel_category_channels"
+                                 constraintName="fk_category__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+
+
+    </changeSet>
+</databaseChangeLog>

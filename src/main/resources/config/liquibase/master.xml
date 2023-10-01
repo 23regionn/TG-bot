@@ -39,6 +39,9 @@
     <include file="config/liquibase/changelog/20230730180248_added_entity_City.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230815124104_added_entity_Manager.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230815124105_added_entity_Admin.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230928181839_added_entity_RelCategoryChannels.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230928134340_added_entity_RelCategoryCity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230928134341_added_entity_RelCategoryCityChannels.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20221123131900_added_entity_constraints_TGUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131901_added_entity_constraints_TGUserLog.xml" relativeToChangelogFile="false"/>
@@ -56,6 +59,7 @@
     <include file="config/liquibase/changelog/20221123131914_added_entity_constraints_MembersTradeDeal.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131915_added_entity_constraints_MembersTradeDealLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131917_added_entity_constraints_BalanceLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230928181839_added_entity_constraints_RelCategoryChannels.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

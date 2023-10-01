@@ -31,6 +31,9 @@ import Admin from './admin';
 import AllCategories from '../modules/all-categories/index';
 import AllChannels from '../modules/all-channels/index';
 import AllCities from '../modules/all-cities/index';
+import RelCategoryChannels from './rel-category-channels';
+import RelCategoryCity from './rel-category-city';
+import RelCategoryCityChannels from './rel-category-city-channels';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -66,6 +69,9 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}all-channels`} component={AllChannels} />
       <ErrorBoundaryRoute path={`${match.url}all-cities`} component={AllCities} />
 
+      <ErrorBoundaryRoute path={`${match.url}rel-category-channels`} component={RelCategoryChannels} />
+      <ErrorBoundaryRoute path={`${match.url}rel-category-city`} component={RelCategoryCity} />
+      <ErrorBoundaryRoute path={`${match.url}rel-category-city-channels`} component={RelCategoryCityChannels} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

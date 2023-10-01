@@ -1,0 +1,28 @@
+{
+  "name": "RelCategoryCity",
+  "fields": [
+    {
+      "fieldName": "isShow",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "score",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "isFirst",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "rel_category_city",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20230928181840"
+}

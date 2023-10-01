@@ -84,6 +84,18 @@ public class Category implements Serializable {
     @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
     private Set<LinksByCategoryInTop> linksByCategoryInTopIds = new HashSet<>();
 
+    @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
+    private Set<RelCategoryChannels> relCategoryChannels = new HashSet<>();
+
+    public Set<RelCategoryChannels> getRelCategoryChannels() {
+        return relCategoryChannels;
+    }
+
+    public void setRelCategoryChannels(Set<RelCategoryChannels> relCategoryChannels) {
+        this.relCategoryChannels = relCategoryChannels;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;

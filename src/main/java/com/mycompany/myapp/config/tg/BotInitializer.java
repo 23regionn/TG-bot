@@ -13,20 +13,20 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 //@Slf4j
-@Component
+//@Component
 public class BotInitializer {
 
     private final Logger log = LoggerFactory.getLogger(BotInitializer.class);
+
     @Autowired
     TelegramBot bot;
 
-    @EventListener({ContextRefreshedEvent.class})
+    @EventListener({ ContextRefreshedEvent.class })
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         try {
             telegramBotsApi.registerBot(bot);
-        }
-        catch (TelegramApiException e) {
+        } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
             System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");
             System.out.println("ЖОПА В БОТ ИНИЦИАЛАЙЗЕРЕ");

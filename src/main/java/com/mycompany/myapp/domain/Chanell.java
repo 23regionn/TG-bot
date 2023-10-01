@@ -102,6 +102,10 @@ public class Chanell implements Serializable {
     @JsonIgnoreProperties(value = { "chanells" }, allowSetters = true)
     private City cityEntity;
 
+    @OneToMany(mappedBy = "chanell")
+    @JsonIgnoreProperties(value = { "chanell" }, allowSetters = true)
+    private Set<RelCategoryChannels> relCategoryChannels = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "manager_id")
     @JsonIgnoreProperties(value = { "chanells" }, allowSetters = true)
@@ -138,6 +142,14 @@ public class Chanell implements Serializable {
     private Boolean isPay;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Set<RelCategoryChannels> getRelCategoryChannels() {
+        return relCategoryChannels;
+    }
+
+    public void setRelCategoryChannels(Set<RelCategoryChannels> relCategoryChannels) {
+        this.relCategoryChannels = relCategoryChannels;
+    }
 
     public Double getPriceForPay() {
         return priceForPay;

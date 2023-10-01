@@ -1,0 +1,15 @@
+entity RelCategoryChannels{
+    	scoreChannel Double,
+    	isShowChannel Boolean
+}
+
+entity RelCategoryCity{
+        isShow Boolean,
+        score Double,
+        isFirst Boolean
+}
+
+entity RelCategoryCityChannels{
+        scoreChannel Double,
+        isShowChannel Boolean
+}

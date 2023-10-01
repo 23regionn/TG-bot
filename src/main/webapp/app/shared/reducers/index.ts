@@ -108,6 +108,14 @@ import manager, {
 import admin, {
   AdminState
 } from 'app/entities/admin/admin.reducer';
+
+import relCategoryChannels, { RelCategoryChannelsState } from 'app/entities/rel-category-channels/rel-category-channels.reducer';
+
+import relCategoryCity, { RelCategoryCityState } from 'app/entities/rel-category-city/rel-category-city.reducer';
+
+import relCategoryCityChannels, {
+  RelCategoryCityChannelsState,
+} from 'app/entities/rel-category-city-channels/rel-category-city-channels.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -145,6 +153,9 @@ export interface IRootState {
   readonly city: CityState;
   readonly manager: ManagerState;
   readonly admin: AdminState;
+  readonly relCategoryChannels: RelCategoryChannelsState;
+  readonly relCategoryCity: RelCategoryCityState;
+  readonly relCategoryCityChannels: RelCategoryCityChannelsState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -184,6 +195,9 @@ const rootReducer = combineReducers<IRootState>({
   city,
   manager,
   admin,
+  relCategoryChannels,
+  relCategoryCity,
+  relCategoryCityChannels,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });
