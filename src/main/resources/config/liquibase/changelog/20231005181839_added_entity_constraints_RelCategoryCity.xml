@@ -8,14 +8,14 @@
     -->
     <changeSet id="20221123131904-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="channel_id"
-                                 baseTableName="rel_category_channels"
-                                 constraintName="fk_chanell__channel_id"
+        <addForeignKeyConstraint baseColumnNames="city_id"
+                                 baseTableName="rel_category_city"
+                                 constraintName="fk_city__city_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="chanell"/>
+                                 referencedTableName="city"/>
 
         <addForeignKeyConstraint baseColumnNames="category_id"
-                                 baseTableName="rel_category_channels"
+                                 baseTableName="rel_category_city"
                                  constraintName="fk_category__category_id"
                                  referencedColumnNames="id"
                                  referencedTableName="category"/>

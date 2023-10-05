@@ -60,6 +60,8 @@
     <include file="config/liquibase/changelog/20221123131915_added_entity_constraints_MembersTradeDealLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131917_added_entity_constraints_BalanceLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230928181839_added_entity_constraints_RelCategoryChannels.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231005181839_added_entity_constraints_RelCategoryCity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231005181840_added_entity_constraints_RelCategoryCityChannels.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

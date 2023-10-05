@@ -1,5 +1,6 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -22,6 +23,32 @@ public class RelCategoryCityChannels implements Serializable {
 
     @Column(name = "is_show_channel")
     private Boolean isShowChannel;
+
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
+    @JsonIgnoreProperties(value = { "relCategoryCityChannels" }, allowSetters = true)
+    private Chanell chanell;
+
+    @ManyToOne
+    @JoinColumn(name = "rel_category_city_id")
+    @JsonIgnoreProperties(value = { "relCategoryCityChannels" }, allowSetters = true)
+    private RelCategoryCity relCategoryCity;
+
+    public Chanell getChanell() {
+        return chanell;
+    }
+
+    public void setChanell(Chanell chanell) {
+        this.chanell = chanell;
+    }
+
+    public RelCategoryCity getRelCategoryCity() {
+        return relCategoryCity;
+    }
+
+    public void setRelCategoryCity(RelCategoryCity relCategoryCity) {
+        this.relCategoryCity = relCategoryCity;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {

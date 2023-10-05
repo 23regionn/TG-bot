@@ -20,6 +20,12 @@
             <column name="is_show_channel" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="channel_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="rel_category_city_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -42,6 +48,8 @@
             <column name="id" type="numeric"/>
             <column name="score_channel" type="numeric"/>
             <column name="is_show_channel" type="boolean"/>
+            <column name="channel_id" type="numeric"/>
+            <column name="rel_category_city_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -1,6 +1,9 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -25,6 +28,44 @@ public class RelCategoryCity implements Serializable {
 
     @Column(name = "is_first")
     private Boolean isFirst;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties(value = { "relCategoryCities" }, allowSetters = true)
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    @JsonIgnoreProperties(value = { "relCategoryCities" }, allowSetters = true)
+    private City city;
+
+    @OneToMany(mappedBy = "relCategoryCity")
+    @JsonIgnoreProperties(value = { "relCategoryCity" }, allowSetters = true)
+    private Set<RelCategoryCityChannels> relCategoryCityChannels = new HashSet<>();
+
+    public Set<RelCategoryCityChannels> getRelCategoryCityChannels() {
+        return relCategoryCityChannels;
+    }
+
+    public void setRelCategoryCityChannels(Set<RelCategoryCityChannels> relCategoryCityChannels) {
+        this.relCategoryCityChannels = relCategoryCityChannels;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {

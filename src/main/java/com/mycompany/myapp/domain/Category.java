@@ -88,6 +88,18 @@ public class Category implements Serializable {
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
     private Set<RelCategoryChannels> relCategoryChannels = new HashSet<>();
 
+    @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
+    private Set<RelCategoryCity> relCategoryCities = new HashSet<>();
+
+    public Set<RelCategoryCity> getRelCategoryCities() {
+        return relCategoryCities;
+    }
+
+    public void setRelCategoryCities(Set<RelCategoryCity> relCategoryCities) {
+        this.relCategoryCities = relCategoryCities;
+    }
+
     public Set<RelCategoryChannels> getRelCategoryChannels() {
         return relCategoryChannels;
     }

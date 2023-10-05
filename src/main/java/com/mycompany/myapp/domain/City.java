@@ -1,7 +1,6 @@
 package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -35,6 +34,9 @@ public class City implements Serializable {
     @JsonIgnoreProperties(value = { "cityEntity" }, allowSetters = true)
     private Set<Chanell> chanells = new HashSet<>();
 
+    @OneToMany(mappedBy = "city")
+    @JsonIgnoreProperties(value = { "city" }, allowSetters = true)
+    private Set<RelCategoryCity> relCategoryCities = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
