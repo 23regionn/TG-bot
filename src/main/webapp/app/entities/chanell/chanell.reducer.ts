@@ -239,3 +239,8 @@ export const partialUpdateChannelForChannelsByCategoryAndCityPage: any = channel
   dispatch(getChannelsByCityIdAndCategoryId(channel?.idCity, channel?.idCat));
   return result;
 };
+
+export const getAllChanellsNamesAndIdDTO: any = () => ({
+  type: ACTION_TYPES.FETCH_CHANELL_LIST,
+  payload: axios.get<IChanell>(`${apiUrl}-only-id-and-name`),
+});

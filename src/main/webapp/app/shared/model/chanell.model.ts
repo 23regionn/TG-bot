@@ -40,6 +40,7 @@ export interface IChanell {
   approvedAdmin?: number | null;
   priceForPay?: number | null;
   isPay?: boolean | null;
+  isChat?: boolean | null;
 }
 
 export const defaultValue: Readonly<IChanell> = {

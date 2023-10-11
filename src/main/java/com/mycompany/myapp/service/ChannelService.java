@@ -10,6 +10,7 @@ import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.repository.CityRepository;
 import com.mycompany.myapp.service.dto.ChanellPostDTO;
+import com.mycompany.myapp.service.dto.ChannelNameAndIDDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -83,5 +84,9 @@ public class ChannelService {
             );
 
         return chanellRepository.getAllByCategoryIdsAndCityEntity(category, city);
+    }
+
+    public List<ChannelNameAndIDDTO> getAllChanellsNamesAndIdDTO() {
+        return chanellRepository.getAllChanellsNamesAndIdDTO();
     }
 }

@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.service.ChannelService;
 import com.mycompany.myapp.service.dto.ChanellPostDTO;
+import com.mycompany.myapp.service.dto.ChannelNameAndIDDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -290,5 +291,11 @@ public class ChanellResource {
         log.debug("REST request to get Chanells by City and Category : {} {}", cityId, categoryId);
         List<Chanell> chanells = channelService.getChannelsByCityIdAndCategoryId(cityId, categoryId);
         return new ResponseEntity<>(chanells, HttpStatus.OK);
+    }
+
+    @GetMapping("/chanells-only-id-and-name")
+    public List<ChannelNameAndIDDTO> getAllChanellsNamesAndIdDTO() {
+        log.debug("REST request to get all ChannelNameAndIDDTO");
+        return channelService.getAllChanellsNamesAndIdDTO();
     }
 }

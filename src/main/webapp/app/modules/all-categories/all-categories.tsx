@@ -132,9 +132,15 @@ export const AllCategories = (props: IAllCategoriesProps) => {
     );
   };
 
-  const pushToChannels = rowData => {
+  /*const pushToChannels = rowData => {
     props.history.push({
       pathname: `all-channels/by-category-id/${rowData.id}`,
+    });
+  };*/
+
+  const pushToChannels = rowData => {
+    props.history.push({
+      pathname: `all-channels/rel/by-category-id/${rowData.id}`,
     });
   };
 

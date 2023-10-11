@@ -2,6 +2,8 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.RelCategoryChannels;
 import com.mycompany.myapp.repository.RelCategoryChannelsRepository;
+import com.mycompany.myapp.service.RelCategoryChannelsService;
+import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +13,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +36,14 @@ public class RelCategoryChannelsResource {
     private String applicationName;
 
     private final RelCategoryChannelsRepository relCategoryChannelsRepository;
+    private final RelCategoryChannelsService relCategoryChannelsService;
 
-    public RelCategoryChannelsResource(RelCategoryChannelsRepository relCategoryChannelsRepository) {
+    public RelCategoryChannelsResource(
+        RelCategoryChannelsRepository relCategoryChannelsRepository,
+        RelCategoryChannelsService relCategoryChannelsService
+    ) {
         this.relCategoryChannelsRepository = relCategoryChannelsRepository;
+        this.relCategoryChannelsService = relCategoryChannelsService;
     }
 
     /**
@@ -104,7 +112,7 @@ public class RelCategoryChannelsResource {
      * or with status {@code 500 (Internal Server Error)} if the relCategoryChannels couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/rel-category-channels/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/rel-category-channels/{id}")
     public ResponseEntity<RelCategoryChannels> partialUpdateRelCategoryChannels(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody RelCategoryChannels relCategoryChannels
@@ -181,5 +189,24 @@ public class RelCategoryChannelsResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    // Получение каналов по категории
+    @GetMapping("/rel-category-channels/by-category/{id}")
+    public ResponseEntity<List<RelCategoryChannels>> getRelCategoryChannelsByCategoryId(@PathVariable Long id) {
+        log.debug("REST request to get RelCategoryChannels by category id: {}", id);
+        List<RelCategoryChannels> relCategoryChannelsList = relCategoryChannelsService.getAllByCategory(id);
+        return new ResponseEntity<>(relCategoryChannelsList, HttpStatus.OK);
+    }
+
+    @PostMapping("/rel-category-channels/by-ids")
+    public ResponseEntity<RelCategoryChannels> createRelCategoryChannelsByIds(@RequestBody RelCategoryChannelsCreateDTO createDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save RelCategoryChannelsCreateDTO : {}", createDTO);
+        RelCategoryChannels result = relCategoryChannelsService.createNewRel(createDTO);
+        return ResponseEntity
+            .created(new URI("/api/rel-category-channels/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }

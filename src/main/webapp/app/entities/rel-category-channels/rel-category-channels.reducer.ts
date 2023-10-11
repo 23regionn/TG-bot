@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IRelCategoryChannels, defaultValue } from 'app/shared/model/rel-category-channels.model';
+import { getChannelsByCategoryId } from 'app/entities/chanell/chanell.reducer';
 
 export const ACTION_TYPES = {
   FETCH_RELCATEGORYCHANNELS_LIST: 'relCategoryChannels/FETCH_RELCATEGORYCHANNELS_LIST',
@@ -154,3 +155,40 @@ export const deleteEntity: ICrudDeleteAction<IRelCategoryChannels> = id => async
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getEntitiesByCategoryId: any = id => ({
+  type: ACTION_TYPES.FETCH_RELCATEGORYCHANNELS_LIST,
+  payload: axios.get<IRelCategoryChannels>(`${apiUrl}/by-category/${id}`),
+});
+
+export const partialUpdateRel: any = rel => async dispatch => {
+  const entity = {
+    id: rel?.id,
+    scoreChannel: rel?.scoreChannel,
+    isShowChannel: rel?.isShowChannel,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_RELCATEGORYCHANNELS,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+
+  dispatch(getEntitiesByCategoryId(rel?.idCat));
+  return result;
+};
+
+export const createRelCategoryChannel: any = rel => async dispatch => {
+  const entity = {
+    scoreChannel: rel?.scoreChannel,
+    isShowChannel: rel?.isShowChannel,
+    idCat: rel?.idCat,
+    idChannel: rel?.idChannel,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_RELCATEGORYCHANNELS,
+    payload: axios.post(`${apiUrl}/by-ids`, cleanEntity(entity)),
+  });
+  dispatch(getEntitiesByCategoryId(rel?.idCat));
+  return result;
+};

@@ -145,6 +145,17 @@ public class Chanell implements Serializable {
     @Column(name = "is_pay")
     private Boolean isPay;
 
+    @Column(name = "is_chat")
+    private Boolean isChat;
+
+    public Boolean getIsChat() {
+        return isChat;
+    }
+
+    public void setIsChat(Boolean isChat) {
+        isChat = isChat;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Set<RelCategoryCityChannels> getRelCategoryCityChannels() {

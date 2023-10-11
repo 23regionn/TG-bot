@@ -54,4 +54,8 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
     );
 
     List<Chanell> getAllByCategoryIdsAndCityEntity(Category category, City cityEntity);
+
+    // Rest- запросы для фронта
+    @Query("SELECT new com.mycompany.myapp.service.dto.ChannelNameAndIDDTO(chan.id, chan.name) " + "FROM Chanell chan")
+    List<com.mycompany.myapp.service.dto.ChannelNameAndIDDTO> getAllChanellsNamesAndIdDTO();
 }
