@@ -24,6 +24,9 @@ public class RelCategoryChannels implements Serializable {
     @Column(name = "is_show_channel")
     private Boolean isShowChannel;
 
+    @Column(name = "comment")
+    private String comment;
+
     @ManyToOne
     @JoinColumn(name = "channel_id")
     @JsonIgnoreProperties(value = { "relCategoryChannels" }, allowSetters = true)
@@ -33,6 +36,14 @@ public class RelCategoryChannels implements Serializable {
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties(value = { "relCategoryChannels" }, allowSetters = true)
     private Category category;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public Chanell getChanell() {
         return chanell;

@@ -166,6 +166,7 @@ export const partialUpdateRel: any = rel => async dispatch => {
     id: rel?.id,
     scoreChannel: rel?.scoreChannel,
     isShowChannel: rel?.isShowChannel,
+    comment: rel?.comment,
   };
 
   const result = await dispatch({
@@ -183,6 +184,7 @@ export const createRelCategoryChannel: any = rel => async dispatch => {
     isShowChannel: rel?.isShowChannel,
     idCat: rel?.idCat,
     idChannel: rel?.idChannel,
+    comment: rel?.comment,
   };
 
   const result = await dispatch({

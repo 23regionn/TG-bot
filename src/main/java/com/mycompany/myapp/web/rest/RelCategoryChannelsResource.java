@@ -140,6 +140,10 @@ public class RelCategoryChannelsResource {
                         existingRelCategoryChannels.setIsShowChannel(relCategoryChannels.getIsShowChannel());
                     }
 
+                    if (relCategoryChannels.getComment() != null) {
+                        existingRelCategoryChannels.setComment(relCategoryChannels.getComment());
+                    }
+
                     return existingRelCategoryChannels;
                 }
             )

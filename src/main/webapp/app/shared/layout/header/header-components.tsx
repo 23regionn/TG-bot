@@ -46,3 +46,12 @@ export const AllCitiesHeader = props => (
     </NavLink>
   </NavItem>
 );
+
+export const AllChannelsHeader = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/all-channels" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="search" />
+      <span>Все каналы</span>
+    </NavLink>
+  </NavItem>
+);

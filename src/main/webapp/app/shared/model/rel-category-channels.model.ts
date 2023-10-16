@@ -7,6 +7,7 @@ export interface IRelCategoryChannels {
   isShowChannel?: boolean | null;
   category?: ICategory[] | null;
   chanell?: IChanell[] | null;
+  comment?: string | null;
 }
 
 export const defaultValue: Readonly<IRelCategoryChannels> = {

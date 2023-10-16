@@ -244,3 +244,56 @@ export const getAllChanellsNamesAndIdDTO: any = () => ({
   type: ACTION_TYPES.FETCH_CHANELL_LIST,
   payload: axios.get<IChanell>(`${apiUrl}-only-id-and-name`),
 });
+
+export const getAllChanellsInfoDTO: any = () => ({
+  type: ACTION_TYPES.FETCH_CHANELL_LIST,
+  payload: axios.get<IChanell>(`${apiUrl}-info`),
+});
+
+export const partialUpdateChannelForChannelPage: any = channel => async dispatch => {
+  const entity = {
+    id: channel?.id,
+    name: channel?.name,
+    score: channel?.score,
+    link: channel?.link,
+    priceForPay: channel?.priceForPay,
+    comment: channel?.comment,
+    contacts: channel?.contacts,
+    isModerate: channel?.isModerate,
+    isPay: channel?.isPay,
+    startDate: channel?.startDate,
+    lastPayDate: channel?.lastPayDate,
+    endPublicDate: channel?.endPublicDate,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_CHANELL,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+
+  dispatch(getAllChanellsInfoDTO());
+  return result;
+};
+
+export const createChannelForChannelPage: any = channel => async dispatch => {
+  const entity = {
+    name: channel?.name,
+    score: channel?.score,
+    link: channel?.link,
+    priceForPay: channel?.priceForPay,
+    comment: channel?.comment,
+    contacts: channel?.contacts,
+    isModerate: channel?.isModerate,
+    isPay: channel?.isPay,
+    startDate: channel?.lastPayDate,
+    lastPayDate: channel?.lastPayDate,
+    endPublicDate: channel?.endPublicDate,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_CHANELL,
+    payload: axios.post(`${apiUrl}`, cleanEntity(entity)),
+  });
+  dispatch(getAllChanellsInfoDTO());
+  return result;
+};

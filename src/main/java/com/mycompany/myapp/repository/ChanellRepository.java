@@ -58,4 +58,12 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
     // Rest- запросы для фронта
     @Query("SELECT new com.mycompany.myapp.service.dto.ChannelNameAndIDDTO(chan.id, chan.name) " + "FROM Chanell chan")
     List<com.mycompany.myapp.service.dto.ChannelNameAndIDDTO> getAllChanellsNamesAndIdDTO();
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.channel" +
+        ".ChannelInfoDTO(chan.id, chan.name, chan.link, chan.isModerate, chan.contacts, chan.startDate," +
+        "chan.lastPayDate, chan.endPublicDate, chan.comment, chan.priceForPay, chan.isPay) " +
+        "FROM Chanell chan"
+    )
+    List<com.mycompany.myapp.service.dto.channel.ChannelInfoDTO> getAllChanellsInfoDTO();
 }

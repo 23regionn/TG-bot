@@ -7,7 +7,6 @@ import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.domain.RelCategoryChannels;
 import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
-import com.mycompany.myapp.repository.CityRepository;
 import com.mycompany.myapp.repository.RelCategoryChannelsRepository;
 import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -67,6 +66,7 @@ public class RelCategoryChannelsService {
         relCategoryChannels.setChanell(chanell);
         relCategoryChannels.setScoreChannel(createDTO.getScoreChannel());
         relCategoryChannels.setIsShowChannel(createDTO.getIsShowChannel());
+        relCategoryChannels.setComment(createDTO.getComment());
 
         return relCategoryChannelsRepository.save(relCategoryChannels);
     }

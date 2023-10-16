@@ -9,6 +9,15 @@ public class RelCategoryChannelsCreateDTO {
     private Boolean isShowChannel;
     private Long idChannel;
     private Long idCat;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public Long getIdChannel() {
         return idChannel;
@@ -64,6 +73,9 @@ public class RelCategoryChannelsCreateDTO {
             idChannel +
             ", idCat=" +
             idCat +
+            ", comment='" +
+            comment +
+            '\'' +
             '}'
         );
     }

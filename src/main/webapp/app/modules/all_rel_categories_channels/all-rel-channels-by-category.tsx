@@ -18,6 +18,7 @@ import {
 } from 'app/entities/rel-category-channels/rel-category-channels.reducer';
 import { getEntityCategoryById as getCategoryById } from 'app/modules/all-categories/all-categories.reducer';
 import { Dropdown } from 'primereact/dropdown';
+import { InputTextarea } from 'primereact/inputtextarea';
 
 export interface IAllRelChannelsByCategoryProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -29,6 +30,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
   const scoreValue = useRef(null);
   const [isShowChannelState, setIsShowChannelState] = useState(false);
   const [channelsNames, setChannelsNames] = useState<any>(null);
+  const commentValue = useRef(null);
 
   const { relCategoryChannels, match, loading, channels } = props;
 
@@ -45,6 +47,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
   };
 
   const editChannel = rowData => {
+    window.console.log(rowData, 'rowData-rowData');
     setRel(rowData);
     setIsShowChannelState(rowData?.isShowChannel);
     setEditChannelDialog(true);
@@ -61,6 +64,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
   const hideDialog = () => {
     setEditChannelDialog(false);
     setRel(null);
+    commentValue.current.value = null;
     scoreValue.current.value = null;
     setIsShowChannelState(null);
   };
@@ -70,12 +74,14 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
       id: rel.id,
       scoreChannel: scoreValue.current.value,
       isShowChannel: isShowChannelState,
+      comment: commentValue.current.value,
       idCat: props.match.params.id,
     };
 
     props.partialUpdateRel(entity);
 
     setRel(null);
+    commentValue.current.value = null;
     scoreValue.current.value = null;
     setIsShowChannelState(null);
     setEditChannelDialog(false);
@@ -100,12 +106,14 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
   const hideCreateDialog = () => {
     setRel(null);
     setIsShowChannelState(null);
+    commentValue.current.value = null;
     scoreValue.current.value = null;
     setAddChanDialog(false);
   };
 
   const createRelButton = () => {
     const entity = {
+      comment: commentValue.current.value,
       scoreChannel: scoreValue.current.value,
       isShowChannel: isShowChannelState,
       idCat: props.match.params.id,
@@ -117,6 +125,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
     window.console.log(entity, 'entity');
     setChannelsNames(null);
     setIsShowChannelState(null);
+    commentValue.current.value = null;
     scoreValue.current.value = null;
     setAddChanDialog(false);
   };
@@ -188,6 +197,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
           style={{ width: '7.5vw' }}
           body={rowData => (rowData.scoreChannel !== null ? rowData.scoreChannel : 'null')}
         ></Column>
+        <Column style={{ maxWidth: '15vw' }} field="comment" header="Комментарий" body={rowData => rowData?.comment}></Column>
 
         <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
       </DataTable>
@@ -217,6 +227,11 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
             <TriStateCheckbox value={isShowChannelState} onChange={e => setIsShowChannelState(e.value)} />
             <div>{String(isShowChannelState)}</div>
           </div>
+        </div>
+
+        <div className="p-field">
+          <div> Комментарий </div>
+          <InputTextarea defaultValue={rel?.comment} rows={2} cols={20} ref={commentValue} />
         </div>
 
         <br />
@@ -264,6 +279,11 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
             <TriStateCheckbox value={isShowChannelState} onChange={e => setIsShowChannelState(e.value)} />
             <div>{String(isShowChannelState)}</div>
           </div>
+        </div>
+
+        <div className="p-field">
+          <div> Комментарий </div>
+          <InputTextarea rows={2} cols={20} ref={commentValue} />
         </div>
 
         <br />

@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.service.ChannelService;
 import com.mycompany.myapp.service.dto.ChanellPostDTO;
 import com.mycompany.myapp.service.dto.ChannelNameAndIDDTO;
+import com.mycompany.myapp.service.dto.channel.ChannelInfoDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -297,5 +298,11 @@ public class ChanellResource {
     public List<ChannelNameAndIDDTO> getAllChanellsNamesAndIdDTO() {
         log.debug("REST request to get all ChannelNameAndIDDTO");
         return channelService.getAllChanellsNamesAndIdDTO();
+    }
+
+    @GetMapping("/chanells-info")
+    public List<ChannelInfoDTO> getAllChanellsInfoDTO() {
+        log.debug("REST request to get all ChannelInfoDTO");
+        return channelService.getAllChanellsInfoDTO();
     }
 }
