@@ -137,7 +137,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
     </React.Fragment>
   );
 
-  const selectedCountryTemplate = (option: { name: string; id: number }, props: { placeholder: string }) => {
+  const selectedCountryTemplate = (option: { name: string; id: number }, innerProps: { placeholder: string }) => {
     if (option) {
       return (
         <div className="country-item country-item-value">
@@ -147,7 +147,7 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
         </div>
       );
     }
-    return <span> {props.placeholder} </span>;
+    return <span> {innerProps.placeholder} </span>;
   };
 
   const countryOptionTemplate = (option: any) => {
