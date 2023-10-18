@@ -3,6 +3,7 @@ export interface IRelCategoryCity {
   isShow?: boolean | null;
   score?: number | null;
   isFirst?: boolean | null;
+  comment?: string | null;
 }
 
 export const defaultValue: Readonly<IRelCategoryCity> = {

@@ -39,6 +39,9 @@ public class RelCategoryCity implements Serializable {
     @JsonIgnoreProperties(value = { "relCategoryCities" }, allowSetters = true)
     private City city;
 
+    @Column(name = "comment")
+    private String comment;
+
     @OneToMany(mappedBy = "relCategoryCity")
     @JsonIgnoreProperties(value = { "relCategoryCity" }, allowSetters = true)
     private Set<RelCategoryCityChannels> relCategoryCityChannels = new HashSet<>();
@@ -74,6 +77,14 @@ public class RelCategoryCity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public RelCategoryCity id(Long id) {

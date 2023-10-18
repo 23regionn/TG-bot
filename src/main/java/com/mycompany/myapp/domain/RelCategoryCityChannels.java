@@ -24,6 +24,9 @@ public class RelCategoryCityChannels implements Serializable {
     @Column(name = "is_show_channel")
     private Boolean isShowChannel;
 
+    @Column(name = "comment")
+    private String comment;
+
     @ManyToOne
     @JoinColumn(name = "channel_id")
     @JsonIgnoreProperties(value = { "relCategoryCityChannels" }, allowSetters = true)
@@ -48,6 +51,14 @@ public class RelCategoryCityChannels implements Serializable {
 
     public void setRelCategoryCity(RelCategoryCity relCategoryCity) {
         this.relCategoryCity = relCategoryCity;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
