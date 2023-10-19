@@ -117,7 +117,8 @@ export const AllCities = (props: IAllCitiesProps) => {
 
   const pushToCategoriesByCity = rowData => {
     props.history.push({
-      pathname: `all-categories/by-city-id/${rowData.id}`,
+      // pathname: `all-categories/by-city-id/${rowData.id}`,
+      pathname: `all-categories/rel/by-city-id/${rowData.id}`,
     });
   };
 

@@ -5,6 +5,8 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IRelCategoryCity, defaultValue } from 'app/shared/model/rel-category-city.model';
+import { IRelCategoryChannels } from 'app/shared/model/rel-category-channels.model';
+import { getEntitiesByCategoryId } from 'app/entities/rel-category-channels/rel-category-channels.reducer';
 
 export const ACTION_TYPES = {
   FETCH_RELCATEGORYCITY_LIST: 'relCategoryCity/FETCH_RELCATEGORYCITY_LIST',
@@ -108,6 +110,11 @@ export const getEntities: ICrudGetAllAction<IRelCategoryCity> = (page, size, sor
   payload: axios.get<IRelCategoryCity>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
 });
 
+export const getEntitiesByCityId: any = id => ({
+  type: ACTION_TYPES.FETCH_RELCATEGORYCITY_LIST,
+  payload: axios.get<IRelCategoryCity>(`${apiUrl}/by-city/${id}`),
+});
+
 export const getEntity: ICrudGetAction<IRelCategoryCity> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
@@ -154,3 +161,38 @@ export const deleteEntity: ICrudDeleteAction<IRelCategoryCity> = id => async dis
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const partialUpdateRelCityCategory: any = rel => async dispatch => {
+  const entity = {
+    id: rel?.id,
+    score: rel?.score,
+    isShow: rel?.isShow,
+    isFirst: rel?.isFirst,
+    comment: rel?.comment,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_RELCATEGORYCITY,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  dispatch(getEntitiesByCityId(rel?.idCity));
+  return result;
+};
+
+export const createRelCityCategory: any = rel => async dispatch => {
+  const entity = {
+    score: rel?.score,
+    isShow: rel?.isShow,
+    isFirst: rel?.isFirst,
+    comment: rel?.comment,
+    idCat: rel?.idCat,
+    idCity: rel?.idCity,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_RELCATEGORYCITY,
+    payload: axios.post(`${apiUrl}/add/category`, cleanEntity(entity)),
+  });
+  dispatch(getEntitiesByCityId(rel?.idCity));
+  return result;
+};

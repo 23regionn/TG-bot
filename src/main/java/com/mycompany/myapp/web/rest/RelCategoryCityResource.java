@@ -2,6 +2,8 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.RelCategoryCity;
 import com.mycompany.myapp.repository.RelCategoryCityRepository;
+import com.mycompany.myapp.service.RelCategoryCityService;
+import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +35,11 @@ public class RelCategoryCityResource {
     private String applicationName;
 
     private final RelCategoryCityRepository relCategoryCityRepository;
+    private final RelCategoryCityService relCategoryCityService;
 
-    public RelCategoryCityResource(RelCategoryCityRepository relCategoryCityRepository) {
+    public RelCategoryCityResource(RelCategoryCityRepository relCategoryCityRepository, RelCategoryCityService relCategoryCityService) {
         this.relCategoryCityRepository = relCategoryCityRepository;
+        this.relCategoryCityService = relCategoryCityService;
     }
 
     /**
@@ -103,7 +107,7 @@ public class RelCategoryCityResource {
      * or with status {@code 500 (Internal Server Error)} if the relCategoryCity couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/rel-category-cities/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/rel-category-cities/{id}")
     public ResponseEntity<RelCategoryCity> partialUpdateRelCategoryCity(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody RelCategoryCity relCategoryCity
@@ -132,6 +136,9 @@ public class RelCategoryCityResource {
                     }
                     if (relCategoryCity.getIsFirst() != null) {
                         existingRelCategoryCity.setIsFirst(relCategoryCity.getIsFirst());
+                    }
+                    if (relCategoryCity.getComment() != null) {
+                        existingRelCategoryCity.setComment(relCategoryCity.getComment());
                     }
 
                     return existingRelCategoryCity;
@@ -183,5 +190,23 @@ public class RelCategoryCityResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/rel-category-cities/by-city/{id}")
+    public List<RelCategoryCity> getAllRelCategoryCitiesByCity(@PathVariable Long id) {
+        log.debug("REST request to get all RelCategoryCities by cityId");
+        return relCategoryCityService.getAllByCityId(id);
+    }
+
+    @PostMapping("/rel-category-cities/add/category")
+    public ResponseEntity<RelCategoryCity> addRelCategoryCityToCity(@RequestBody RelCategoryCityCreateDTO relCategoryCity)
+        throws URISyntaxException {
+        log.debug("REST request to add RelCategoryCity to City: {}", relCategoryCity);
+
+        RelCategoryCity result = relCategoryCityService.createRelCategoryCity(relCategoryCity);
+        return ResponseEntity
+            .created(new URI("/api/rel-category-cities/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }
