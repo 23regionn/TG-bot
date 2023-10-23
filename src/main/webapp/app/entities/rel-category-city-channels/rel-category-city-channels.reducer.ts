@@ -5,6 +5,8 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IRelCategoryCityChannels, defaultValue } from 'app/shared/model/rel-category-city-channels.model';
+import { IChanell } from 'app/shared/model/chanell.model';
+import { getEntitiesByCategoryId } from 'app/entities/rel-category-channels/rel-category-channels.reducer';
 
 export const ACTION_TYPES = {
   FETCH_RELCATEGORYCITYCHANNELS_LIST: 'relCategoryCityChannels/FETCH_RELCATEGORYCITYCHANNELS_LIST',
@@ -154,3 +156,42 @@ export const deleteEntity: ICrudDeleteAction<IRelCategoryCityChannels> = id => a
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getCategoryCityChannelsByRelCityCategory: any = (relCategoryCityId: number) => ({
+  type: ACTION_TYPES.FETCH_RELCATEGORYCITYCHANNELS_LIST,
+  payload: axios.get<IRelCategoryCityChannels>(`${apiUrl}/by-rel-city-and-category-id/${relCategoryCityId}`),
+});
+
+export const partialUpdateRel: any = rel => async dispatch => {
+  const entity = {
+    id: rel?.id,
+    scoreChannel: rel?.scoreChannel,
+    isShowChannel: rel?.isShowChannel,
+    comment: rel?.comment,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_RELCATEGORYCITYCHANNELS,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+
+  dispatch(getCategoryCityChannelsByRelCityCategory(rel?.idRel));
+  return result;
+};
+
+export const createRelCategoryCityChannel: any = rel => async dispatch => {
+  const entity = {
+    scoreChannel: rel?.scoreChannel,
+    isShowChannel: rel?.isShowChannel,
+    idRel: rel?.idRel,
+    idChannel: rel?.idChannel,
+    comment: rel?.comment,
+  };
+
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_RELCATEGORYCITYCHANNELS,
+    payload: axios.post(`${apiUrl}/by-ids`, cleanEntity(entity)),
+  });
+  dispatch(getCategoryCityChannelsByRelCityCategory(rel?.idRel));
+  return result;
+};

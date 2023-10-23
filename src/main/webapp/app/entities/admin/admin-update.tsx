@@ -91,13 +91,19 @@ export const AdminUpdate = (props: IAdminUpdateProps) => {
                 </Label>
                 <AvField id="admin-link" data-cy="link" type="text" name="link" />
               </AvGroup>
+              <AvGroup>
+                <Label id="scoreLabel" for="admin-score">
+                  Score
+                </Label>
+                <AvField id="admin-score" data-cy="score" type="string" className="form-control" name="score" />
+              </AvGroup>
               <AvGroup check>
                 <Label id="isActiveLabel">
                   <AvInput id="admin-isActive" data-cy="isActive" type="checkbox" className="form-check-input" name="isActive" />
                   Is Active
                 </Label>
               </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/admin" replace color="info">
+              <Button tag={Link} id="cancel-save" to="/entity-admin" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>

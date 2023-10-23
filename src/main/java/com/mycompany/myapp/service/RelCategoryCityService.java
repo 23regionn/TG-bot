@@ -6,6 +6,7 @@ import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
 import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityCreateDTO;
+import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityInfoDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,9 @@ public class RelCategoryCityService {
         relCategoryCity.setIsFirst(entity.getIsFirst());
         relCategoryCity.setIsShow(entity.getIsShow());
         return relCategoryCityRepository.save(relCategoryCity);
+    }
+
+    public RelCategoryCityInfoDTO getInfoById(Long id) {
+        return relCategoryCityRepository.getInfoDTOById(id);
     }
 }

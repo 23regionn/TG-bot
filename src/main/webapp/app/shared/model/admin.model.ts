@@ -4,6 +4,7 @@ export interface IAdmin {
   contact?: string | null;
   link?: string | null;
   isActive?: boolean | null;
+  score?: number | null;
 }
 
 export const defaultValue: Readonly<IAdmin> = {

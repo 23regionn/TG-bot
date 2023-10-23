@@ -63,7 +63,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}edit-channels`} component={EditChannels} />
       <ErrorBoundaryRoute path={`${match.url}city`} component={City} />
       <ErrorBoundaryRoute path={`${match.url}manager`} component={Manager} />
-      <ErrorBoundaryRoute path={`${match.url}admin`} component={Admin} />
+      <ErrorBoundaryRoute path={`${match.url}entity-admin`} component={Admin} />
       {/* новые*/}
       <ErrorBoundaryRoute path={`${match.url}all-categories`} component={AllCategories} />
       <ErrorBoundaryRoute path={`${match.url}all-channels`} component={AllChannels} />

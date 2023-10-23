@@ -26,6 +26,9 @@ public class Admin implements Serializable {
     @Column(name = "link")
     private String link;
 
+    @Column(name = "score")
+    private Double score;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -89,6 +92,14 @@ public class Admin implements Serializable {
     public Admin isActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 
     public void setIsActive(Boolean isActive) {

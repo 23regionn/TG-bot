@@ -196,3 +196,11 @@ export const createRelCityCategory: any = rel => async dispatch => {
   dispatch(getEntitiesByCityId(rel?.idCity));
   return result;
 };
+
+export const getInfoAboutRelCategoryAndCity: any = (relCategoryCityId: number) => {
+  const requestUrl = `${apiUrl}/info-by-id/${relCategoryCityId}`;
+  return {
+    type: ACTION_TYPES.FETCH_RELCATEGORYCITY,
+    payload: axios.get<any>(requestUrl),
+  };
+};

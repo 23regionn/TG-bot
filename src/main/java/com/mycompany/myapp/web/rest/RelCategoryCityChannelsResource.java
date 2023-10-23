@@ -1,7 +1,11 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.RelCategoryChannels;
 import com.mycompany.myapp.domain.RelCategoryCityChannels;
 import com.mycompany.myapp.repository.RelCategoryCityChannelsRepository;
+import com.mycompany.myapp.service.RelCategoryCityChannelsService;
+import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
+import com.mycompany.myapp.service.dto.relCategoryCityChannels.RelCategoryCityChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +37,14 @@ public class RelCategoryCityChannelsResource {
     private String applicationName;
 
     private final RelCategoryCityChannelsRepository relCategoryCityChannelsRepository;
+    private final RelCategoryCityChannelsService relCategoryCityChannelsService;
 
-    public RelCategoryCityChannelsResource(RelCategoryCityChannelsRepository relCategoryCityChannelsRepository) {
+    public RelCategoryCityChannelsResource(
+        RelCategoryCityChannelsRepository relCategoryCityChannelsRepository,
+        RelCategoryCityChannelsService relCategoryCityChannelsService
+    ) {
         this.relCategoryCityChannelsRepository = relCategoryCityChannelsRepository;
+        this.relCategoryCityChannelsService = relCategoryCityChannelsService;
     }
 
     /**
@@ -105,7 +114,7 @@ public class RelCategoryCityChannelsResource {
      * or with status {@code 500 (Internal Server Error)} if the relCategoryCityChannels couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/rel-category-city-channels/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/rel-category-city-channels/{id}")
     public ResponseEntity<RelCategoryCityChannels> partialUpdateRelCategoryCityChannels(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody RelCategoryCityChannels relCategoryCityChannels
@@ -131,6 +140,9 @@ public class RelCategoryCityChannelsResource {
                     }
                     if (relCategoryCityChannels.getIsShowChannel() != null) {
                         existingRelCategoryCityChannels.setIsShowChannel(relCategoryCityChannels.getIsShowChannel());
+                    }
+                    if (relCategoryCityChannels.getComment() != null) {
+                        existingRelCategoryCityChannels.setComment(relCategoryCityChannels.getComment());
                     }
 
                     return existingRelCategoryCityChannels;
@@ -182,5 +194,22 @@ public class RelCategoryCityChannelsResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/rel-category-city-channels/by-rel-city-and-category-id/{relCategoryCityId}")
+    public List<RelCategoryCityChannels> getCategoryCityChannelsByRelCityCategory(@PathVariable Long relCategoryCityId) {
+        log.debug("REST request to get all RelCategoryCityChannels by relCategoryCityId");
+        return relCategoryCityChannelsService.getCategoryCityChannelsByRelCityCategory(relCategoryCityId);
+    }
+
+    @PostMapping("/rel-category-city-channels/by-ids")
+    public ResponseEntity<RelCategoryCityChannels> createRelCategoryChannelsByIds(@RequestBody RelCategoryCityChannelsCreateDTO createDTO)
+        throws URISyntaxException {
+        log.debug("REST request to add RelCategoryCityChannelsCreateDTO : {}", createDTO);
+        RelCategoryCityChannels result = relCategoryCityChannelsService.createNewRel(createDTO);
+        return ResponseEntity
+            .created(new URI("/api/rel-category-city-channels/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 }

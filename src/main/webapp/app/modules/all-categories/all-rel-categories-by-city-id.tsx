@@ -104,7 +104,8 @@ export const AllRelCategoriesByCityId = (props: IRelAllCategoriesByCityIdIAllCat
         <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => editRel(rowData)} />
         <NavLink
           tag={Link}
-          to={`/all-channels/by-city-and-category/${props.match.params.id}/${rowData.id}`}
+          // to={`/all-channels/by-city-and-category/${props.match.params.id}/${rowData.id}`}
+          to={`/all-channels/rel/channels-city-category/${rowData?.id}`}
           className="d-flex align-items-center"
         >
           <Button id="button_basic" className="p-button-rounded p-button-warning p-mr-2" label="Список каналов по городу" />{' '}

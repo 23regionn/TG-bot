@@ -4,6 +4,7 @@ import com.mycompany.myapp.domain.RelCategoryCity;
 import com.mycompany.myapp.repository.RelCategoryCityRepository;
 import com.mycompany.myapp.service.RelCategoryCityService;
 import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityCreateDTO;
+import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityInfoDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -208,5 +209,11 @@ public class RelCategoryCityResource {
             .created(new URI("/api/rel-category-cities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/rel-category-cities/info-by-id/{relCategoryCityId}")
+    public RelCategoryCityInfoDTO getInfoById(@PathVariable Long relCategoryCityId) {
+        log.debug("REST request to get RelCategoryCityInfoDTO info by relCategoryCityId");
+        return relCategoryCityService.getInfoById(relCategoryCityId);
     }
 }

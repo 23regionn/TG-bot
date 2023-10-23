@@ -45,6 +45,7 @@ export const Admin = (props: IAdminProps) => {
                 <th>Name</th>
                 <th>Contact</th>
                 <th>Link</th>
+                <th>Score</th>
                 <th>Is Active</th>
                 <th />
               </tr>
@@ -60,6 +61,7 @@ export const Admin = (props: IAdminProps) => {
                   <td>{admin.name}</td>
                   <td>{admin.contact}</td>
                   <td>{admin.link}</td>
+                  <td>{admin.score}</td>
                   <td>{admin.isActive ? 'true' : 'false'}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

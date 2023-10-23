@@ -74,7 +74,7 @@ export const EntitiesMenu = props => (
     <MenuItem icon="asterisk" to="/manager">
       Manager
     </MenuItem>
-    <MenuItem icon="asterisk" to="/admin">
+    <MenuItem icon="asterisk" to="/entity-admin">
       Admin
     </MenuItem>
     <MenuItem icon="asterisk" to="/rel-category-channels">

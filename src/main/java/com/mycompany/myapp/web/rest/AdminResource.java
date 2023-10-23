@@ -132,6 +132,9 @@ public class AdminResource {
                     if (admin.getIsActive() != null) {
                         existingAdmin.setIsActive(admin.getIsActive());
                     }
+                    if (admin.getScore() != null) {
+                        existingAdmin.setScore(admin.getScore());
+                    }
 
                     return existingAdmin;
                 }

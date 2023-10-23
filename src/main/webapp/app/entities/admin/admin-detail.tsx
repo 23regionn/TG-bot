@@ -42,8 +42,12 @@ export const AdminDetail = (props: IAdminDetailProps) => {
             <span id="isActive">Is Active</span>
           </dt>
           <dd>{adminEntity.isActive ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="score">Score</span>
+          </dt>
+          <dd>{adminEntity.score}</dd>
         </dl>
-        <Button tag={Link} to="/admin" replace color="info" data-cy="entityDetailsBackButton">
+        <Button tag={Link} to="/entity-admin" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
