@@ -1,0 +1,36 @@
+{
+  "name": "SearchTypeLog",
+  "fields": [
+    {
+      "fieldName": "chatId",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "dateLog",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "inlineSearch",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "pageSearch",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "pageNumber",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "search_type_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20231025203956"
+}

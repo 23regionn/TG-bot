@@ -116,6 +116,15 @@ import relCategoryCity, { RelCategoryCityState } from 'app/entities/rel-category
 import relCategoryCityChannels, {
   RelCategoryCityChannelsState,
 } from 'app/entities/rel-category-city-channels/rel-category-city-channels.reducer';
+// prettier-ignore
+import searchTypeLog, {
+  SearchTypeLogState
+} from 'app/entities/search-type-log/search-type-log.reducer';
+// prettier-ignore
+import countChannelClickPageLog, {
+  CountChannelClickPageLogState
+} from 'app/entities/count-channel-click-page-log/count-channel-click-page-log.reducer';
+// prettier-ignore
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -156,6 +165,8 @@ export interface IRootState {
   readonly relCategoryChannels: RelCategoryChannelsState;
   readonly relCategoryCity: RelCategoryCityState;
   readonly relCategoryCityChannels: RelCategoryCityChannelsState;
+  readonly searchTypeLog: SearchTypeLogState;
+  readonly countChannelClickPageLog: CountChannelClickPageLogState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -198,6 +209,8 @@ const rootReducer = combineReducers<IRootState>({
   relCategoryChannels,
   relCategoryCity,
   relCategoryCityChannels,
+  searchTypeLog,
+  countChannelClickPageLog,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

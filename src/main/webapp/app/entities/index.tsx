@@ -34,6 +34,8 @@ import AllCities from '../modules/all-cities/index';
 import RelCategoryChannels from './rel-category-channels';
 import RelCategoryCity from './rel-category-city';
 import RelCategoryCityChannels from './rel-category-city-channels';
+import SearchTypeLog from './search-type-log';
+import CountChannelClickPageLog from './count-channel-click-page-log';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -72,6 +74,8 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}rel-category-channels`} component={RelCategoryChannels} />
       <ErrorBoundaryRoute path={`${match.url}rel-category-city`} component={RelCategoryCity} />
       <ErrorBoundaryRoute path={`${match.url}rel-category-city-channels`} component={RelCategoryCityChannels} />
+      <ErrorBoundaryRoute path={`${match.url}search-type-log`} component={SearchTypeLog} />
+      <ErrorBoundaryRoute path={`${match.url}count-channel-click-page-log`} component={CountChannelClickPageLog} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

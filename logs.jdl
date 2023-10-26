@@ -1,0 +1,18 @@
+
+entity SearchTypeLog{
+    	chatId Long,
+    	dateLog ZonedDateTime,
+	inlineSearch Boolean, 
+	pageSearch Boolean, 
+	pageNumber Long	
+}
+
+entity CountChannelClickPageLog{
+	chatId Long,
+    	dateLog ZonedDateTime,
+	idChannel Long,
+	pageNumber Long,
+	idCategory Long,
+	idCity Long	
+}
+

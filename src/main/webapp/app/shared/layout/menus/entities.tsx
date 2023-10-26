@@ -86,6 +86,12 @@ export const EntitiesMenu = props => (
     <MenuItem icon="asterisk" to="/rel-category-city-channels">
       Rel Category City Channels
     </MenuItem>
+    <MenuItem icon="asterisk" to="/search-type-log">
+      Search Type Log
+    </MenuItem>
+    <MenuItem icon="asterisk" to="/count-channel-click-page-log">
+      Count Channel Click Page Log
+    </MenuItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
 );
