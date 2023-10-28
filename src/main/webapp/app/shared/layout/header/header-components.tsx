@@ -41,7 +41,7 @@ export const AllCategoriesHeader = props => (
 export const AllCitiesHeader = props => (
   <NavItem>
     <NavLink tag={Link} to="/all-cities" className="d-flex align-items-center">
-      <FontAwesomeIcon icon="search" />
+      <FontAwesomeIcon icon="book" />
       <span>Все города</span>
     </NavLink>
   </NavItem>
@@ -50,8 +50,17 @@ export const AllCitiesHeader = props => (
 export const AllChannelsHeader = props => (
   <NavItem>
     <NavLink tag={Link} to="/all-channels" className="d-flex align-items-center">
-      <FontAwesomeIcon icon="search" />
+      <FontAwesomeIcon icon="book" />
       <span>Все каналы</span>
+    </NavLink>
+  </NavItem>
+);
+
+export const AllStatisticsHeader = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/all-statistics" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="search" />
+      <span>Статистика</span>
     </NavLink>
   </NavItem>
 );

@@ -36,6 +36,7 @@ import RelCategoryCity from './rel-category-city';
 import RelCategoryCityChannels from './rel-category-city-channels';
 import SearchTypeLog from './search-type-log';
 import CountChannelClickPageLog from './count-channel-click-page-log';
+import AllStatistics from '../modules/all-statistics/index';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -70,6 +71,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}all-categories`} component={AllCategories} />
       <ErrorBoundaryRoute path={`${match.url}all-channels`} component={AllChannels} />
       <ErrorBoundaryRoute path={`${match.url}all-cities`} component={AllCities} />
+      <ErrorBoundaryRoute path={`${match.url}all-statistics`} component={AllStatistics} />
 
       <ErrorBoundaryRoute path={`${match.url}rel-category-channels`} component={RelCategoryChannels} />
       <ErrorBoundaryRoute path={`${match.url}rel-category-city`} component={RelCategoryCity} />
