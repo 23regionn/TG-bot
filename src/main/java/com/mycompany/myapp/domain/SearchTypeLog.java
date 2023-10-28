@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 /**
  * A SearchTypeLog.
+ * Таблица для вывода данных о количестве запросов через инлайн режим и листалки категорий...
  */
 @Entity
 @Table(name = "search_type_log")
@@ -32,6 +33,9 @@ public class SearchTypeLog implements Serializable {
 
     @Column(name = "page_number")
     private Long pageNumber;
+
+    @Column(name = "id_city")
+    private Long idCity;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -112,6 +116,19 @@ public class SearchTypeLog implements Serializable {
         this.pageNumber = pageNumber;
     }
 
+    public Long getIdCity() {
+        return this.idCity;
+    }
+
+    public SearchTypeLog idCity(Long idCity) {
+        this.idCity = idCity;
+        return this;
+    }
+
+    public void setIdCity(Long idCity) {
+        this.idCity = idCity;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -131,16 +148,25 @@ public class SearchTypeLog implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "SearchTypeLog{" +
-            "id=" + getId() +
-            ", chatId=" + getChatId() +
-            ", dateLog='" + getDateLog() + "'" +
-            ", inlineSearch='" + getInlineSearch() + "'" +
-            ", pageSearch='" + getPageSearch() + "'" +
-            ", pageNumber=" + getPageNumber() +
-            "}";
+        return (
+            "SearchTypeLog{" +
+            "id=" +
+            id +
+            ", chatId=" +
+            chatId +
+            ", dateLog=" +
+            dateLog +
+            ", inlineSearch=" +
+            inlineSearch +
+            ", pageSearch=" +
+            pageSearch +
+            ", pageNumber=" +
+            pageNumber +
+            ", idCity=" +
+            idCity +
+            '}'
+        );
     }
 }

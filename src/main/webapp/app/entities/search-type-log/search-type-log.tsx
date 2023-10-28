@@ -47,6 +47,7 @@ export const SearchTypeLog = (props: ISearchTypeLogProps) => {
                 <th>Inline Search</th>
                 <th>Page Search</th>
                 <th>Page Number</th>
+                <th>City Id</th>
                 <th />
               </tr>
             </thead>
@@ -65,6 +66,7 @@ export const SearchTypeLog = (props: ISearchTypeLogProps) => {
                   <td>{searchTypeLog.inlineSearch ? 'true' : 'false'}</td>
                   <td>{searchTypeLog.pageSearch ? 'true' : 'false'}</td>
                   <td>{searchTypeLog.pageNumber}</td>
+                  <td>{searchTypeLog.idCity}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${searchTypeLog.id}`} color="info" size="sm" data-cy="entityDetailsButton">

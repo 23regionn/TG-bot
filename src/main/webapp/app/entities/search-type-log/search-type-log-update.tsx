@@ -125,6 +125,12 @@ export const SearchTypeLogUpdate = (props: ISearchTypeLogUpdateProps) => {
                 </Label>
                 <AvField id="search-type-log-pageNumber" data-cy="pageNumber" type="string" className="form-control" name="pageNumber" />
               </AvGroup>
+              <AvGroup>
+                <Label id="idCityLabel" for="search-type-log-idCity">
+                  City Id
+                </Label>
+                <AvField id="search-type-log-idCity" data-cy="idCity" type="string" className="form-control" name="idCity" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/search-type-log" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

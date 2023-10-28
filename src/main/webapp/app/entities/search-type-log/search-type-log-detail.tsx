@@ -48,6 +48,10 @@ export const SearchTypeLogDetail = (props: ISearchTypeLogDetailProps) => {
             <span id="pageNumber">Page Number</span>
           </dt>
           <dd>{searchTypeLogEntity.pageNumber}</dd>
+          <dt>
+            <span id="pageNumber">City Id</span>
+          </dt>
+          <dd>{searchTypeLogEntity.idCity}</dd>
         </dl>
         <Button tag={Link} to="/search-type-log" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

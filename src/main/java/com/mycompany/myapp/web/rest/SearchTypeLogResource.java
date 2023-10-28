@@ -139,6 +139,9 @@ public class SearchTypeLogResource {
                     if (searchTypeLog.getPageNumber() != null) {
                         existingSearchTypeLog.setPageNumber(searchTypeLog.getPageNumber());
                     }
+                    if (searchTypeLog.getIdCity() != null) {
+                        existingSearchTypeLog.setIdCity(searchTypeLog.getIdCity());
+                    }
 
                     return existingSearchTypeLog;
                 }
