@@ -29,9 +29,27 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
 
   const { cityList: cityList, match, loading } = props;
 
-  const pushTo = rowData => {
+  const pushToStatisticsCategory = rowData => {
     props.history.push({
-      pathname: `all-categories/rel/by-city-id/${rowData.id}`,
+      pathname: `all-statistics/category`,
+    });
+  };
+
+  const pushToStatisticsChannels = rowData => {
+    props.history.push({
+      pathname: `all-statistics/channels`,
+    });
+  };
+
+  const pushToStatisticsCity = rowData => {
+    props.history.push({
+      pathname: `all-statistics/city`,
+    });
+  };
+
+  const pushToStatisticsClicks = rowData => {
+    props.history.push({
+      pathname: `all-statistics/clicks`,
     });
   };
 
@@ -119,34 +137,18 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       <hr />
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}>
-          <Button
-            id="button_basic"
-            label="Статистика по категориям"
-            // onClick={createChanFunc}
-          />
+          <Button id="button_basic" label="Статистика по категориям" onClick={pushToStatisticsCategory} />
         </div>
 
         <div style={{ flexGrow: 2, textAlign: 'center', fontSize: '1.4rem' }}>
-          <Button
-            id="button_basic"
-            label="Статистика по городам"
-            // onClick={createChanFunc}
-          />
+          <Button id="button_basic" label="Статистика по городам" onClick={pushToStatisticsCity} />
         </div>
 
         <div style={{ flexGrow: 3, textAlign: 'center', fontSize: '1.4rem' }}>
-          <Button
-            id="button_basic"
-            label="Статистика по каналам"
-            // onClick={createChanFunc}
-          />
+          <Button id="button_basic" label="Статистика по каналам" onClick={pushToStatisticsChannels} />
         </div>
         <div style={{ flexGrow: 4, textAlign: 'center', fontSize: '1.4rem' }}>
-          <Button
-            id="button_basic"
-            label="Статистика по нажатиям"
-            // onClick={createChanFunc}
-          />
+          <Button id="button_basic" label="Статистика по нажатиям" onClick={pushToStatisticsClicks} />
         </div>
       </div>
     </div>
