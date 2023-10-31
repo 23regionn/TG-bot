@@ -127,27 +127,6 @@ public class CategoryLogResource {
                     if (categoryLog.getName() != null) {
                         existingCategoryLog.setName(categoryLog.getName());
                     }
-                    if (categoryLog.getCountChanellInCategory() != null) {
-                        existingCategoryLog.setCountChanellInCategory(categoryLog.getCountChanellInCategory());
-                    }
-                    if (categoryLog.getIsDelete() != null) {
-                        existingCategoryLog.setIsDelete(categoryLog.getIsDelete());
-                    }
-                    if (categoryLog.getDate1() != null) {
-                        existingCategoryLog.setDate1(categoryLog.getDate1());
-                    }
-                    if (categoryLog.getDate2() != null) {
-                        existingCategoryLog.setDate2(categoryLog.getDate2());
-                    }
-                    if (categoryLog.getLong1() != null) {
-                        existingCategoryLog.setLong1(categoryLog.getLong1());
-                    }
-                    if (categoryLog.getString1() != null) {
-                        existingCategoryLog.setString1(categoryLog.getString1());
-                    }
-                    if (categoryLog.getBoolean1() != null) {
-                        existingCategoryLog.setBoolean1(categoryLog.getBoolean1());
-                    }
 
                     return existingCategoryLog;
                 }

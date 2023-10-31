@@ -48,7 +48,6 @@
     <include file="config/liquibase/changelog/20221123131900_added_entity_constraints_TGUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131901_added_entity_constraints_TGUserLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131902_added_entity_constraints_Category.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20221123131903_added_entity_constraints_CategoryLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131904_added_entity_constraints_Chanell.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131905_added_entity_constraints_ChanellLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131906_added_entity_constraints_Review.xml" relativeToChangelogFile="false"/>

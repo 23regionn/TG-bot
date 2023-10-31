@@ -1959,7 +1959,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             categoryLog.setName(Optional.ofNullable(category.get().getName()).orElse(null));
             categoryLog.setScore(Optional.ofNullable(category.get().getScore()).orElse(null));
             categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
-            categoryLog.setTgBotApi(true);
             categoryLogRepository.save(categoryLog);
         }
     }
@@ -2566,7 +2565,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
             categoryLog.setCityName(nameCity);
             categoryLog.setCityId(cityId);
-            categoryLog.setTgBotApi(true);
             categoryLogRepository.save(categoryLog);
         }
     }

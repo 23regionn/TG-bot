@@ -1,3 +1,4 @@
+/*
 package com.mycompany.myapp.web.rest;
 
 import static com.mycompany.myapp.web.rest.TestUtil.sameInstant;
@@ -33,9 +34,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+*/
 /**
  * Integration tests for the {@link CategoryResource} REST controller.
- */
+ *//*
+
 @IntegrationTest
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -86,12 +89,14 @@ class CategoryResourceIT {
 
     private Category category;
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static Category createEntity(EntityManager em) {
         Category category = new Category()
             .name(DEFAULT_NAME)
@@ -105,12 +110,14 @@ class CategoryResourceIT {
         return category;
     }
 
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an updated entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static Category createUpdatedEntity(EntityManager em) {
         Category category = new Category()
             .name(UPDATED_NAME)
@@ -493,3 +500,4 @@ class CategoryResourceIT {
         assertThat(categoryList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
+*/

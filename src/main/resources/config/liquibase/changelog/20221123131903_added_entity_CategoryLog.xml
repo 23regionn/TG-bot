@@ -17,30 +17,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="count_chanell_in_category" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="is_delete" type="boolean" remarks="удаленный">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_1" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_2" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="long_1" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="string_1" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="boolean_1" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="category_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="city_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -59,16 +35,8 @@
             <column name="score" type="double">
                 <constraints nullable="true" />
             </column>
-            <column name="tg_bot_api" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="web_api" type="boolean">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="category_log" columnName="date_1" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="category_log" columnName="date_2" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -88,13 +56,12 @@
                   tableName="category_log">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
-            <column name="count_chanell_in_category" type="numeric"/>
-            <column name="is_delete" type="boolean"/>
-            <column name="date_1" type="${datetimeType}"/>
-            <column name="date_2" type="${datetimeType}"/>
-            <column name="long_1" type="numeric"/>
-            <column name="string_1" type="string"/>
-            <column name="boolean_1" type="boolean"/>
+            <column name="city_id" type="numeric"/>
+            <column name="city_name" type="string"/>
+            <column name="chat_id" type="numeric"/>
+            <column name="cat_id" type="numeric"/>
+            <column name="date_log" type="${datetimeType}"/>
+            <column name="score" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

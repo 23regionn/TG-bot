@@ -61,10 +61,6 @@ public class Category implements Serializable {
     @Column(name = "score")
     private Double score; // Рейтинг
 
-    @OneToMany(mappedBy = "category")
-    @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
-    private Set<CategoryLog> categoryLogs = new HashSet<>();
-
     @ManyToMany
     @JoinTable(
         name = "rel_category__chanell_id",
@@ -224,37 +220,6 @@ public class Category implements Serializable {
 
     public void setBoolean1(Boolean boolean1) {
         this.boolean1 = boolean1;
-    }
-
-    public Set<CategoryLog> getCategoryLogs() {
-        return this.categoryLogs;
-    }
-
-    public Category categoryLogs(Set<CategoryLog> categoryLogs) {
-        this.setCategoryLogs(categoryLogs);
-        return this;
-    }
-
-    public Category addCategoryLog(CategoryLog categoryLog) {
-        this.categoryLogs.add(categoryLog);
-        categoryLog.setCategory(this);
-        return this;
-    }
-
-    public Category removeCategoryLog(CategoryLog categoryLog) {
-        this.categoryLogs.remove(categoryLog);
-        categoryLog.setCategory(null);
-        return this;
-    }
-
-    public void setCategoryLogs(Set<CategoryLog> categoryLogs) {
-        if (this.categoryLogs != null) {
-            this.categoryLogs.forEach(i -> i.setCategory(null));
-        }
-        if (categoryLogs != null) {
-            categoryLogs.forEach(i -> i.setCategory(this));
-        }
-        this.categoryLogs = categoryLogs;
     }
 
     public Set<Chanell> getChanellIds() {
