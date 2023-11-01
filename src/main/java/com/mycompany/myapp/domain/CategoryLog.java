@@ -1,7 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
@@ -20,7 +18,7 @@ public class CategoryLog implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "category_name")
     private String name;
 
     @Column(name = "city_id")
@@ -32,7 +30,7 @@ public class CategoryLog implements Serializable {
     @Column(name = "chat_id")
     private Long chatId;
 
-    @Column(name = "cat_id")
+    @Column(name = "category_id")
     private Long catId;
 
     @Column(name = "date_log")

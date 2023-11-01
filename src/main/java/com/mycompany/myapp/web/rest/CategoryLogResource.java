@@ -2,6 +2,8 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.repository.CategoryLogRepository;
+import com.mycompany.myapp.service.dto.category_log.AllCategoryLogDTO;
+import com.mycompany.myapp.service.statistics.CategoryLogService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +35,11 @@ public class CategoryLogResource {
     private String applicationName;
 
     private final CategoryLogRepository categoryLogRepository;
+    private final CategoryLogService categoryLogService;
 
-    public CategoryLogResource(CategoryLogRepository categoryLogRepository) {
+    public CategoryLogResource(CategoryLogRepository categoryLogRepository, CategoryLogService categoryLogService) {
         this.categoryLogRepository = categoryLogRepository;
+        this.categoryLogService = categoryLogService;
     }
 
     /**
@@ -177,5 +181,11 @@ public class CategoryLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/category-logs-test")
+    public List<AllCategoryLogDTO> getAllCategoryLogsTest() {
+        log.debug("REST request to get all AllCategoryLogDTO");
+        return categoryLogService.getAllCategoryLogsCount();
     }
 }
