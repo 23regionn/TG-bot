@@ -82,6 +82,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
             onChange={e => setDateForSearchCountSubscribers(e.value)}
             selectionMode="range"
             readOnlyInput
+            dateFormat="dd.mm.yy"
           />
           <Button
             label="Поиск"

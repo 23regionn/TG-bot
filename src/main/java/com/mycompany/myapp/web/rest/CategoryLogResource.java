@@ -2,17 +2,21 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.repository.CategoryLogRepository;
-import com.mycompany.myapp.service.dto.category_log.AllCategoryLogDTO;
+import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
 import com.mycompany.myapp.service.statistics.CategoryLogService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.json.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -183,9 +187,18 @@ public class CategoryLogResource {
             .build();
     }
 
-    @GetMapping("/category-logs-test")
-    public List<AllCategoryLogDTO> getAllCategoryLogsTest() {
-        log.debug("REST request to get all AllCategoryLogDTO");
-        return categoryLogService.getAllCategoryLogsCount();
+    @GetMapping("/category-logs-statistics")
+    public List<StatisticsByCategoryLogDTO> getAllCategoryLogsStatistics() {
+        log.debug("REST request to get all StatisticsByCategoryLogDTO");
+        return categoryLogService.getAllStatisticsByCategoryLogs();
+    }
+
+    @PostMapping("/category-logs-statistics-by-dates")
+    public ResponseEntity<StatisticsByCategoryLogDTO> getStatisticsCategoryLogByDates(
+        @RequestBody StatisticsCategoryLogByDatesDTO request
+    ) {
+        log.debug("REST request to get StatisticsByCategoryLogDTO : {}", request.getId());
+        StatisticsByCategoryLogDTO categoryLog = categoryLogService.getStatisticCategoryClickCountsByIDAndDate(request);
+        return ResponseEntity.ok(categoryLog);
     }
 }

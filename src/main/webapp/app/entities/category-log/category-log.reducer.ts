@@ -154,3 +154,16 @@ export const deleteEntity: ICrudDeleteAction<ICategoryLog> = id => async dispatc
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getCategoriesStatistics: any = () => ({
+  type: ACTION_TYPES.FETCH_CATEGORYLOG_LIST,
+  payload: axios.get<any>(`${apiUrl}-statistics`),
+});
+
+export const getStatisticsCategoryLogByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_CATEGORYLOG,
+    payload: axios.post(`${apiUrl}-statistics-by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};

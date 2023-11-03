@@ -1,9 +1,11 @@
-package com.mycompany.myapp.service.dto.category_log;
+package com.mycompany.myapp.service.dto.statistics;
+
+import java.time.ZonedDateTime;
 
 /**
- * A AllCategoryLogDTO.
+ * A StatisticsByCategoryLogDTO.
  */
-public class AllCategoryLogDTO {
+public class StatisticsByCategoryLogDTO {
 
     private Long idCategory;
     private String categoryName;
@@ -11,8 +13,32 @@ public class AllCategoryLogDTO {
     private Long countClickTotalByUniChatId;
     private Long countClickByCity;
     private Long countClickNotByCity;
+    private ZonedDateTime startDate;
+    private ZonedDateTime endDate;
 
-    public AllCategoryLogDTO(
+    public StatisticsByCategoryLogDTO() {}
+
+    public StatisticsByCategoryLogDTO(
+        Long idCategory,
+        String categoryName,
+        Long countClickTotal,
+        Long countClickTotalByUniChatId,
+        Long countClickByCity,
+        Long countClickNotByCity,
+        ZonedDateTime startDate,
+        ZonedDateTime endDate
+    ) {
+        this.idCategory = idCategory;
+        this.categoryName = categoryName;
+        this.countClickTotal = countClickTotal;
+        this.countClickTotalByUniChatId = countClickTotalByUniChatId;
+        this.countClickByCity = countClickByCity;
+        this.countClickNotByCity = countClickNotByCity;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public StatisticsByCategoryLogDTO(
         Long idCategory,
         String categoryName,
         Long countClickTotal,
@@ -75,10 +101,26 @@ public class AllCategoryLogDTO {
         this.countClickNotByCity = countClickNotByCity;
     }
 
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return (
-            "AllCategoryLogDTO{" +
+            "StatisticsByCategoryLogDTO{" +
             "idCategory=" +
             idCategory +
             ", categoryName='" +
@@ -92,6 +134,10 @@ public class AllCategoryLogDTO {
             countClickByCity +
             ", countClickNotByCity=" +
             countClickNotByCity +
+            ", startDate=" +
+            startDate +
+            ", endDate=" +
+            endDate +
             '}'
         );
     }
