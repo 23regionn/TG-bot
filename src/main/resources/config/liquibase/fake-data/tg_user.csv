@@ -1,2 +1,5 @@
 id;id_tg_user;first_name;user_name;registration_date;user_role;current_step;is_admin;score;is_blocked;chat_id;is_delete;date_1;date_2;long_1;string_1;boolean_1
-1;66904;Thora;regionn23;2022-11-22T15:34:32;Frozen CSS;current_step;true;55180;false;33775;false;2022-11-23T04:36:57;2022-11-23T04:19:43;81437;Practical Home bleeding-edge;true
+1;1;Oleg;regionn23;2023-11-22T15:34:32;Frozen CSS;current_step;true;55180;false;1;false;2022-11-23T04:36:57;2022-11-23T04:19:43;81437;Practical Home bleeding-edge;true
+2;2;Tim;regionn24;2023-10-22T15:34:32;Frozen CSS;current_step;false;55180;false;2;false;2022-11-23T04:36:57;2022-11-23T04:19:43;81437;Practical Home bleeding-edge;true
+3;3;Maks;regionn25;2022-10-22T15:34:32;Frozen CSS;current_step;false;55180;false;3;false;2022-11-23T04:36:57;2022-11-23T04:19:43;81437;Practical Home bleeding-edge;true
+4;4;Yura;regionn26;2022-11-22T15:34:32;Frozen CSS;current_step;false;55180;false;4;false;2022-11-23T04:36:57;2022-11-23T04:19:43;81437;Practical Home bleeding-edge;true

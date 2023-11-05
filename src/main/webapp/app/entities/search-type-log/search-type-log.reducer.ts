@@ -9,6 +9,8 @@ import { ISearchTypeLog, defaultValue } from 'app/shared/model/search-type-log.m
 export const ACTION_TYPES = {
   FETCH_SEARCHTYPELOG_LIST: 'searchTypeLog/FETCH_SEARCHTYPELOG_LIST',
   FETCH_SEARCHTYPELOG: 'searchTypeLog/FETCH_SEARCHTYPELOG',
+  FETCH_SEARCHTYPELOG_COUNT: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT',
+  FETCH_SEARCHTYPELOG_COUNT_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES',
   CREATE_SEARCHTYPELOG: 'searchTypeLog/CREATE_SEARCHTYPELOG',
   UPDATE_SEARCHTYPELOG: 'searchTypeLog/UPDATE_SEARCHTYPELOG',
   PARTIAL_UPDATE_SEARCHTYPELOG: 'searchTypeLog/PARTIAL_UPDATE_SEARCHTYPELOG',
@@ -154,3 +156,16 @@ export const deleteEntity: ICrudDeleteAction<ISearchTypeLog> = id => async dispa
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getAllSearchTypeLogsCount: any = () => ({
+  type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT,
+  payload: axios.get<any>(`${apiUrl}/count`),
+});
+
+export const getSearchTypeByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_BY_DATES,
+    payload: axios.post(`${apiUrl}/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};

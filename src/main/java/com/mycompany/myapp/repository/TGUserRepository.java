@@ -1,12 +1,15 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TGUser;
+import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Spring Data SQL repository for the TGUser entity.
@@ -14,7 +17,6 @@ import java.util.Set;
 @SuppressWarnings("unused")
 @Repository
 public interface TGUserRepository extends JpaRepository<TGUser, Long> {
-
     TGUser findByChatId(Long chatId);
 
     Set<TGUser> findAllByChatId(Long chatId);
@@ -25,7 +27,15 @@ public interface TGUserRepository extends JpaRepository<TGUser, Long> {
     @Query("select t from TGUser t " + " where (t.chatId = :chatId)" + " and  (t.isDelete = false ) ")
     TGUser getOneChatIdAndDeleteFalse(@Param("chatId") Long chatId);
 
-
     @Query("select t from TGUser t " + " where t.isAdmin = true")
     Set<TGUser> getAllAdmins();
+
+    @Query("SELECT COUNT(DISTINCT tgUser.chatId ) FROM TGUser tgUser")
+    Long getTGUserCount();
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO(COUNT(DISTINCT tgUser.chatId )) FROM TGUser tgUser " +
+        "  where tgUser.registrationDate >= :startDate and tgUser.registrationDate <= :endDate"
+    )
+    Optional<TgUsersCountDTO> getTGUserCountByDates(@Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
 }

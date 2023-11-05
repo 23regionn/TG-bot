@@ -2,6 +2,10 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.SearchTypeLog;
 import com.mycompany.myapp.repository.SearchTypeLogRepository;
+import com.mycompany.myapp.service.SearchTypeLogService;
+import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
+import com.mycompany.myapp.service.dto.tgUsers.SearchTypeCountDTO;
+import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +37,11 @@ public class SearchTypeLogResource {
     private String applicationName;
 
     private final SearchTypeLogRepository searchTypeLogRepository;
+    private final SearchTypeLogService searchTypeLogService;
 
-    public SearchTypeLogResource(SearchTypeLogRepository searchTypeLogRepository) {
+    public SearchTypeLogResource(SearchTypeLogRepository searchTypeLogRepository, SearchTypeLogService searchTypeLogService) {
         this.searchTypeLogRepository = searchTypeLogRepository;
+        this.searchTypeLogService = searchTypeLogService;
     }
 
     /**
@@ -192,5 +198,19 @@ public class SearchTypeLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/search-type-logs/count")
+    public ResponseEntity<Long> getSearchTypeLogsCount() {
+        log.debug("REST request to get all SearchTypeLogs count");
+        Long count = searchTypeLogService.searchTypeLogCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @PostMapping("/search-type-logs/count/by-dates")
+    public ResponseEntity<SearchTypeCountDTO> getSearchTypeLogsByDates(@RequestBody SearchAnyByDatesDTO request) {
+        log.debug("REST request to get SearchAnyByDatesDTO : {}");
+        SearchTypeCountDTO countsByDates = searchTypeLogService.getCountByDates(request);
+        return ResponseEntity.ok(countsByDates);
     }
 }

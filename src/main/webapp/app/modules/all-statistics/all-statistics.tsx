@@ -9,23 +9,35 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { createEntity, getEntities, partialUpdateCity } from 'app/entities/city/city.reducer';
 import { Calendar } from 'primereact/calendar';
+import { getCountSubscribersByDates, getTGUserCount } from 'app/entities/tg-user/tg-user.reducer';
+import { Dropdown } from 'primereact/dropdown';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { getAllSearchTypeLogsCount, getSearchTypeByDates } from 'app/entities/search-type-log/search-type-log.reducer';
 
 export interface IAllStatisticsProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const AllStatistics = (props: IAllStatisticsProps) => {
-  const [dateForSearchCountSubscribers, setDateForSearchCountSubscribers] = useState<Date | Date[] | undefined>(undefined);
   const [dateForSearchCountRequests, setDateForSearchCountRequests] = useState<Date | Date[] | undefined>(undefined);
+  const [countTgUsers, setCountTgUsers] = useState(null);
+  const [countTgUsersByDates, setCountTgUsersByDates] = useState(null);
+
+  const [countSearchRequest, setCountSearchRequest] = useState(null);
+  const [countSearchRequestByDates, setCountSearchRequestByDates] = useState(null);
+
+  const [searchCountUsersStartDate, setSearchCountUsersStartDate] = useState<Date | Date[] | undefined>(undefined);
+  const [searchCountUsersEndDate, setSearchCountUsersEndDate] = useState<Date | Date[] | undefined>(undefined);
+  const [searchCountRequestStartDate, setSearchCountRequestStartDate] = useState<Date | Date[] | undefined>(undefined);
+  const [searchCountRequestEndDate, setSearchCountRequestEndDate] = useState<Date | Date[] | undefined>(undefined);
 
   useEffect(() => {
-    // props.getEntities();
+    props.getTGUserCount().then(count => {
+      setCountTgUsers(count.value.data);
+    });
+    props.getAllSearchTypeLogsCount().then(count => {
+      setCountSearchRequest(count.value.data);
+    });
   }, []);
-
-  useEffect(() => {
-    window.console.log(new Date(dateForSearchCountSubscribers?.[0]).toLocaleDateString(), 'dateForSearchCountSubscribers-0');
-    window.console.log(new Date(dateForSearchCountSubscribers?.[1]).toLocaleDateString(), 'dateForSearchCountSubscribers-1');
-  }, [dateForSearchCountSubscribers?.[1]]);
 
   const { cityList: cityList, match, loading } = props;
 
@@ -53,6 +65,51 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
     });
   };
 
+  const monthNavigatorTemplate = (e: any) => {
+    return (
+      <Dropdown
+        value={e.value}
+        options={e.options}
+        onChange={event => e.onChange(event.originalEvent, event.value)}
+        style={{ lineHeight: 1 }}
+      />
+    );
+  };
+
+  const yearNavigatorTemplate = (e: any) => {
+    return (
+      <Dropdown
+        value={e.value}
+        options={e.options}
+        onChange={event => e.onChange(event.originalEvent, event.value)}
+        className="p-ml-2"
+        style={{ lineHeight: 1 }}
+      />
+    );
+  };
+
+  const searchCountUsersByDateButton = () => {
+    const entity = {
+      startDate: convertDateTimeToServer(searchCountUsersStartDate),
+      endDate: convertDateTimeToServer(searchCountUsersEndDate),
+    };
+
+    props.getCountSubscribersByDates(entity).then(response => {
+      setCountTgUsersByDates(response?.value?.data?.count);
+    });
+  };
+
+  const searchTypeByDateButton = () => {
+    const entity = {
+      startDate: convertDateTimeToServer(searchCountRequestStartDate),
+      endDate: convertDateTimeToServer(searchCountRequestEndDate),
+    };
+
+    props.getSearchTypeByDates(entity).then(response => {
+      setCountSearchRequestByDates(response?.value?.data?.count);
+    });
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -63,7 +120,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       <div style={{ alignItems: 'left' }}>
         <div style={{ textAlign: 'left', fontSize: '1.4rem' }}> Количество пользователей ⬇⬇⬇ </div>
         <div>
-          <InputText defaultValue={'1'} disabled={true} />
+          <InputText value={countTgUsers} disabled={true} />
         </div>
       </div>
 
@@ -72,28 +129,54 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       <div style={{ alignItems: 'left' }}>
         <div style={{ textAlign: 'left', fontSize: '1.4rem' }}> Количество пользователей на даты 🔍🔍🔍 </div>
 
-        <div className="p-field p-col-12 p-md-4">
-          <label htmlFor="range">
-            Выберите даты - <span>&nbsp;</span>{' '}
+        <div className="p-field">
+          <label htmlFor="range" style={{ fontWeight: '600' }}>
+            Выберите даты:
           </label>
+
+          <br />
+
+          <div>
+            {' '}
+            Начальная дата <span>&nbsp;</span>{' '}
+          </div>
           <Calendar
-            id="range"
-            value={dateForSearchCountSubscribers}
-            onChange={e => setDateForSearchCountSubscribers(e.value)}
-            selectionMode="range"
-            readOnlyInput
+            id="navigatorstemplate"
+            value={searchCountUsersStartDate}
+            onChange={e => setSearchCountUsersStartDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
             dateFormat="dd.mm.yy"
           />
-          <Button
-            label="Поиск"
-            icon="pi pi-search"
-            className="p-button-text"
-            // onClick={hideDialog}
+
+          <br />
+          <div>
+            {' '}
+            Конечная дата <span>&nbsp; &nbsp;</span>{' '}
+          </div>
+          <Calendar
+            id="navigatorstemplate"
+            value={searchCountUsersEndDate}
+            onChange={e => setSearchCountUsersEndDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
+            dateFormat="dd.mm.yy"
           />
         </div>
+        <br />
+        <Button label="Поиск" icon="pi pi-search" onClick={searchCountUsersByDateButton} />
+
+        <br />
+        <br />
 
         <div>
-          <InputText defaultValue={'1'} disabled={true} />
+          <InputText value={countTgUsersByDates} disabled={true} />
         </div>
       </div>
 
@@ -102,7 +185,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       <div style={{ alignItems: 'left' }}>
         <div style={{ textAlign: 'left', fontSize: '1.4rem' }}> Количество запросов ❓❓❓ </div>
         <div>
-          <InputText defaultValue={'1'} disabled={true} />
+          <InputText value={countSearchRequest} disabled={true} />
         </div>
       </div>
 
@@ -111,27 +194,54 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       <div style={{ alignItems: 'left' }}>
         <div style={{ textAlign: 'left', fontSize: '1.4rem' }}> Количество запросов на даты 🔍🔍🔍 </div>
 
-        <div className="p-field p-col-12 p-md-4">
-          <label htmlFor="range">
-            Выберите даты - <span>&nbsp;</span>{' '}
+        <div className="p-field">
+          <label htmlFor="range" style={{ fontWeight: '600' }}>
+            Выберите даты:
           </label>
+
+          <br />
+
+          <div>
+            {' '}
+            Начальная дата <span>&nbsp;</span>{' '}
+          </div>
           <Calendar
-            id="range"
-            value={dateForSearchCountRequests}
-            onChange={e => setDateForSearchCountRequests(e.value)}
-            selectionMode="range"
-            readOnlyInput
+            id="navigatorstemplate"
+            value={searchCountRequestStartDate}
+            onChange={e => setSearchCountRequestStartDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
+            dateFormat="dd.mm.yy"
           />
-          <Button
-            label="Поиск"
-            icon="pi pi-search"
-            className="p-button-text"
-            // onClick={hideDialog}
+
+          <br />
+          <div>
+            {' '}
+            Конечная дата <span>&nbsp; &nbsp;</span>{' '}
+          </div>
+          <Calendar
+            id="navigatorstemplate"
+            value={searchCountRequestEndDate}
+            onChange={e => setSearchCountRequestEndDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
+            dateFormat="dd.mm.yy"
           />
         </div>
+        <br />
+        <Button label="Поиск" icon="pi pi-search" onClick={searchTypeByDateButton} />
+
+        <br />
+        <br />
 
         <div>
-          <InputText defaultValue={'1'} disabled={true} />
+          <InputText value={countSearchRequestByDates} disabled={true} />
         </div>
       </div>
 
@@ -162,9 +272,10 @@ const mapStateToProps = ({ city }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities,
-  createEntity,
-  partialUpdateCity,
+  getTGUserCount,
+  getCountSubscribersByDates,
+  getAllSearchTypeLogsCount,
+  getSearchTypeByDates,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

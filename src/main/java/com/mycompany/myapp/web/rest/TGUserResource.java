@@ -2,6 +2,11 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.TGUserRepository;
+import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
+import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
+import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
+import com.mycompany.myapp.service.tg.TgUserService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +38,11 @@ public class TGUserResource {
     private String applicationName;
 
     private final TGUserRepository tGUserRepository;
+    private final TgUserService tgUserService;
 
-    public TGUserResource(TGUserRepository tGUserRepository) {
+    public TGUserResource(TGUserRepository tGUserRepository, TgUserService tgUserService) {
         this.tGUserRepository = tGUserRepository;
+        this.tgUserService = tgUserService;
     }
 
     /**
@@ -214,5 +221,19 @@ public class TGUserResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/tg-users/count")
+    public ResponseEntity<Long> getTGUserCount() {
+        log.debug("REST request to get TGUser count ");
+        Long count = tgUserService.getTGUserCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @PostMapping("/tg-users/count/by-dates")
+    public ResponseEntity<TgUsersCountDTO> getCountSubscribersByDates(@RequestBody SearchAnyByDatesDTO request) {
+        log.debug("REST request to get SearchAnyByDatesDTO : {}");
+        TgUsersCountDTO countsByDates = tgUserService.getTGUserCountByDates(request);
+        return ResponseEntity.ok(countsByDates);
     }
 }

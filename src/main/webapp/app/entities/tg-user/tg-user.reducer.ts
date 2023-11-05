@@ -8,6 +8,8 @@ import { ITGUser, defaultValue } from 'app/shared/model/tg-user.model';
 
 export const ACTION_TYPES = {
   FETCH_TGUSER_LIST: 'tGUser/FETCH_TGUSER_LIST',
+  FETCH_TGUSER_COUNT: 'tGUser/FETCH_TGUSER_COUNT',
+  FETCH_TGUSER_COUNT_BY_DATES: 'tGUser/FETCH_TGUSER_COUNT_BY_DATES',
   FETCH_TGUSER: 'tGUser/FETCH_TGUSER',
   CREATE_TGUSER: 'tGUser/CREATE_TGUSER',
   UPDATE_TGUSER: 'tGUser/UPDATE_TGUSER',
@@ -154,3 +156,16 @@ export const deleteEntity: ICrudDeleteAction<ITGUser> = id => async dispatch => 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getTGUserCount: any = () => ({
+  type: ACTION_TYPES.FETCH_TGUSER_COUNT,
+  payload: axios.get<any>(`${apiUrl}/count`),
+});
+
+export const getCountSubscribersByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_TGUSER_COUNT_BY_DATES,
+    payload: axios.post(`${apiUrl}/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};

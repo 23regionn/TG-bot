@@ -3,15 +3,9 @@ package com.mycompany.myapp.service.statistics;
 import com.mycompany.myapp.repository.CategoryLogRepository;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
