@@ -3,6 +3,8 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.SearchTypeLog;
 import com.mycompany.myapp.repository.SearchTypeLogRepository;
 import com.mycompany.myapp.service.SearchTypeLogService;
+import com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO;
+import com.mycompany.myapp.service.dto.statistics.StatisticsBySearchTypesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchTypeCountDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
@@ -212,5 +214,49 @@ public class SearchTypeLogResource {
         log.debug("REST request to get SearchAnyByDatesDTO : {}");
         SearchTypeCountDTO countsByDates = searchTypeLogService.getCountByDates(request);
         return ResponseEntity.ok(countsByDates);
+    }
+
+    @GetMapping("/search-type-logs/detail")
+    public ResponseEntity<StatisticsBySearchTypesDTO> searchTypeLogCountByTypeRequests() {
+        log.debug("REST request to get all SearchTypeLogs detail by typeRequests");
+        StatisticsBySearchTypesDTO count = searchTypeLogService.searchTypeLogDetail();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/search-type-logs/detail/page-number")
+    public ResponseEntity<List<StatisticsByPageNumberCountDTO>> searchTypeLogCountByPageNumber() {
+        log.debug("REST request to get all SearchTypeLogs detail by typeRequests");
+        return ResponseEntity.ok(searchTypeLogService.searchTypeLogCountByPageNumber());
+    }
+
+    @PostMapping("/search-type-logs/inline/count/by-dates")
+    public ResponseEntity<SearchTypeCountDTO> getSearchTypeInlineRequestCountByDates(@RequestBody SearchAnyByDatesDTO request) {
+        log.debug("REST request to get count inlineRequest SearchAnyByDatesDTO : {}");
+        SearchTypeCountDTO countsByDates = searchTypeLogService.getSearchTypeInlineRequestCountByDates(request);
+        return ResponseEntity.ok(countsByDates);
+    }
+
+    @PostMapping("/search-type-logs/pages-category/count/by-dates")
+    public ResponseEntity<SearchTypeCountDTO> getSearchTypePagesCategoryRequestCountByDates(@RequestBody SearchAnyByDatesDTO request) {
+        log.debug("REST request to get count pages-category SearchAnyByDatesDTO : {}");
+        SearchTypeCountDTO countsByDates = searchTypeLogService.getSearchTypePagesCategoryRequestCountByDates(request);
+        return ResponseEntity.ok(countsByDates);
+    }
+
+    @PostMapping("/search-type-logs/pages-category/for-city/count/by-dates")
+    public ResponseEntity<SearchTypeCountDTO> getSearchTypePagesCategoryRequestCountForCityByDates(
+        @RequestBody SearchAnyByDatesDTO request
+    ) {
+        log.debug("REST request to get count pages-category for-city  SearchAnyByDatesDTO : {}");
+        SearchTypeCountDTO countsByDates = searchTypeLogService.getSearchTypePagesCategoryRequestCountForCityByDates(request);
+        return ResponseEntity.ok(countsByDates);
+    }
+
+    @PostMapping("/search-type-logs/detail/page-number/by-dates")
+    public ResponseEntity<List<StatisticsByPageNumberCountDTO>> searchTypeLogCountByPageNumberByDates(
+        @RequestBody SearchAnyByDatesDTO request
+    ) {
+        log.debug("REST request to get count page-number by-dates SearchAnyByDatesDTO : {}");
+        return ResponseEntity.ok(searchTypeLogService.searchTypeLogCountByPageNumberByDates(request));
     }
 }

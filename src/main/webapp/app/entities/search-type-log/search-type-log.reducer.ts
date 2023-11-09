@@ -10,7 +10,14 @@ export const ACTION_TYPES = {
   FETCH_SEARCHTYPELOG_LIST: 'searchTypeLog/FETCH_SEARCHTYPELOG_LIST',
   FETCH_SEARCHTYPELOG: 'searchTypeLog/FETCH_SEARCHTYPELOG',
   FETCH_SEARCHTYPELOG_COUNT: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT',
+  FETCH_SEARCHTYPELOG_COUNT_DEATAIL: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_DEATAIL',
+  FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER',
+  FETCH_SEARCHTYPELOG_COUNT_BY_DATES_INLINE_QUERY: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_INLINE_QUERY',
   FETCH_SEARCHTYPELOG_COUNT_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES',
+  FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_QUERY: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_QUERY',
+  FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_FOR_CITY_QUERY:
+    'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_FOR_CITY_QUERY',
+  FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES',
   CREATE_SEARCHTYPELOG: 'searchTypeLog/CREATE_SEARCHTYPELOG',
   UPDATE_SEARCHTYPELOG: 'searchTypeLog/UPDATE_SEARCHTYPELOG',
   PARTIAL_UPDATE_SEARCHTYPELOG: 'searchTypeLog/PARTIAL_UPDATE_SEARCHTYPELOG',
@@ -166,6 +173,48 @@ export const getSearchTypeByDates: any = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_BY_DATES,
     payload: axios.post(`${apiUrl}/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const searchTypeLogCountDetail: any = () => ({
+  type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_DEATAIL,
+  payload: axios.get<any>(`${apiUrl}/detail`),
+});
+
+export const searchTypeLogCountByPageNumber: any = () => ({
+  type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER,
+  payload: axios.get<any>(`${apiUrl}/detail/page-number`),
+});
+
+export const getSearchTypeInlineRequestCountByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_BY_DATES_INLINE_QUERY,
+    payload: axios.post(`${apiUrl}/inline/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const getSearchTypePagesCategoryRequestCountByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_QUERY,
+    payload: axios.post(`${apiUrl}/pages-category/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const getSearchTypePagesCategoryRequestCountForCityByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_FOR_CITY_QUERY,
+    payload: axios.post(`${apiUrl}/pages-category/for-city/count/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const searchTypeLogCountByPageNumberByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES,
+    payload: axios.post(`${apiUrl}/detail/page-number/by-dates`, cleanEntity(entity)),
   });
   return result;
 };

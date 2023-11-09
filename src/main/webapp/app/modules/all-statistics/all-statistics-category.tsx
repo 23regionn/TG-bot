@@ -16,7 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 export interface IAllStatisticsCategoryProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
-  const [statiscticsCategoriesLogs, setStatiscticsCategoriesLogs] = useState(null);
+  const [statisticsCategoriesLogs, setStatisticsCategoriesLogs] = useState(null);
   const [openDateDetailDialog, setOpenDateDetailDialog] = useState(false);
   const [logEntity, setLogEntity] = useState(null);
   const [searchStartDate, setSearchStartDate] = useState<Date | Date[] | undefined>(undefined);
@@ -30,7 +30,7 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
 
   useEffect(() => {
     props.getCategoriesStatistics().then(categoryLogs => {
-      setStatiscticsCategoriesLogs(categoryLogs.value.data);
+      setStatisticsCategoriesLogs(categoryLogs.value.data);
     });
   }, []);
 
@@ -118,7 +118,7 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
 
       <br />
 
-      <DataTable value={statiscticsCategoriesLogs as any[]} sortMode="multiple" className="oi-p-datatable">
+      <DataTable value={statisticsCategoriesLogs as any[]} sortMode="multiple" className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="idCategory" header="№ Категории"></Column>
         <Column field="categoryName" filter filterPlaceholder="Поиск на наименованию" sortable header="Наименование категории"></Column>
         <Column

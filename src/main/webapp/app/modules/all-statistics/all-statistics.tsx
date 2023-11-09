@@ -18,7 +18,6 @@ import { getAllSearchTypeLogsCount, getSearchTypeByDates } from 'app/entities/se
 export interface IAllStatisticsProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const AllStatistics = (props: IAllStatisticsProps) => {
-  const [dateForSearchCountRequests, setDateForSearchCountRequests] = useState<Date | Date[] | undefined>(undefined);
   const [countTgUsers, setCountTgUsers] = useState(null);
   const [countTgUsersByDates, setCountTgUsersByDates] = useState(null);
 
