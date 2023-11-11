@@ -155,14 +155,14 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.5rem' }}> Статитстика бота по категориям </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статитстика бота по категориям </div>
       </div>
 
       <br />
 
       <DataTable value={statisticsCategoriesLogs as any[]} sortMode="multiple" className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="idCategory" header="№ Категории"></Column>
-        <Column field="categoryName" filter filterPlaceholder="Поиск на наименованию" sortable header="Наименование категории"></Column>
+        <Column field="categoryName" filter filterPlaceholder="Поиск по наименованию" sortable header="Наименование категории"></Column>
         <Column
           field="countClickTotal"
           sortable

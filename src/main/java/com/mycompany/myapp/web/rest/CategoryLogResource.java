@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.repository.CategoryLogRepository;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
+import com.mycompany.myapp.service.dto.statistics.category.CategoryLogForUserDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.CityLogForUserDTO;
 import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsByCategoryCityLogDTO;
 import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsCategoryLogForCityByDatesDTO;
 import com.mycompany.myapp.service.statistics.CategoryLogService;
@@ -217,5 +219,17 @@ public class CategoryLogResource {
         log.debug("REST request to get StatisticsByCategoryCityLogDTO : {}", request.getIdCategory());
         StatisticsByCategoryCityLogDTO categoryLog = categoryLogService.getStatisticsCategoryLogForCityByDates(request);
         return ResponseEntity.ok(categoryLog);
+    }
+
+    @GetMapping("/category-logs-statistics/categories/by-chat-id/{idChat}")
+    public ResponseEntity<List<CategoryLogForUserDTO>> getStatisticCategoryByChatId(@PathVariable Long idChat) {
+        log.debug("REST request to get List<CategoryLogForUserDTO> by chatId ");
+        return ResponseEntity.ok(categoryLogService.getStatisticCategoryByChatId(idChat));
+    }
+
+    @GetMapping("/category-logs-statistics/cities/by-chat-id/{idChat}")
+    public ResponseEntity<List<CityLogForUserDTO>> getStatisticCityByChatId(@PathVariable Long idChat) {
+        log.debug("REST request to get List<CityLogForUserDTO> by chatId ");
+        return ResponseEntity.ok(categoryLogService.getStatisticCityByChatId(idChat));
     }
 }

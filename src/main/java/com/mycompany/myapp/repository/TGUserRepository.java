@@ -1,7 +1,7 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.TGUser;
-import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -38,4 +38,11 @@ public interface TGUserRepository extends JpaRepository<TGUser, Long> {
         "  where tgUser.registrationDate >= :startDate and tgUser.registrationDate <= :endDate"
     )
     Optional<TgUsersCountDTO> getTGUserCountByDates(@Param("startDate") ZonedDateTime startDate, @Param("endDate") ZonedDateTime endDate);
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.tgUsers" +
+        ".StatisticsTgUserDTO(tgUser.id, tgUser.firstName, tgUser.userName, tgUser.registrationDate, tgUser.chatId )" +
+        " FROM TGUser tgUser "
+    )
+    List<StatisticsTgUserDTO> getAllTgUsersForStatistics();
 }

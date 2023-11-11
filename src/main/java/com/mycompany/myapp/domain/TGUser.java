@@ -22,9 +22,6 @@ public class TGUser implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "id_tg_user")
-    private Long idTgUser;
-
     @Column(name = "first_name")
     private String firstName;
 
@@ -55,27 +52,9 @@ public class TGUser implements Serializable {
     @Column(name = "chat_id")
     private Long chatId;
 
-    /**
-     * удаленный
-     */
     @ApiModelProperty(value = "удаленный")
     @Column(name = "is_delete")
     private Boolean isDelete;
-
-    @Column(name = "date_1")
-    private ZonedDateTime date1;
-
-    @Column(name = "date_2")
-    private ZonedDateTime date2;
-
-    @Column(name = "long_1")
-    private Long long1;
-
-    @Column(name = "string_1")
-    private String string1;
-
-    @Column(name = "boolean_1")
-    private Boolean boolean1;
 
     @JsonIgnoreProperties(value = { "balanceLogs", "tGUser" }, allowSetters = true)
     @OneToOne
@@ -114,19 +93,6 @@ public class TGUser implements Serializable {
     public TGUser id(Long id) {
         this.id = id;
         return this;
-    }
-
-    public Long getIdTgUser() {
-        return this.idTgUser;
-    }
-
-    public TGUser idTgUser(Long idTgUser) {
-        this.idTgUser = idTgUser;
-        return this;
-    }
-
-    public void setIdTgUser(Long idTgUser) {
-        this.idTgUser = idTgUser;
     }
 
     public String getFirstName() {
@@ -220,15 +186,6 @@ public class TGUser implements Serializable {
         this.chatId = chatId;
     }
 
-    public Boolean getIsDelete() {
-        return this.isDelete;
-    }
-
-    public TGUser isDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-        return this;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -239,45 +196,6 @@ public class TGUser implements Serializable {
 
     public TGUser userName(String userName) {
         this.userName = userName;
-        return this;
-    }
-
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public ZonedDateTime getDate1() {
-        return this.date1;
-    }
-
-    public TGUser date1(ZonedDateTime date1) {
-        this.date1 = date1;
-        return this;
-    }
-
-    public void setDate1(ZonedDateTime date1) {
-        this.date1 = date1;
-    }
-
-    public ZonedDateTime getDate2() {
-        return this.date2;
-    }
-
-    public TGUser date2(ZonedDateTime date2) {
-        this.date2 = date2;
-        return this;
-    }
-
-    public void setDate2(ZonedDateTime date2) {
-        this.date2 = date2;
-    }
-
-    public Long getLong1() {
-        return this.long1;
-    }
-
-    public TGUser long1(Long long1) {
-        this.long1 = long1;
         return this;
     }
 
@@ -313,6 +231,14 @@ public class TGUser implements Serializable {
         isDelete = delete;
     }
 
+    public void setIsDelete(Boolean isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public Boolean getIsDelete() {
+        return isDelete;
+    }
+
     public Set<TGUserLog> gettGUserLogs() {
         return tGUserLogs;
     }
@@ -337,36 +263,6 @@ public class TGUser implements Serializable {
     public TGUser idCurrentChannelAction(Long idCurrentChannelAction) {
         this.idCurrentChannelAction = idCurrentChannelAction;
         return this;
-    }
-
-    public void setLong1(Long long1) {
-        this.long1 = long1;
-    }
-
-    public String getString1() {
-        return this.string1;
-    }
-
-    public TGUser string1(String string1) {
-        this.string1 = string1;
-        return this;
-    }
-
-    public void setString1(String string1) {
-        this.string1 = string1;
-    }
-
-    public Boolean getBoolean1() {
-        return this.boolean1;
-    }
-
-    public TGUser boolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
-        return this;
-    }
-
-    public void setBoolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
     }
 
     public Balance getBalance() {
@@ -556,33 +452,49 @@ public class TGUser implements Serializable {
         return getClass().hashCode();
     }
 
-
     @Override
     public String toString() {
-        return "TGUser{" +
-            "id=" + id +
-            ", idTgUser=" + idTgUser +
-            ", userName='" + userName + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", registrationDate=" + registrationDate +
-            ", userRole='" + userRole + '\'' +
-            ", currentStep='" + currentStep + '\'' +
-            ", idCurrentChannelAction=" + idCurrentChannelAction +
-            ", isAdmin=" + isAdmin +
-            ", score=" + score +
-            ", isBlocked=" + isBlocked +
-            ", chatId=" + chatId +
-            ", isDelete=" + isDelete +
-            ", date1=" + date1 +
-            ", date2=" + date2 +
-            ", long1=" + long1 +
-            ", string1='" + string1 + '\'' +
-            ", boolean1=" + boolean1 +
-            ", balance=" + balance +
-            ", offerFromCostumers=" + offerFromCostumers +
-            ", reviews=" + reviews +
-            ", pays=" + pays +
-            ", tGUserLogs=" + tGUserLogs +
-            '}';
+        return (
+            "TGUser{" +
+            "id=" +
+            id +
+            ", userName='" +
+            userName +
+            '\'' +
+            ", firstName='" +
+            firstName +
+            '\'' +
+            ", registrationDate=" +
+            registrationDate +
+            ", userRole='" +
+            userRole +
+            '\'' +
+            ", currentStep='" +
+            currentStep +
+            '\'' +
+            ", idCurrentChannelAction=" +
+            idCurrentChannelAction +
+            ", isAdmin=" +
+            isAdmin +
+            ", isDelete=" +
+            isDelete +
+            ", score=" +
+            score +
+            ", isBlocked=" +
+            isBlocked +
+            ", chatId=" +
+            chatId +
+            ", balance=" +
+            balance +
+            ", offerFromCostumers=" +
+            offerFromCostumers +
+            ", reviews=" +
+            reviews +
+            ", pays=" +
+            pays +
+            ", tGUserLogs=" +
+            tGUserLogs +
+            '}'
+        );
     }
 }

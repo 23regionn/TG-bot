@@ -96,7 +96,7 @@ export const AllCategoriesByCityId = (props: IAllCategoriesByCityIdIAllCategorie
       <br />
       <DataTable value={categoryList as any[]} className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="id" header="№"></Column>
-        <Column field="name" filter filterPlaceholder="Поиск на наименованию" sortable header="Наименование категории"></Column>
+        <Column field="name" filter filterPlaceholder="Поиск по наименованию" sortable header="Наименование категории"></Column>
         <Column
           field="isFirst"
           sortable

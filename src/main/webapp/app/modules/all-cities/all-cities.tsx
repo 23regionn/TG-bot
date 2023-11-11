@@ -134,7 +134,7 @@ export const AllCities = (props: IAllCitiesProps) => {
       <br />
       <DataTable value={cityList as any[]} className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="id" header="№"></Column>
-        <Column field="cityName" filter filterPlaceholder="Поиск на названию" sortable header="Наименование города"></Column>
+        <Column field="cityName" filter filterPlaceholder="Поиск по названию" sortable header="Наименование города"></Column>
         <Column
           field="dateCreateCity"
           header="Дата создания в боте"

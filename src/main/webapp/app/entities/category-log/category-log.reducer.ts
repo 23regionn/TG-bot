@@ -8,6 +8,8 @@ import { ICategoryLog, defaultValue } from 'app/shared/model/category-log.model'
 
 export const ACTION_TYPES = {
   FETCH_CATEGORYLOG_LIST: 'categoryLog/FETCH_CATEGORYLOG_LIST',
+  FETCH_CATEGORYLOG_LIST_BY_CHAT_ID: 'categoryLog/FETCH_CATEGORYLOG_LIST_BY_CHAT_ID',
+  FETCH_CITIES_LIST_BY_CHAT_ID: 'categoryLog/FETCH_CITIES_LIST_BY_CHAT_ID',
   FETCH_CATEGORYLOG_LIST_FOR_CITY: 'categoryLog/FETCH_CATEGORYLOG_LIST_FOR_CITY',
   FETCH_CATEGORYLOG_LIST_FOR_CITY_BY_DATES: 'categoryLog/FETCH_CATEGORYLOG_LIST_FOR_CITY_BY_DATES',
   FETCH_CATEGORYLOG: 'categoryLog/FETCH_CATEGORYLOG',
@@ -182,3 +184,13 @@ export const getStatisticsCategoryLogForCityByDates: any = entity => async dispa
   });
   return result;
 };
+
+export const getStatisticCategoryByChatId: any = idChat => ({
+  type: ACTION_TYPES.FETCH_CATEGORYLOG_LIST_BY_CHAT_ID,
+  payload: axios.get<any>(`${apiUrl}-statistics/categories/by-chat-id/${idChat}`),
+});
+
+export const getStatisticCityByChatId: any = idChat => ({
+  type: ACTION_TYPES.FETCH_CITIES_LIST_BY_CHAT_ID,
+  payload: axios.get<any>(`${apiUrl}-statistics/cities/by-chat-id/${idChat}`),
+});

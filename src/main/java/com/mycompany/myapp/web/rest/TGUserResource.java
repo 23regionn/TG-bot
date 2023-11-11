@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
+import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
 import com.mycompany.myapp.service.tg.TgUserService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -129,9 +130,6 @@ public class TGUserResource {
             .findById(tGUser.getId())
             .map(
                 existingTGUser -> {
-                    if (tGUser.getIdTgUser() != null) {
-                        existingTGUser.setIdTgUser(tGUser.getIdTgUser());
-                    }
                     if (tGUser.getFirstName() != null) {
                         existingTGUser.setFirstName(tGUser.getFirstName());
                     }
@@ -156,22 +154,6 @@ public class TGUserResource {
                     if (tGUser.getIsDelete() != null) {
                         existingTGUser.setIsDelete(tGUser.getIsDelete());
                     }
-                    if (tGUser.getDate1() != null) {
-                        existingTGUser.setDate1(tGUser.getDate1());
-                    }
-                    if (tGUser.getDate2() != null) {
-                        existingTGUser.setDate2(tGUser.getDate2());
-                    }
-                    if (tGUser.getLong1() != null) {
-                        existingTGUser.setLong1(tGUser.getLong1());
-                    }
-                    if (tGUser.getString1() != null) {
-                        existingTGUser.setString1(tGUser.getString1());
-                    }
-                    if (tGUser.getBoolean1() != null) {
-                        existingTGUser.setBoolean1(tGUser.getBoolean1());
-                    }
-
                     return existingTGUser;
                 }
             )
@@ -235,5 +217,11 @@ public class TGUserResource {
         log.debug("REST request to get SearchAnyByDatesDTO : {}");
         TgUsersCountDTO countsByDates = tgUserService.getTGUserCountByDates(request);
         return ResponseEntity.ok(countsByDates);
+    }
+
+    @GetMapping("/tg-users/base-statistics")
+    public ResponseEntity<List<StatisticsTgUserDTO>> getAllTgUsersForStatistics() {
+        log.debug("REST request to get getAllTgUsersForStatistics ");
+        return ResponseEntity.ok(tgUserService.getAllTgUsersForStatistics());
     }
 }

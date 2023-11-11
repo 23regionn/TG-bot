@@ -2,7 +2,9 @@ package com.mycompany.myapp.service.tg;
 
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
+import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,5 +30,9 @@ public class TgUserService {
         log.setStartDate(request.getStartDate().plusDays(1l));
         log.setEndDate(request.getEndDate().plusDays(1l));
         return log;
+    }
+
+    public List<StatisticsTgUserDTO> getAllTgUsersForStatistics() {
+        return tgUserRepository.getAllTgUsersForStatistics();
     }
 }

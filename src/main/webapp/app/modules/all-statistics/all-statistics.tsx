@@ -241,6 +241,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
       </div>
 
       <hr />
+
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}>
           <Button id="button_basic" label="Статистика по категориям" onClick={pushToStatisticsCategory} />
@@ -257,6 +258,8 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
           <Button id="button_basic" label="Статистика по нажатиям" onClick={pushToStatisticsClicks} />
         </div>
       </div>
+
+      <hr />
     </div>
   );
 };

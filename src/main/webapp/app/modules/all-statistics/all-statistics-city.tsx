@@ -154,14 +154,14 @@ export const AllStatisticsCity = (props: IAllStatisticsCityProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.5rem' }}> Статитстика бота по городам </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статитстика бота по городам </div>
       </div>
 
       <br />
 
       <DataTable value={cityStatistics as any[]} className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="idCity" header="№"></Column>
-        <Column field="nameCity" filter filterPlaceholder="Поиск на названию" sortable header="Наименование города"></Column>
+        <Column field="nameCity" filter filterPlaceholder="Поиск по названию" sortable header="Наименование города"></Column>
         <Column field="countClickFirstPage" header="Количество кликов по первой страничке" sortable></Column>
         <Column field="countClickUsers" header="Количество кликавших пользователей"></Column>
         <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>

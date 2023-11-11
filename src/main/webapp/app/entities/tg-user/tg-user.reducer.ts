@@ -9,6 +9,7 @@ import { ITGUser, defaultValue } from 'app/shared/model/tg-user.model';
 export const ACTION_TYPES = {
   FETCH_TGUSER_LIST: 'tGUser/FETCH_TGUSER_LIST',
   FETCH_TGUSER_COUNT: 'tGUser/FETCH_TGUSER_COUNT',
+  FETCH_TGUSER_BASE_STATISTICS: 'tGUser/FETCH_TGUSER_BASE_STATISTICS',
   FETCH_TGUSER_COUNT_BY_DATES: 'tGUser/FETCH_TGUSER_COUNT_BY_DATES',
   FETCH_TGUSER: 'tGUser/FETCH_TGUSER',
   CREATE_TGUSER: 'tGUser/CREATE_TGUSER',
@@ -169,3 +170,8 @@ export const getCountSubscribersByDates: any = entity => async dispatch => {
   });
   return result;
 };
+
+export const getAllTgUsersForStatistics: any = () => ({
+  type: ACTION_TYPES.FETCH_TGUSER_BASE_STATISTICS,
+  payload: axios.get<any>(`${apiUrl}/base-statistics`),
+});

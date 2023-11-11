@@ -148,7 +148,7 @@ export const AllStatisticsCityCategory = (props: IAllStatisticsCityCategoryProps
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.5rem' }}>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}>
           {' '}
           Статитстика категорий по городу &nbsp; {props.cityEntity.cityName}
         </div>
@@ -158,7 +158,7 @@ export const AllStatisticsCityCategory = (props: IAllStatisticsCityCategoryProps
 
       <DataTable value={statisticsCategoriesLogs as any[]} sortMode="multiple" className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="idCategory" header="№"></Column>
-        <Column field="categoryName" filter filterPlaceholder="Поиск на наименованию" sortable header="Имя категории"></Column>
+        <Column field="categoryName" filter filterPlaceholder="Поиск по наименованию" sortable header="Имя категории"></Column>
         <Column field="countClickTotalByUniChatId" sortable header="Количество уникальных пользователей"></Column>
         <Column field="countClickByCity" sortable header="Количество кликов по городу"></Column>
         <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>

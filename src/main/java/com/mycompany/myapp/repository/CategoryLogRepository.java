@@ -2,6 +2,8 @@ package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.statistics.category.CategoryLogForUserDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.CityLogForUserDTO;
 import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsByCategoryCityLogDTO;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -56,4 +58,20 @@ public interface CategoryLogRepository extends JpaRepository<CategoryLog, Long> 
         @Param("startDate") ZonedDateTime startDate,
         @Param("endDate") ZonedDateTime endDate
     );
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics" +
+        ".category.CategoryLogForUserDTO(cl.catId, cl.name, COUNT(cl)," +
+        " COUNT(cl.cityId)) FROM CategoryLog cl " +
+        " where cl.chatId = :idChat GROUP BY cl.catId, cl.name"
+    )
+    List<CategoryLogForUserDTO> getStatisticCategoryByChatId(@Param("idChat") Long idChat);
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics" +
+        ".for_city.CityLogForUserDTO(cl.cityId, cl.cityName, COUNT(cl))" +
+        " FROM CategoryLog cl " +
+        " where cl.chatId = :idChat GROUP BY cl.cityId, cl.cityName"
+    )
+    List<CityLogForUserDTO> getStatisticCityByChatId(@Param("idChat") Long idChat);
 }

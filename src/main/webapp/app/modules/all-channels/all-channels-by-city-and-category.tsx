@@ -242,7 +242,7 @@ export const AllChannelsByCityAndCategory = (props: IAllChannelsByCityAndCategor
       <br />
       <DataTable value={chanellList as any[]} sortMode="multiple" className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="id" header="№"></Column>
-        <Column field="name" filter filterPlaceholder="Поиск на наименованию" sortable header="Имя канала"></Column>
+        <Column field="name" filter filterPlaceholder="Поиск по наименованию" sortable header="Имя канала"></Column>
         <Column
           field="link"
           style={{ maxWidth: '15vw', maxHight: '5vw' }}

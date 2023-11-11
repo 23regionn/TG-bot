@@ -178,7 +178,7 @@ export const AllRelCategoriesByCityId = (props: IRelAllCategoriesByCityIdIAllCat
       <br />
       <DataTable value={categoriesCity as any[]} className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="id" header="№"></Column>
-        <Column field="category.name" filter filterPlaceholder="Поиск на наименованию" sortable header="Наименование категории"></Column>
+        <Column field="category.name" filter filterPlaceholder="Поиск по наименованию" sortable header="Наименование категории"></Column>
         <Column
           field="isFirst"
           sortable

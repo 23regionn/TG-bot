@@ -3111,7 +3111,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             user.setChatId(chatId);
             user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
             user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
-            user.setIdTgUser(userId);
+            //            user.setIdTgUser(userId);
             user.setRegistrationDate(ZonedDateTime.now());
             user.setIsDelete(false);
 
@@ -3134,7 +3134,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 user.setChatId(chatId);
                 user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
                 user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
-                user.setIdTgUser(userId);
+                //                user.setIdTgUser(userId);
                 user.setRegistrationDate(ZonedDateTime.now());
                 user.setIsDelete(false);
                 tgUserRepositoryService.saveTgUser(user);
