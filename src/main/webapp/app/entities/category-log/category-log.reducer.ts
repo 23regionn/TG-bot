@@ -8,6 +8,8 @@ import { ICategoryLog, defaultValue } from 'app/shared/model/category-log.model'
 
 export const ACTION_TYPES = {
   FETCH_CATEGORYLOG_LIST: 'categoryLog/FETCH_CATEGORYLOG_LIST',
+  FETCH_CATEGORYLOG_LIST_FOR_CITY: 'categoryLog/FETCH_CATEGORYLOG_LIST_FOR_CITY',
+  FETCH_CATEGORYLOG_LIST_FOR_CITY_BY_DATES: 'categoryLog/FETCH_CATEGORYLOG_LIST_FOR_CITY_BY_DATES',
   FETCH_CATEGORYLOG: 'categoryLog/FETCH_CATEGORYLOG',
   CREATE_CATEGORYLOG: 'categoryLog/CREATE_CATEGORYLOG',
   UPDATE_CATEGORYLOG: 'categoryLog/UPDATE_CATEGORYLOG',
@@ -164,6 +166,19 @@ export const getStatisticsCategoryLogByDates: any = entity => async dispatch => 
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_CATEGORYLOG,
     payload: axios.post(`${apiUrl}-statistics-by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const getCategoriesStatisticsForCity: any = idCity => ({
+  type: ACTION_TYPES.FETCH_CATEGORYLOG_LIST_FOR_CITY,
+  payload: axios.get<any>(`${apiUrl}-statistics/for-city/${idCity}`),
+});
+
+export const getStatisticsCategoryLogForCityByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_CATEGORYLOG_LIST_FOR_CITY_BY_DATES,
+    payload: axios.post(`${apiUrl}-statistics-by-dates/for-city`, cleanEntity(entity)),
   });
   return result;
 };

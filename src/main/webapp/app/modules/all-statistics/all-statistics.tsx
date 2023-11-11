@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { Calendar } from 'primereact/calendar';
 import { getCountSubscribersByDates, getTGUserCount } from 'app/entities/tg-user/tg-user.reducer';
 import { Dropdown } from 'primereact/dropdown';
@@ -46,9 +42,9 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
     });
   };
 
-  const pushToStatisticsChannels = rowData => {
+  const pushToStatisticsTgUsers = rowData => {
     props.history.push({
-      pathname: `all-statistics/channels`,
+      pathname: `all-statistics/tgUsers`,
     });
   };
 
@@ -255,7 +251,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
         </div>
 
         <div style={{ flexGrow: 3, textAlign: 'center', fontSize: '1.4rem' }}>
-          <Button id="button_basic" label="Статистика по каналам" onClick={pushToStatisticsChannels} />
+          <Button id="button_basic" label="Статистика по пользователям" onClick={pushToStatisticsTgUsers} />
         </div>
         <div style={{ flexGrow: 4, textAlign: 'center', fontSize: '1.4rem' }}>
           <Button id="button_basic" label="Статистика по нажатиям" onClick={pushToStatisticsClicks} />

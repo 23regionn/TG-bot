@@ -1,10 +1,13 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.City;
 import com.mycompany.myapp.domain.SearchTypeLog;
+import com.mycompany.myapp.repository.CityRepository;
 import com.mycompany.myapp.repository.SearchTypeLogRepository;
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsBySearchTypesDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.BaseCityStatisticsDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchTypeCountDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
@@ -19,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SearchTypeLogService {
 
     private final SearchTypeLogRepository searchTypeLogRepository;
+    private final CityRepository cityRepository;
 
-    public SearchTypeLogService(SearchTypeLogRepository searchTypeLogRepository) {
+    public SearchTypeLogService(SearchTypeLogRepository searchTypeLogRepository, CityRepository cityRepository) {
         this.searchTypeLogRepository = searchTypeLogRepository;
+        this.cityRepository = cityRepository;
     }
 
     public Long searchTypeLogCount() {
@@ -82,6 +87,38 @@ public class SearchTypeLogService {
 
     public List<StatisticsByPageNumberCountDTO> searchTypeLogCountByPageNumberByDates(SearchAnyByDatesDTO request) {
         List<StatisticsByPageNumberCountDTO> searchList = searchTypeLogRepository.searchTypeLogCountByPageNumberByDates(
+            request.getStartDate().plusDays(1l),
+            request.getEndDate().plusDays(1l)
+        );
+        return searchList;
+    }
+
+    public List<BaseCityStatisticsDTO> getAllCityBaseStatistics() {
+        List<City> cities = cityRepository.findAll();
+        List<BaseCityStatisticsDTO> anyDto = searchTypeLogRepository.getAllCityBaseStatistics();
+
+        for (BaseCityStatisticsDTO dto : anyDto) {
+            for (City city : cities) {
+                if (dto.getIdCity().equals(city.getId())) {
+                    dto.setNameCity(city.getCityName());
+                    break;
+                }
+            }
+        }
+        return anyDto;
+    }
+
+    public BaseCityStatisticsDTO getCityBaseStatisticsByDate(SearchAnyByDatesDTO request, Long idCity) {
+        return searchTypeLogRepository.getCityBaseStatisticsByDate(
+            idCity,
+            request.getStartDate().plusDays(1l),
+            request.getEndDate().plusDays(1l)
+        );
+    }
+
+    public List<StatisticsByPageNumberCountDTO> getCityBaseStatisticsByDateForCity(SearchAnyByDatesDTO request, Long idCity) {
+        List<StatisticsByPageNumberCountDTO> searchList = searchTypeLogRepository.getCityBaseStatisticsByDateForCity(
+            idCity,
             request.getStartDate().plusDays(1l),
             request.getEndDate().plusDays(1l)
         );

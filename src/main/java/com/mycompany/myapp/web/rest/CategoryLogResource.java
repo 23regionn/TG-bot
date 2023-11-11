@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.repository.CategoryLogRepository;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsByCategoryCityLogDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsCategoryLogForCityByDatesDTO;
 import com.mycompany.myapp.service.statistics.CategoryLogService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -199,6 +201,21 @@ public class CategoryLogResource {
     ) {
         log.debug("REST request to get StatisticsByCategoryLogDTO : {}", request.getId());
         StatisticsByCategoryLogDTO categoryLog = categoryLogService.getStatisticCategoryClickCountsByIDAndDate(request);
+        return ResponseEntity.ok(categoryLog);
+    }
+
+    @GetMapping("/category-logs-statistics/for-city/{idCity}")
+    public ResponseEntity<List<StatisticsByCategoryCityLogDTO>> getCategoriesStatisticsForCity(@PathVariable Long idCity) {
+        log.debug("REST request to get StatisticsByCategoryLogDTO for city ");
+        return ResponseEntity.ok(categoryLogService.getCategoriesStatisticsForCity(idCity));
+    }
+
+    @PostMapping("/category-logs-statistics-by-dates/for-city")
+    public ResponseEntity<StatisticsByCategoryCityLogDTO> getStatisticsCategoryLogForCityByDates(
+        @RequestBody StatisticsCategoryLogForCityByDatesDTO request
+    ) {
+        log.debug("REST request to get StatisticsByCategoryCityLogDTO : {}", request.getIdCategory());
+        StatisticsByCategoryCityLogDTO categoryLog = categoryLogService.getStatisticsCategoryLogForCityByDates(request);
         return ResponseEntity.ok(categoryLog);
     }
 }

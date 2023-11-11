@@ -2,6 +2,7 @@ package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.CategoryLog;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.StatisticsByCategoryCityLogDTO;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,28 @@ public interface CategoryLogRepository extends JpaRepository<CategoryLog, Long> 
     )
     Optional<StatisticsByCategoryLogDTO> getStatisticCategoryClickCountsByIDAndDate(
         @Param("id") Long id,
+        @Param("startDate") ZonedDateTime startDate,
+        @Param("endDate") ZonedDateTime endDate
+    );
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics.for_city" +
+        ".StatisticsByCategoryCityLogDTO(cl.catId, cl.name, cl.cityId, cl.cityName, " +
+        " COUNT(DISTINCT cl.chatId), COUNT(cl.cityId) ) FROM CategoryLog cl WHERE cl.cityId = :idCity " +
+        " GROUP BY cl.catId, cl.name, cl.cityId, cl.cityName"
+    )
+    List<StatisticsByCategoryCityLogDTO> getAllCategoryClickCounts(@Param("idCity") Long idCity);
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics.for_city" +
+        ".StatisticsByCategoryCityLogDTO(cl.catId, cl.name, cl.cityId, cl.cityName, COUNT(DISTINCT cl.chatId), COUNT(cl.cityId))" +
+        " FROM CategoryLog cl " +
+        " where cl.dateLog >= :startDate and cl.dateLog <= :endDate and cl.catId = :idCategory and cl.cityId = :idCity " +
+        " GROUP BY  cl.catId, cl.name, cl.cityId, cl.cityName"
+    )
+    Optional<StatisticsByCategoryCityLogDTO> getStatisticsCategoryLogForCityByDates(
+        @Param("idCategory") Long idCategory,
+        @Param("idCity") Long idCity,
         @Param("startDate") ZonedDateTime startDate,
         @Param("endDate") ZonedDateTime endDate
     );

@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ISearchTypeLog, defaultValue } from 'app/shared/model/search-type-log.model';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 
 export const ACTION_TYPES = {
   FETCH_SEARCHTYPELOG_LIST: 'searchTypeLog/FETCH_SEARCHTYPELOG_LIST',
@@ -12,12 +13,15 @@ export const ACTION_TYPES = {
   FETCH_SEARCHTYPELOG_COUNT: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT',
   FETCH_SEARCHTYPELOG_COUNT_DEATAIL: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_DEATAIL',
   FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER',
+  FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS: 'searchTypeLog/FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS',
   FETCH_SEARCHTYPELOG_COUNT_BY_DATES_INLINE_QUERY: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_INLINE_QUERY',
   FETCH_SEARCHTYPELOG_COUNT_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES',
   FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_QUERY: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_QUERY',
   FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_FOR_CITY_QUERY:
     'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_BY_DATES_PAGES_CATEGORY_FOR_CITY_QUERY',
   FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES',
+  FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES_FOR_CITY: 'searchTypeLog/FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES_FOR_CITY',
+  FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS_BY_DATES: 'searchTypeLog/FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS_BY_DATES',
   CREATE_SEARCHTYPELOG: 'searchTypeLog/CREATE_SEARCHTYPELOG',
   UPDATE_SEARCHTYPELOG: 'searchTypeLog/UPDATE_SEARCHTYPELOG',
   PARTIAL_UPDATE_SEARCHTYPELOG: 'searchTypeLog/PARTIAL_UPDATE_SEARCHTYPELOG',
@@ -215,6 +219,35 @@ export const searchTypeLogCountByPageNumberByDates: any = entity => async dispat
   const result = await dispatch({
     type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES,
     payload: axios.post(`${apiUrl}/detail/page-number/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const getAllCityBaseStatistics: any = () => ({
+  type: ACTION_TYPES.FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS,
+  payload: axios.get<any>(`${apiUrl}/city-base/statistics`),
+});
+
+export const getCityBaseStatisticsByDate: any = json => async dispatch => {
+  const entity = {
+    startDate: json.startDate,
+    endDate: json.endDate,
+  };
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_CITY_BASE_STATISTICS_BY_DATES,
+    payload: axios.post(`${apiUrl}/city-base/statistics/by-dates/${json?.idCity}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const getCityBaseStatisticsByDateForCity: any = json => async dispatch => {
+  const entity = {
+    startDate: json.startDate,
+    endDate: json.endDate,
+  };
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_SEARCHTYPELOG_COUNT_PAGE_NUMBER_BY_DATES_FOR_CITY,
+    payload: axios.post(`${apiUrl}/detail/for-city/page-number/by-dates/${json?.idCity}`, cleanEntity(entity)),
   });
   return result;
 };

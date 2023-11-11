@@ -5,9 +5,9 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { createEntity, getEntities, partialUpdateCity } from 'app/entities/city/city.reducer';
 
-export interface IAllStatisticsChannelsProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IAllStatisticsTgUsersProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
-export const AllStatisticsChannels = (props: IAllStatisticsChannelsProps) => {
+export const AllStatisticsTgUsers = (props: IAllStatisticsTgUsersProps) => {
   useEffect(() => {
     // props.getEntities();
   }, []);
@@ -23,7 +23,7 @@ export const AllStatisticsChannels = (props: IAllStatisticsChannelsProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по каналам </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по пользователям </div>
       </div>
     </div>
   );
@@ -43,4 +43,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllStatisticsChannels);
+export default connect(mapStateToProps, mapDispatchToProps)(AllStatisticsTgUsers);

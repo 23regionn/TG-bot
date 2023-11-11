@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.SearchTypeLogRepository;
 import com.mycompany.myapp.service.SearchTypeLogService;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO;
 import com.mycompany.myapp.service.dto.statistics.StatisticsBySearchTypesDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.BaseCityStatisticsDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchTypeCountDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
@@ -258,5 +259,29 @@ public class SearchTypeLogResource {
     ) {
         log.debug("REST request to get count page-number by-dates SearchAnyByDatesDTO : {}");
         return ResponseEntity.ok(searchTypeLogService.searchTypeLogCountByPageNumberByDates(request));
+    }
+
+    @GetMapping("/search-type-logs/city-base/statistics")
+    public ResponseEntity<List<BaseCityStatisticsDTO>> getAllCityBaseStatistics() {
+        log.debug("REST request to get all BaseCityStatisticsDTO");
+        return ResponseEntity.ok(searchTypeLogService.getAllCityBaseStatistics());
+    }
+
+    @PostMapping("/search-type-logs/city-base/statistics/by-dates/{idCity}")
+    public ResponseEntity<BaseCityStatisticsDTO> getCityBaseStatisticsByDate(
+        @PathVariable(value = "idCity", required = false) final Long idCity,
+        @RequestBody SearchAnyByDatesDTO request
+    ) {
+        log.debug("REST request to get all BaseCityStatisticsDTO by-dates : {}");
+        return ResponseEntity.ok(searchTypeLogService.getCityBaseStatisticsByDate(request, idCity));
+    }
+
+    @PostMapping("/search-type-logs/detail/for-city/page-number/by-dates/{idCity}")
+    public ResponseEntity<List<StatisticsByPageNumberCountDTO>> getCityBaseStatisticsByDateForCity(
+        @PathVariable(value = "idCity", required = false) final Long idCity,
+        @RequestBody SearchAnyByDatesDTO request
+    ) {
+        log.debug("REST request to get count for-city page-number by-dates SearchAnyByDatesDTO : {}");
+        return ResponseEntity.ok(searchTypeLogService.getCityBaseStatisticsByDateForCity(request, idCity));
     }
 }

@@ -2,6 +2,7 @@ package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.SearchTypeLog;
 import com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO;
+import com.mycompany.myapp.service.dto.statistics.for_city.BaseCityStatisticsDTO;
 import com.mycompany.myapp.service.dto.tgUsers.SearchTypeCountDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
 import java.time.ZonedDateTime;
@@ -79,6 +80,40 @@ public interface SearchTypeLogRepository extends JpaRepository<SearchTypeLog, Lo
         " search.pageSearch is true and search.dateLog >= :startDate and search.dateLog <= :endDate GROUP BY search.pageNumber"
     )
     List<StatisticsByPageNumberCountDTO> searchTypeLogCountByPageNumberByDates(
+        @Param("startDate") ZonedDateTime startDate,
+        @Param("endDate") ZonedDateTime endDate
+    );
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics.for_city.BaseCityStatisticsDTO( search.idCity, COUNT(search.pageNumber)," +
+        " COUNT(DISTINCT search.chatId)) " +
+        " FROM SearchTypeLog search " +
+        " where search.pageSearch = true and search.pageNumber = 1" +
+        " and search.idCity is not null  and search.idCity is not null GROUP BY search.idCity"
+    )
+    List<BaseCityStatisticsDTO> getAllCityBaseStatistics();
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics.for_city.BaseCityStatisticsDTO( search.idCity, COUNT(search.pageNumber)," +
+        " COUNT(DISTINCT search.chatId)) " +
+        " FROM SearchTypeLog search " +
+        " where search.pageSearch = true and search.pageNumber = 1" +
+        " and search.idCity = :idCity and search.dateLog >= :startDate and search.dateLog <= :endDate " +
+        " and search.idCity is not null GROUP BY search.idCity"
+    )
+    BaseCityStatisticsDTO getCityBaseStatisticsByDate(
+        @Param("idCity") Long idCity,
+        @Param("startDate") ZonedDateTime startDate,
+        @Param("endDate") ZonedDateTime endDate
+    );
+
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO( search.pageNumber, COUNT(search)) " +
+        " FROM SearchTypeLog search where search.idCity = :idCity and " +
+        " search.pageSearch is true and search.dateLog >= :startDate and search.dateLog <= :endDate GROUP BY search.pageNumber"
+    )
+    List<StatisticsByPageNumberCountDTO> getCityBaseStatisticsByDateForCity(
+        @Param("idCity") Long idCity,
         @Param("startDate") ZonedDateTime startDate,
         @Param("endDate") ZonedDateTime endDate
     );
