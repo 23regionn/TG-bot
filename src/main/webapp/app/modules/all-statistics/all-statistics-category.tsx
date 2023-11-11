@@ -12,6 +12,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { Dropdown } from 'primereact/dropdown';
+import { searchTypeLogCountByPageNumberByDates } from 'app/entities/count-channel-click-page-log/count-channel-click-page-log.reducer';
 
 export interface IAllStatisticsCategoryProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -27,6 +28,14 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
   const [countClickTotalByUniChatId, setCountClickTotalByUniChatId] = useState(null);
   const [countClickByCity, setCountClickByCity] = useState(null);
   const [countClickNotByCity, setCountClickNotByCity] = useState(null);
+
+  const [openPageClickDialog, setOpenPageClickDialog] = useState(false);
+  const [cityStatisticsPageCountByDates, setCityStatisticsPageCountByDates] = useState(null);
+
+  const [cityStatisticsClickPageByDatesStartDate, setCityStatisticsClickPageByDatesStartDate] = useState<Date | Date[] | undefined>(
+    undefined
+  );
+  const [cityStatisticsClickPageByDatesEndDate, setCityStatisticsClickPageByDatesEndDate] = useState<Date | Date[] | undefined>(undefined);
 
   useEffect(() => {
     props.getCategoriesStatistics().then(categoryLogs => {
@@ -46,10 +55,16 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
     setOpenDateDetailDialog(true);
   };
 
+  const showPageClick = rowData => {
+    setLogEntity(rowData);
+    setOpenPageClickDialog(true);
+  };
+
   const actionBodyTemplate = rowData => {
     return (
       <React.Fragment>
         <Button icon="pi pi-search" className="p-button-rounded p-button-success p-mr-2" onClick={() => showByDates(rowData)} />
+        <Button label="Листалка" className="p-button-text" onClick={() => showPageClick(rowData)} />
       </React.Fragment>
     );
   };
@@ -110,10 +125,37 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
     );
   };
 
+  const hidePageClickDialog = () => {
+    setLogEntity(null);
+    setCityStatisticsPageCountByDates(null);
+    setCityStatisticsClickPageByDatesStartDate(undefined);
+    setCityStatisticsClickPageByDatesEndDate(undefined);
+    setOpenPageClickDialog(false);
+  };
+
+  const pageClickDialogFooter = (
+    <React.Fragment>
+      <Button label="Close" icon="pi pi-times" className="p-button-text" onClick={hidePageClickDialog} />
+    </React.Fragment>
+  );
+
+  const statisticsClickPageForCityByDateButton = () => {
+    const entity = {
+      idCategory: logEntity?.idCategory,
+      idCity: null,
+      startDate: convertDateTimeToServer(cityStatisticsClickPageByDatesStartDate),
+      endDate: convertDateTimeToServer(cityStatisticsClickPageByDatesEndDate),
+    };
+
+    props.searchTypeLogCountByPageNumberByDates(entity).then(response => {
+      setCityStatisticsPageCountByDates(response?.value?.data);
+    });
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по категориям </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.5rem' }}> Статитстика бота по категориям </div>
       </div>
 
       <br />
@@ -235,6 +277,63 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
 
         <br />
       </Dialog>
+
+      <Dialog
+        visible={openPageClickDialog}
+        style={{ width: '600px' }}
+        header={'Статистика долистываний каналов : ' + logEntity?.categoryName + ' на даты'}
+        modal
+        className="p-fluid"
+        footer={pageClickDialogFooter}
+        onHide={hidePageClickDialog}
+        dismissableMask={true}
+      >
+        <div className="p-field">
+          <label htmlFor="range" style={{ fontWeight: '600' }}>
+            Выберите даты:
+          </label>
+          <br />
+          <div>
+            {' '}
+            Начальная дата <span>&nbsp;</span>{' '}
+          </div>
+          <Calendar
+            id="navigatorstemplate"
+            value={cityStatisticsClickPageByDatesStartDate}
+            onChange={e => setCityStatisticsClickPageByDatesStartDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
+            dateFormat="dd.mm.yy"
+          />
+
+          <br />
+          <div>
+            {' '}
+            Конечная дата <span>&nbsp; &nbsp;</span>{' '}
+          </div>
+          <Calendar
+            id="navigatorstemplate"
+            value={cityStatisticsClickPageByDatesEndDate}
+            onChange={e => setCityStatisticsClickPageByDatesEndDate(e.value)}
+            monthNavigator
+            yearNavigator
+            yearRange="2022:2050"
+            monthNavigatorTemplate={monthNavigatorTemplate}
+            yearNavigatorTemplate={yearNavigatorTemplate}
+            dateFormat="dd.mm.yy"
+          />
+        </div>
+        <br />
+        <Button label="Поиск" icon="pi pi-search" onClick={statisticsClickPageForCityByDateButton} />
+
+        <DataTable value={cityStatisticsPageCountByDates as any[]} sortMode="multiple" className="oi-p-datatable">
+          <Column headerStyle={{ width: '5rem' }} field="pageNumber" sortable header="№ страницы листалки"></Column>
+          <Column field="count" sortable header="Количество нажатий"></Column>
+        </DataTable>
+      </Dialog>
     </div>
   );
 };
@@ -247,6 +346,7 @@ const mapStateToProps = ({ city }: IRootState) => ({
 const mapDispatchToProps = {
   getCategoriesStatistics,
   getStatisticsCategoryLogByDates,
+  searchTypeLogCountByPageNumberByDates,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

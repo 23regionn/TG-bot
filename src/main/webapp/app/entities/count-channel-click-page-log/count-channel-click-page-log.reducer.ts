@@ -8,6 +8,7 @@ import { ICountChannelClickPageLog, defaultValue } from 'app/shared/model/count-
 
 export const ACTION_TYPES = {
   FETCH_COUNTCHANNELCLICKPAGELOG_LIST: 'countChannelClickPageLog/FETCH_COUNTCHANNELCLICKPAGELOG_LIST',
+  FETCH_COUNTCHANNELCLICKPAGELOG_LIST_BY_DATES: 'countChannelClickPageLog/FETCH_COUNTCHANNELCLICKPAGELOG_LIST_BY_DATES',
   FETCH_COUNTCHANNELCLICKPAGELOG: 'countChannelClickPageLog/FETCH_COUNTCHANNELCLICKPAGELOG',
   CREATE_COUNTCHANNELCLICKPAGELOG: 'countChannelClickPageLog/CREATE_COUNTCHANNELCLICKPAGELOG',
   UPDATE_COUNTCHANNELCLICKPAGELOG: 'countChannelClickPageLog/UPDATE_COUNTCHANNELCLICKPAGELOG',
@@ -154,3 +155,19 @@ export const deleteEntity: ICrudDeleteAction<ICountChannelClickPageLog> = id => 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const searchTypeLogCountByPageNumberByDates: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_COUNTCHANNELCLICKPAGELOG_LIST_BY_DATES,
+    payload: axios.post(`${apiUrl}/detail/page-number/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const searchTypeLogCountByPageNumberByDatesForCity: any = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_COUNTCHANNELCLICKPAGELOG_LIST_BY_DATES,
+    payload: axios.post(`${apiUrl}/detail/for-city/page-number/by-dates`, cleanEntity(entity)),
+  });
+  return result;
+};

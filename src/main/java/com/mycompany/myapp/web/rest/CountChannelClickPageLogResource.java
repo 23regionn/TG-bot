@@ -2,6 +2,9 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.CountChannelClickPageLog;
 import com.mycompany.myapp.repository.CountChannelClickPageLogRepository;
+import com.mycompany.myapp.service.CountChannelClickPageLogService;
+import com.mycompany.myapp.service.dto.statistics.StatisticsByPageNumberCountDTO;
+import com.mycompany.myapp.service.dto.statistics.count_channel_click.CountChannelClickPageByDatesDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +36,14 @@ public class CountChannelClickPageLogResource {
     private String applicationName;
 
     private final CountChannelClickPageLogRepository countChannelClickPageLogRepository;
+    private final CountChannelClickPageLogService countChannelClickPageLogService;
 
-    public CountChannelClickPageLogResource(CountChannelClickPageLogRepository countChannelClickPageLogRepository) {
+    public CountChannelClickPageLogResource(
+        CountChannelClickPageLogRepository countChannelClickPageLogRepository,
+        CountChannelClickPageLogService countChannelClickPageLogService
+    ) {
         this.countChannelClickPageLogRepository = countChannelClickPageLogRepository;
+        this.countChannelClickPageLogService = countChannelClickPageLogService;
     }
 
     /**
@@ -194,5 +202,21 @@ public class CountChannelClickPageLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/count-channel-click-page-logs/detail/page-number/by-dates")
+    public ResponseEntity<List<StatisticsByPageNumberCountDTO>> getStatisticsChannelPagesLogByDates(
+        @RequestBody CountChannelClickPageByDatesDTO request
+    ) {
+        log.debug("REST request to get count /count-channel-click-page-logs/detail/page-number/by-dates ");
+        return ResponseEntity.ok(countChannelClickPageLogService.getStatisticsChannelPagesLogByDates(request));
+    }
+
+    @PostMapping("/count-channel-click-page-logs/detail/for-city/page-number/by-dates")
+    public ResponseEntity<List<StatisticsByPageNumberCountDTO>> getStatisticsChannelPagesLogByDatesForCity(
+        @RequestBody CountChannelClickPageByDatesDTO request
+    ) {
+        log.debug("REST request to get count /count-channel-click-page-logs/detail/for-city/page-number/by-dates ");
+        return ResponseEntity.ok(countChannelClickPageLogService.getStatisticsChannelPagesLogByDatesForCity(request));
     }
 }

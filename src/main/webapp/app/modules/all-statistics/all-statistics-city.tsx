@@ -154,7 +154,7 @@ export const AllStatisticsCity = (props: IAllStatisticsCityProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по городам </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.5rem' }}> Статитстика бота по городам </div>
       </div>
 
       <br />
@@ -240,7 +240,7 @@ export const AllStatisticsCity = (props: IAllStatisticsCityProps) => {
       <Dialog
         visible={openPageClickDialog}
         style={{ width: '600px' }}
-        header={'Cтатистика долистываний категорий по городу : ' + cityName + ' на даты'}
+        header={'Статистика долистываний категорий по городу : ' + cityName + ' на даты'}
         modal
         className="p-fluid"
         footer={pageClickDialogFooter}
