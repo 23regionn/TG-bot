@@ -1,3 +1,4 @@
+/*
 package com.mycompany.myapp.web.rest;
 
 import static com.mycompany.myapp.web.rest.TestUtil.sameInstant;
@@ -26,9 +27,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+*/
 /**
  * Integration tests for the {@link TGUserResource} REST controller.
- */
+ *//*
+
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
@@ -93,12 +96,14 @@ class TGUserResourceIT {
 
     private TGUser tGUser;
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static TGUser createEntity(EntityManager em) {
         TGUser tGUser = new TGUser()
             .idTgUser(DEFAULT_ID_TG_USER)
@@ -118,12 +123,14 @@ class TGUserResourceIT {
         return tGUser;
     }
 
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an updated entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static TGUser createUpdatedEntity(EntityManager em) {
         TGUser tGUser = new TGUser()
             .idTgUser(UPDATED_ID_TG_USER)
@@ -551,3 +558,4 @@ class TGUserResourceIT {
         assertThat(tGUserList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
+*/

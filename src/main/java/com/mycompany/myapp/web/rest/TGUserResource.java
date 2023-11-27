@@ -2,12 +2,10 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.TGUserRepository;
-import com.mycompany.myapp.service.dto.statistics.StatisticsByCategoryLogDTO;
-import com.mycompany.myapp.service.dto.statistics.StatisticsCategoryLogByDatesDTO;
+import com.mycompany.myapp.service.TgUserService;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
-import com.mycompany.myapp.service.tg.TgUserService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;

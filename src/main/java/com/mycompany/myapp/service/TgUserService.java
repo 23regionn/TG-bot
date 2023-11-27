@@ -1,4 +1,4 @@
-package com.mycompany.myapp.service.tg;
+package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;

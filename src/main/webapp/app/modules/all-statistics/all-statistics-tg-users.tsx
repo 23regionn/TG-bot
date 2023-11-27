@@ -98,7 +98,6 @@ export const AllStatisticsTgUsers = (props: IAllStatisticsTgUsersProps) => {
           filterPlaceholder="Поиск по User name"
           header="User name"
           body={rowData => (
-            // <NavLink href={rowData?.userName} target="_blank">
             <NavLink href={`https://t.me/${rowData?.userName}`} target="_blank">
               {rowData?.userName}
             </NavLink>
