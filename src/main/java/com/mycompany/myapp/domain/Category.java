@@ -27,31 +27,6 @@ public class Category implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "count_chanell_in_category")
-    private Long countChanellInCategory;
-
-    /**
-     * удаленный
-     */
-    @ApiModelProperty(value = "удаленный")
-    @Column(name = "is_delete")
-    private Boolean isDelete;
-
-    @Column(name = "date_1")
-    private ZonedDateTime date1;
-
-    @Column(name = "date_2")
-    private ZonedDateTime date2;
-
-    @Column(name = "long_1")
-    private Long long1; // Рейтинг
-
-    @Column(name = "string_1")
-    private String string1;
-
-    @Column(name = "boolean_1")
-    private Boolean boolean1;
-
     @Column(name = "is_show")
     private Boolean isShow; // отображать или нет
 
@@ -131,97 +106,6 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public Long getCountChanellInCategory() {
-        return this.countChanellInCategory;
-    }
-
-    public Category countChanellInCategory(Long countChanellInCategory) {
-        this.countChanellInCategory = countChanellInCategory;
-        return this;
-    }
-
-    public void setCountChanellInCategory(Long countChanellInCategory) {
-        this.countChanellInCategory = countChanellInCategory;
-    }
-
-    public Boolean getIsDelete() {
-        return this.isDelete;
-    }
-
-    public Category isDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-        return this;
-    }
-
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public ZonedDateTime getDate1() {
-        return this.date1;
-    }
-
-    public Category date1(ZonedDateTime date1) {
-        this.date1 = date1;
-        return this;
-    }
-
-    public void setDate1(ZonedDateTime date1) {
-        this.date1 = date1;
-    }
-
-    public ZonedDateTime getDate2() {
-        return this.date2;
-    }
-
-    public Category date2(ZonedDateTime date2) {
-        this.date2 = date2;
-        return this;
-    }
-
-    public void setDate2(ZonedDateTime date2) {
-        this.date2 = date2;
-    }
-
-    public Long getLong1() {
-        return this.long1;
-    }
-
-    public Category long1(Long long1) {
-        this.long1 = long1;
-        return this;
-    }
-
-    public void setLong1(Long long1) {
-        this.long1 = long1;
-    }
-
-    public String getString1() {
-        return this.string1;
-    }
-
-    public Category string1(String string1) {
-        this.string1 = string1;
-        return this;
-    }
-
-    public void setString1(String string1) {
-        this.string1 = string1;
-    }
-
-    public Boolean getBoolean1() {
-        return this.boolean1;
-    }
-
-    public Category boolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
-        return this;
-    }
-
-    public void setBoolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
-    }
-
     public Set<Chanell> getChanellIds() {
         return this.chanellIds;
     }
@@ -272,14 +156,6 @@ public class Category implements Serializable {
         this.linksByCategoryInTopIds = linksByCategoryInTops;
     }
 
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
-    }
-
     public Boolean getIsShow() {
         return isShow;
     }
@@ -326,34 +202,7 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return (
-            "Category{" +
-            "id=" +
-            id +
-            ", name='" +
-            name +
-            '\'' +
-            ", countChanellInCategory=" +
-            countChanellInCategory +
-            ", isDelete=" +
-            isDelete +
-            ", date1=" +
-            date1 +
-            ", date2=" +
-            date2 +
-            ", long1=" +
-            long1 +
-            ", string1='" +
-            string1 +
-            '\'' +
-            ", boolean1=" +
-            boolean1 +
-            ", isShow=" +
-            isShow +
-            ", isFirst=" +
-            isFirst +
-            ", score=" +
-            score +
-            '}'
+            "Category{" + "id=" + id + ", name='" + name + '\'' + ", isShow=" + isShow + ", isFirst=" + isFirst + ", score=" + score + '}'
         );
     }
 }

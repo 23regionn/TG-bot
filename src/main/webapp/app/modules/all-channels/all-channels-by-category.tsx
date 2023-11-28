@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { createCategory, getEntityCategoryById, getOnlyCategories, partialUpdateCategory } from '../all-categories/all-categories.reducer';
+import { getEntityCategoryById } from '../all-categories/all-categories.reducer';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';

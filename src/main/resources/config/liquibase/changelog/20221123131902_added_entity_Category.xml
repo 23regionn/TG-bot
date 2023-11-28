@@ -17,27 +17,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="count_chanell_in_category" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="is_delete" type="boolean" remarks="удаленный">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_1" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_2" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="long_1" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="string_1" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="boolean_1" type="boolean">
-                <constraints nullable="true" />
-            </column>
             <column name="score" type="double">
                 <constraints nullable="true" />
             </column>
@@ -49,8 +28,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="category" columnName="date_1" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="category" columnName="date_2" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <changeSet id="20221123131902-1-relations" author="jhipster">
@@ -95,13 +72,6 @@
                   tableName="category">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
-            <column name="count_chanell_in_category" type="numeric"/>
-            <column name="is_delete" type="boolean"/>
-            <column name="date_1" type="${datetimeType}"/>
-            <column name="date_2" type="${datetimeType}"/>
-            <column name="long_1" type="numeric"/>
-            <column name="string_1" type="string"/>
-            <column name="boolean_1" type="boolean"/>
             <column name="score" type="numeric"/>
             <column name="is_first" type="boolean"/>
             <column name="is_show" type="boolean"/>

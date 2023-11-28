@@ -137,27 +137,6 @@ public class CategoryResource {
                     if (category.getName() != null) {
                         existingCategory.setName(category.getName());
                     }
-                    if (category.getCountChanellInCategory() != null) {
-                        existingCategory.setCountChanellInCategory(category.getCountChanellInCategory());
-                    }
-                    if (category.getIsDelete() != null) {
-                        existingCategory.setIsDelete(category.getIsDelete());
-                    }
-                    if (category.getDate1() != null) {
-                        existingCategory.setDate1(category.getDate1());
-                    }
-                    if (category.getDate2() != null) {
-                        existingCategory.setDate2(category.getDate2());
-                    }
-                    if (category.getLong1() != null) {
-                        existingCategory.setLong1(category.getLong1());
-                    }
-                    if (category.getString1() != null) {
-                        existingCategory.setString1(category.getString1());
-                    }
-                    if (category.getBoolean1() != null) {
-                        existingCategory.setBoolean1(category.getBoolean1());
-                    }
                     if (category.getIsFirst() != null) {
                         existingCategory.setIsFirst(category.getIsFirst());
                     }

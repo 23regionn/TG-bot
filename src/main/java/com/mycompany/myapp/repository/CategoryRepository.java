@@ -139,4 +139,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // ЗАПРОСЫ - REST
     @Query("SELECT DISTINCT cat FROM Category cat " + "JOIN cat.chanellIds ch join ch.cityEntity ce " + "WHERE ce.id = :cityId")
     List<Category> findCategoriesByCityId(@Param("cityId") Long cityId);
+    // Запросы для Логики бота
+
 }

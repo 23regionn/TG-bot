@@ -1,7 +1,6 @@
 package com.mycompany.myapp.service.dto;
 
 import com.mycompany.myapp.domain.Category;
-
 import java.util.Objects;
 
 public class CategoryWithCountChanellsDTO {
@@ -9,44 +8,43 @@ public class CategoryWithCountChanellsDTO {
     String name;
     long id;
 
-    Long long1 = 10000l;
+    //    Long long1 = 10000l;
     long countChannelsInCategory;
 
-
-    public CategoryWithCountChanellsDTO(Category category){
-        if(category == null){
+    public CategoryWithCountChanellsDTO(Category category) {
+        if (category == null) {
             return;
         }
-        if(category.getName() != null){
+        if (category.getName() != null) {
             this.name = category.getName();
         }
-        if(category.getId() != null){
+        if (category.getId() != null) {
             this.id = category.getId();
         }
 
-        if(category.getLong1() != null){
+        /*if(category.getLong1() != null){
             this.long1 = category.getLong1();
-        }
-        if(category.getChanellIds() != null){
+        }*/
+        if (category.getChanellIds() != null) {
             countChannelsInCategory = category.getChanellIds().size();
         }
     }
 
-    public CategoryWithCountChanellsDTO(Category category, long countChan){
-        if(category == null){
+    public CategoryWithCountChanellsDTO(Category category, long countChan) {
+        if (category == null) {
             return;
         }
-        if(category.getName() != null){
+        if (category.getName() != null) {
             this.name = category.getName();
         }
-        if(category.getId() != null){
+        if (category.getId() != null) {
             this.id = category.getId();
         }
 
-        if(category.getLong1() != null){
+        /*if(category.getLong1() != null){
             this.long1 = category.getLong1();
-        }
-        if(category.getChanellIds() != null){
+        }*/
+        if (category.getChanellIds() != null) {
             this.countChannelsInCategory = countChan;
         }
     }
@@ -75,34 +73,32 @@ public class CategoryWithCountChanellsDTO {
         this.id = id;
     }
 
-    public Long getLong1() {
-        return long1;
-    }
-
-    public void setLong1(Long long1) {
-        this.long1 = long1;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryWithCountChanellsDTO that = (CategoryWithCountChanellsDTO) o;
-        return id == that.id && long1 == that.long1 && Objects.equals(name, that.name);
+        return id == that.id && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, long1);
+        return Objects.hash(name, id);
     }
 
     @Override
     public String toString() {
-        return "CategoryWithCountChanellsDTO{" +
-            "name='" + name + '\'' +
-            ", id=" + id +
-            ", long1=" + long1 +
-            ", countChannelsInCategory=" + countChannelsInCategory +
-            '}';
+        return (
+            "CategoryWithCountChanellsDTO{" +
+            "name='" +
+            name +
+            '\'' +
+            ", id=" +
+            id +
+            //            ", long1=" + long1 +
+            ", countChannelsInCategory=" +
+            countChannelsInCategory +
+            '}'
+        );
     }
 }
