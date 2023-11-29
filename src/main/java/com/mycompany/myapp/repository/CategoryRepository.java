@@ -139,6 +139,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // ЗАПРОСЫ - REST
     @Query("SELECT DISTINCT cat FROM Category cat " + "JOIN cat.chanellIds ch join ch.cityEntity ce " + "WHERE ce.id = :cityId")
     List<Category> findCategoriesByCityId(@Param("cityId") Long cityId);
-    // Запросы для Логики бота
 
+    // Запросы для Логики бота
+    @Query(
+        "SELECT DISTINCT c FROM Category c JOIN c.relCategoryChannels rcc  JOIN rcc.chanell ch WHERE c.isShow = true " +
+        "AND rcc.isShowChannel = true and ch.isModerate = true and ch.endPublicDate > :currentDate " +
+        "ORDER BY c.isFirst DESC, c.score DESC"
+    )
+    List<CategoryNameAndIdDTO> findCategoriesForSearchMethodsBot(@Param("currentDate") ZonedDateTime currentDate);
 }

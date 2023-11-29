@@ -106,6 +106,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String CHANNEL = "CHANNEL";
     static final String MY_CHNS = "MY_CHNS";
 
+    private static final int PAGE_SIZE = 50;
+
     static final String ERROR_TEXT = "Error occurred: ";
     static final String FIND_CAT_FOR_ADD_CHAN = "FIND_CAT_FOR_ADD_CHAN";
     static final String ADD_СH_NAME = "ADD_СH_NAME";
@@ -393,12 +395,83 @@ public class TelegramBot extends TelegramLongPollingBot {
             String query = inlineQuery.getQuery();
             List<InlineQueryResult> results = new ArrayList<>();
 
+            // Получение параметра offset из InlineQuery
+            String offset = inlineQuery.getOffset();
+
+            int page = 0;
+            if (offset != null && !offset.isEmpty()) {
+                try {
+                    page = Integer.parseInt(offset);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+
             var categories = categoryRepository
-                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
+                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
+                //                .findAllNames()
+                .stream()
+                .filter(cat -> !cat.getName().isEmpty())
+                .filter(cat -> cat.getName().toLowerCase().contains(query.toLowerCase()))
+                .skip(page * PAGE_SIZE) // Пропускаем элементы на предыдущих страницах
+                .limit(PAGE_SIZE) // Ограничиваем количество элементов на текущей странице
+                .collect(Collectors.toList());
+
+            InputTextMessageContent messageContent = new InputTextMessageContent();
+            messageContent.setMessageText("Кликните на категорию ниже ⬇️⬇️⬇️"); // Текст в двух местах
+
+            for (int i = 0; i < categories.size(); i++) {
+                String name = categories.get(i).getName();
+
+                InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+                // создание списка со списками с кнопками в ответе на сообщение
+                List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+                // создание списка с кнопками в ответе на сообщение
+                List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+                var buttonResponse = new InlineKeyboardButton();
+
+                buttonResponse.setText(name); // Содержимое ответа в кнопке
+                buttonResponse.setCallbackData(CLICK_TEMA + ":" + categories.get(i).getId() + ":"); // Привязка кнопки к реагирование на Button в сообщении, типо когда ответ не текст а кол-бек
+                rowInLine.add(buttonResponse);
+
+                rowsInLine.add(rowInLine);
+                markupInLine.setKeyboard(rowsInLine);
+
+                results.add(new InlineQueryResultArticle(("" + i), name, messageContent, markupInLine, null, null, null, null, null, null));
+            }
+
+            // Настройка параметров ответа
+            AnswerInlineQuery answer = new AnswerInlineQuery();
+            answer.setInlineQueryId(inlineQuery.getId());
+            answer.setResults(results);
+
+            // Вычисление следующего offset
+            int nextOffset = (page + 1) * PAGE_SIZE;
+            if (nextOffset >= categories.size()) {
+                nextOffset = page * PAGE_SIZE; // Оставляем текущий offset без изменений
+            }
+            answer.setNextOffset(Integer.toString(nextOffset));
+
+            try {
+                execute(answer); // Отправка ответа на inline-запрос
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        } // Работающий, но старый вариант
+        /*else if (update.hasInlineQuery()) {
+            InlineQuery inlineQuery = update.getInlineQuery();
+
+            // Обработка запроса и формирование ответа
+            String query = inlineQuery.getQuery();
+            List<InlineQueryResult> results = new ArrayList<>();
+
+            var categories = categoryRepository
+//                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
+                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
                 .stream()
                 .filter(cat -> !cat.getName().isEmpty())
                 .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); // Выставить лимит 50
 
             InputTextMessageContent messageContent = new InputTextMessageContent();
             messageContent.setMessageText("Кликните на категорию ниже ⬇⬇⬇"); // Текст в двух местах
@@ -433,7 +506,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-        } else if (update.hasCallbackQuery()) {
+        }*/else if (update.hasCallbackQuery()) {
             String callbackData = update.getCallbackQuery().getData();
             Long chatId = null;
             Integer messageId = null;
