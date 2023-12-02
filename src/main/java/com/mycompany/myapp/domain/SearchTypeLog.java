@@ -37,6 +37,22 @@ public class SearchTypeLog implements Serializable {
     @Column(name = "id_city")
     private Long idCity;
 
+    public SearchTypeLog() {}
+
+    public SearchTypeLog(Long chatId, Boolean inlineSearch) {
+        this.chatId = chatId;
+        this.inlineSearch = inlineSearch;
+        this.dateLog = ZonedDateTime.now().plusHours(3l);
+    }
+
+    public SearchTypeLog(Long chatId, Boolean pageSearch, Long pageNumber, Long idCity) {
+        this.chatId = chatId;
+        this.pageSearch = pageSearch;
+        this.pageNumber = pageNumber;
+        this.idCity = idCity;
+        this.dateLog = ZonedDateTime.now().plusHours(3l);
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;

@@ -73,6 +73,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private CategoryLogRepository categoryLogRepository;
 
+    @Autowired
+    private SearchTypeLogRepository searchTypeLogRepository;
+
     final BotConfig config;
 
     /*static final String HELP_TEXT = "This bot is created to demonstrate Spring capabilities.\n\n" +
@@ -206,7 +209,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }*/
                 startCommandReceived(
                     chatId,
-                    update.getMessage().getChat().getFirstName() != null ? update.getMessage().getChat().getFirstName() : ""
+                    update.getMessage().getChat().getFirstName() != null
+                        ? update.getMessage().getChat().getFirstName()
+                        : update.getMessage().getChat().getUserName() != null ? update.getMessage().getChat().getUserName() : ""
                 );
             } else if (messageText.equals("/help")) {
                 registerUser(update.getMessage());
@@ -276,6 +281,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 executeDeleteMessage(chatId, nameForLog, mesId);
                 executeMessageWithKeybord(nameForLog, chatId, update.getMessage().getText(), mark);
                 System.out.println("При отправкке заходит сюда " + update.getMessage());
+                searchTypeLogRepository.save(new SearchTypeLog(chatId, true));
             }
             // Рассылка пользователям
             else if (messageText.contains("/send") && config.getOwnerId() == chatId) {
@@ -466,8 +472,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             List<InlineQueryResult> results = new ArrayList<>();
 
             var categories = categoryRepository
-//                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
-                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
+                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
+//                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
                 .stream()
                 .filter(cat -> !cat.getName().isEmpty())
                 .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
@@ -895,7 +901,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void checkFindChannelOrAddChannel(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        //         message.setText("Выберите  \"действие\" "); // Обязательное для телеграмма-апи поле
         message.setText("Выберите действие ⬇⬇⬇ "); // Обязательное для телеграмма-апи поле
 
         // создание клавиатуры с кнопками в ответе на сообщение
@@ -986,7 +991,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(
+        //        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesForSearchMethodsBot(
             ZonedDateTime.now().minusDays(1)
         ); //categoryListFirstPage
         List<CategoryNameAndIdDTO> categoryListFirstPage = categoryListFromDB
@@ -995,12 +1001,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore))
             .collect(Collectors.toList());
 
-        List<CategoryNameAndIdDTO> categoryListNotFirst = categoryRepository
-            .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
-            .stream()
-            .filter(cat -> cat.getIsFirst().equals(false))
-            .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore))
-            .collect(Collectors.toList());
+        List<CategoryNameAndIdDTO> categoryListNotFirst =
+            //            categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
+            categoryListFromDB
+                .stream()
+                .filter(cat -> cat.getIsFirst().equals(false))
+                .sorted(Comparator.comparing(CategoryNameAndIdDTO::getScore))
+                .collect(Collectors.toList());
 
         Map<Integer, List<CategoryNameAndIdDTO>> groupedCategories = IntStream
             .range(0, categoryListNotFirst.size())
@@ -1097,6 +1104,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             executeMessage(message, name);
         }
         log.info("Пользователь с имененем " + name + " получил список категорий ");
+        searchTypeLogRepository.save(new SearchTypeLog(chatId, true, 1l, null));
     }
 
     // Найти категории - следующая страница
@@ -1111,9 +1119,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(
-            ZonedDateTime.now().minusDays(1)
-        );
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesHaveChanellsAndIsShowTrue(
+        .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO> categoryListFirstPage = categoryListFromDB
             .stream()
@@ -1269,6 +1276,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         //        executeMessage(message, name);
         executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
         log.info("Пользователь с имененем " + name + " получил список категорий ");
+        searchTypeLogRepository.save(new SearchTypeLog(chatId, true, pageNumber.longValue(), null));
     }
 
     // Найти категории - все страницы с категориями
@@ -1283,9 +1291,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesHaveChanellsAndIsShowTrue(
-            ZonedDateTime.now().minusDays(1)
-        );
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.//            findCategoriesHaveChanellsAndIsShowTrue(
+        findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO> categoryListFirstPage = categoryListFromDB
             .stream()

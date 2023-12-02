@@ -140,7 +140,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT DISTINCT cat FROM Category cat " + "JOIN cat.chanellIds ch join ch.cityEntity ce " + "WHERE ce.id = :cityId")
     List<Category> findCategoriesByCityId(@Param("cityId") Long cityId);
 
-    // Запросы для Логики бота
+    /** Запросы для логики бота */
+    // Запрос используется в боте для получения списка всех категорий к отображению (в режиме инлайн и при листалке)
     @Query(
         "SELECT DISTINCT c FROM Category c JOIN c.relCategoryChannels rcc  JOIN rcc.chanell ch WHERE c.isShow = true " +
         "AND rcc.isShowChannel = true and ch.isModerate = true and ch.endPublicDate > :currentDate " +
