@@ -157,33 +157,6 @@ public class ChanellResource {
                     if (chanell.getShowChanellInTopByCategory() != null) {
                         existingChanell.setShowChanellInTopByCategory(chanell.getShowChanellInTopByCategory());
                     }
-                    if (chanell.getRegion() != null) {
-                        existingChanell.setRegion(chanell.getRegion());
-                    }
-                    if (chanell.getCity() != null) {
-                        existingChanell.setCity(chanell.getCity());
-                    }
-                    if (chanell.getIsDelete() != null) {
-                        existingChanell.setIsDelete(chanell.getIsDelete());
-                    }
-                    if (chanell.getCurrentDate() != null) {
-                        existingChanell.setCurrentDate(chanell.getCurrentDate());
-                    }
-                    if (chanell.getDate1() != null) {
-                        existingChanell.setDate1(chanell.getDate1());
-                    }
-                    if (chanell.getDate2() != null) {
-                        existingChanell.setDate2(chanell.getDate2());
-                    }
-                    if (chanell.getLong1() != null) {
-                        existingChanell.setLong1(chanell.getLong1());
-                    }
-                    if (chanell.getString1() != null) {
-                        existingChanell.setString1(chanell.getString1());
-                    }
-                    if (chanell.getBoolean1() != null) {
-                        existingChanell.setBoolean1(chanell.getBoolean1());
-                    }
                     if (chanell.getIsPay() != null) {
                         existingChanell.setIsPay(chanell.getIsPay());
                     }
@@ -262,18 +235,6 @@ public class ChanellResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    @GetMapping("/city-names")
-    public Set<String> getAllCityNames() {
-        log.debug("REST request to get all City Names");
-        return chanellRepository.getCitiesNames();
-    }
-
-    @GetMapping("/city-names-by-first-letter")
-    public Set<String> getAllCitiesByFirstLetter() {
-        log.debug("REST request to get all City Names");
-        return chanellRepository.getCitiesByFirstLetter("С");
     }
 
     @PostMapping("/chanells/with-category-id")

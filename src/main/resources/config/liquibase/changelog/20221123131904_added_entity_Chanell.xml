@@ -41,46 +41,16 @@
             <column name="show_chanell_in_top_by_category" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="region" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="city" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="approved_admin" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="is_delete" type="boolean" remarks="удаленный">
-                <constraints nullable="true" />
-            </column>
-            <column name="jhi_current_date" type="${datetimeType}" remarks="текущая дата">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_1" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_2" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="long_1" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="string_1" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="contacts" type="varchar(10000)">
-                <constraints nullable="true" />
-            </column>
-            <column name="boolean_1" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="tguser_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="city_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="is_active" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="start_date" type="${datetimeType}">
@@ -109,9 +79,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="chanell" columnName="jhi_current_date" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="chanell" columnName="date_1" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="chanell" columnName="date_2" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -139,19 +106,9 @@
             <column name="price_diapozon" type="numeric"/>
             <column name="is_moderate" type="boolean"/>
             <column name="show_chanell_in_top_by_category" type="boolean"/>
-            <column name="region" type="string"/>
-            <column name="city" type="string"/>
             <column name="approved_admin" type="numeric"/>
-            <column name="is_delete" type="boolean"/>
-            <column name="jhi_current_date" type="${datetimeType}"/>
-            <column name="date_1" type="${datetimeType}"/>
-            <column name="date_2" type="${datetimeType}"/>
-            <column name="long_1" type="numeric"/>
-            <column name="string_1" type="string"/>
-            <column name="boolean_1" type="boolean"/>
             <column name="tguser_id" type="numeric"/>
             <column name="city_id" type="numeric"/>
-            <column name="is_active" type="boolean"/>
             <column name="contacts" type="string"/>
             <column name="start_date" type="${datetimeType}"/>
             <column name="last_pay_date" type="${datetimeType}"/>

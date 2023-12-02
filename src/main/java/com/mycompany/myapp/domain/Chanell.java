@@ -46,52 +46,14 @@ public class Chanell implements Serializable {
     @Column(name = "is_moderate")
     private Boolean isModerate;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @Column(name = "show_chanell_in_top_by_category")
     private Boolean showChanellInTopByCategory;
-
-    @Column(name = "region")
-    private String region;
-
-    @Column(name = "city")
-    private String city;
 
     @Column(name = "contacts")
     private String contacts;
 
     @Column(name = "approved_admin")
     private Long approvedAdmin;
-
-    /**
-     * удаленный
-     */
-    @ApiModelProperty(value = "удаленный")
-    @Column(name = "is_delete")
-    private Boolean isDelete;
-
-    /**
-     * текущая дата
-     */
-    @ApiModelProperty(value = "текущая дата")
-    @Column(name = "jhi_current_date")
-    private ZonedDateTime currentDate;
-
-    @Column(name = "date_1")
-    private ZonedDateTime date1;
-
-    @Column(name = "date_2")
-    private ZonedDateTime date2;
-
-    @Column(name = "long_1")
-    private Long long1;
-
-    @Column(name = "string_1")
-    private String string1; // ОПИСАНИЕ КАНАЛА
-
-    @Column(name = "boolean_1")
-    private Boolean boolean1;
 
     @OneToMany(mappedBy = "chanell")
     @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
@@ -153,7 +115,7 @@ public class Chanell implements Serializable {
     }
 
     public void setIsChat(Boolean isChat) {
-        isChat = isChat;
+        this.isChat = isChat;
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -328,123 +290,6 @@ public class Chanell implements Serializable {
         this.showChanellInTopByCategory = showChanellInTopByCategory;
     }
 
-    public String getRegion() {
-        return this.region;
-    }
-
-    public Chanell region(String region) {
-        this.region = region;
-        return this;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
-    public Chanell city(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Boolean getIsDelete() {
-        return this.isDelete;
-    }
-
-    public Chanell isDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-        return this;
-    }
-
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public ZonedDateTime getCurrentDate() {
-        return this.currentDate;
-    }
-
-    public Chanell currentDate(ZonedDateTime currentDate) {
-        this.currentDate = currentDate;
-        return this;
-    }
-
-    public void setCurrentDate(ZonedDateTime currentDate) {
-        this.currentDate = currentDate;
-    }
-
-    public ZonedDateTime getDate1() {
-        return this.date1;
-    }
-
-    public Chanell date1(ZonedDateTime date1) {
-        this.date1 = date1;
-        return this;
-    }
-
-    public void setDate1(ZonedDateTime date1) {
-        this.date1 = date1;
-    }
-
-    public ZonedDateTime getDate2() {
-        return this.date2;
-    }
-
-    public Chanell date2(ZonedDateTime date2) {
-        this.date2 = date2;
-        return this;
-    }
-
-    public void setDate2(ZonedDateTime date2) {
-        this.date2 = date2;
-    }
-
-    public Long getLong1() {
-        return this.long1;
-    }
-
-    public Chanell long1(Long long1) {
-        this.long1 = long1;
-        return this;
-    }
-
-    public void setLong1(Long long1) {
-        this.long1 = long1;
-    }
-
-    public String getString1() {
-        return this.string1;
-    }
-
-    public Chanell string1(String string1) {
-        this.string1 = string1;
-        return this;
-    }
-
-    public void setString1(String string1) {
-        this.string1 = string1;
-    }
-
-    public Boolean getBoolean1() {
-        return this.boolean1;
-    }
-
-    public Chanell boolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
-        return this;
-    }
-
-    public void setBoolean1(Boolean boolean1) {
-        this.boolean1 = boolean1;
-    }
-
     public Set<LinksByCategoryInTop> getLinksByCategoryInTops() {
         return this.linksByCategoryInTops;
     }
@@ -516,25 +361,12 @@ public class Chanell implements Serializable {
         return this;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active) {
-        isActive = active;
-    }
-
     public TGUser gettGUser() {
         return tGUser;
     }
 
     public void settGUser(TGUser tGUser) {
         this.tGUser = tGUser;
-    }
-
-    public Chanell isActive(Boolean isActive) {
-        this.setIsActive(isActive);
-        return this;
     }
 
     public void setTGUser(TGUser tGUser) {
@@ -666,16 +498,7 @@ public class Chanell implements Serializable {
             ", priceDiapozon=" + getPriceDiapozon() +
             ", isModerate='" + getIsModerate() + "'" +
             ", showChanellInTopByCategory='" + getShowChanellInTopByCategory() + "'" +
-            ", region='" + getRegion() + "'" +
-            ", city='" + getCity() + "'" +
             ", approvedAdmin=" + approvedAdmin +
-            ", isDelete='" + getIsDelete() + "'" +
-            ", currentDate='" + getCurrentDate() + "'" +
-            ", date1='" + getDate1() + "'" +
-            ", date2='" + getDate2() + "'" +
-            ", long1=" + getLong1() +
-            ", string1='" + getString1() + "'" +
-            ", boolean1='" + getBoolean1() + "'" +
             ", contacts='" + getContacts() + "'" +
             ", cityId='" + getCityEntity() + "'" +
             ", startDate='" + getStartDate() + "'" +

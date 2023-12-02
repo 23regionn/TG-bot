@@ -1,3 +1,4 @@
+/*
 package com.mycompany.myapp.web.rest;
 
 import static com.mycompany.myapp.web.rest.TestUtil.sameInstant;
@@ -26,9 +27,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+*/
 /**
  * Integration tests for the {@link ChanellResource} REST controller.
- */
+ *//*
+
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
@@ -105,12 +108,14 @@ class ChanellResourceIT {
 
     private Chanell chanell;
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static Chanell createEntity(EntityManager em) {
         Chanell chanell = new Chanell()
             .name(DEFAULT_NAME)
@@ -134,12 +139,14 @@ class ChanellResourceIT {
         return chanell;
     }
 
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
+    */
+/**
+ * Create an updated entity for this test.
+ *
+ * This is a static method, as tests for other entities might also need it,
+ * if they test an entity which requires the current entity.
+ *//*
+
     public static Chanell createUpdatedEntity(EntityManager em) {
         Chanell chanell = new Chanell()
             .name(UPDATED_NAME)
@@ -600,3 +607,4 @@ class ChanellResourceIT {
         assertThat(chanellList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
+*/

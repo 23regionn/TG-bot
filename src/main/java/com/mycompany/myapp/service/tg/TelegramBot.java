@@ -1119,8 +1119,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesHaveChanellsAndIsShowTrue(
-        .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesForSearchMethodsBot( //            .findCategoriesHaveChanellsAndIsShowTrue(
+            ZonedDateTime.now().minusDays(1)
+        );
 
         List<CategoryNameAndIdDTO> categoryListFirstPage = categoryListFromDB
             .stream()
@@ -1291,8 +1292,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
         // создание списка с кнопками в ответе на сообщение
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.//            findCategoriesHaveChanellsAndIsShowTrue(
-        findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesForSearchMethodsBot( //            findCategoriesHaveChanellsAndIsShowTrue(
+            ZonedDateTime.now().minusDays(1)
+        );
 
         List<CategoryNameAndIdDTO> categoryListFirstPage = categoryListFromDB
             .stream()
@@ -1928,9 +1930,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
                 if (chanell.getIsModerate() != null && chanell.getIsModerate() == true) {
-                    if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
-                        chanellList.add(chanell);
-                    }
+                    /*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
+                    }*/
+                    chanellList.add(chanell);
                 }
             }
 
@@ -2055,9 +2057,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
                 if (chanell.getIsModerate() == true) {
-                    if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
-                        chanellList.add(chanell);
-                    }
+                    /*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
+                    }*/
+                    chanellList.add(chanell);
                 }
             }
 
@@ -3614,8 +3616,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             "Пользователь хочет изменить ссылку на " +
             editChannels.getNewlastLinkToChannel() +
             "\n" +
-            "Описание: " +
-            chanell.getString1() +
+            /*"Описание: " +
+            chanell.getString1() +*/
             "\n" +
             "Пользователь хочет изменить описание на: " +
             editChannels.getAddDescriptionAboutChannel() +
@@ -3856,7 +3858,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void approveCreateChannel(long channelId) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         chanell.setIsModerate(true);
-        chanell.setIsActive(true);
+        //        chanell.setIsActive(true);
         chanellRepository.save(chanell);
         sendMessage(
             chanell.getTGUser().getChatId(),
@@ -3876,8 +3878,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         editChannelsRepository.save(editChannel);
         Chanell chanell = chanellRepository.findById(editChannel.getIdChannel()).get();
         chanell.setIsModerate(true);
-        chanell.setIsActive(true);
-        chanell.setString1(editChannel.getAddDescriptionAboutChannel());
+        //        chanell.setIsActive(true);
+        //        chanell.setString1(editChannel.getAddDescriptionAboutChannel());
         chanell.setName(editChannel.getNewNameChannel());
         chanell.setLink(editChannel.getNewlastLinkToChannel());
         chanell.setPriceDiapozon(editChannel.getNewPriceChannel());
@@ -3897,7 +3899,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void disableCreateChannel(long channelId, String whyFailure) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         chanell.setIsModerate(false);
-        chanell.setIsActive(false);
+        //        chanell.setIsActive(false);
         chanellRepository.save(chanell);
 
         SendMessage message = new SendMessage();
