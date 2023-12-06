@@ -3,6 +3,7 @@ package com.mycompany.myapp.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A RelCategoryChannels.
@@ -18,11 +19,13 @@ public class RelCategoryChannels implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Column(name = "score_channel")
-    private Double scoreChannel;
+    private Double scoreChannel = 10000.0;
 
+    @NotNull
     @Column(name = "is_show_channel")
-    private Boolean isShowChannel;
+    private Boolean isShowChannel = false;
 
     @Column(name = "comment")
     private String comment;

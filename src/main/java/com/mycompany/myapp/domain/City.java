@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A City.
@@ -21,8 +22,9 @@ public class City implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Column(name = "city_name")
-    private String cityName;
+    private String cityName = "default";
 
     @Column(name = "date_create_city")
     private ZonedDateTime dateCreateCity;
@@ -97,6 +99,14 @@ public class City implements Serializable {
 
     public void setChanells(Set<Chanell> chanells) {
         this.chanells = chanells;
+    }
+
+    public Set<RelCategoryCity> getRelCategoryCities() {
+        return relCategoryCities;
+    }
+
+    public void setRelCategoryCities(Set<RelCategoryCity> relCategoryCities) {
+        this.relCategoryCities = relCategoryCities;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

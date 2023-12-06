@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A RelCategoryCity.
@@ -20,14 +21,17 @@ public class RelCategoryCity implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Column(name = "is_show")
-    private Boolean isShow;
+    private Boolean isShow = false;
 
+    @NotNull
     @Column(name = "score")
-    private Double score;
+    private Double score = 10000.0;
 
+    @NotNull
     @Column(name = "is_first")
-    private Boolean isFirst;
+    private Boolean isFirst = false;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

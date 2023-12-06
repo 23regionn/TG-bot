@@ -258,7 +258,7 @@ export const AllChannelsByCityAndCategory = (props: IAllChannelsByCityAndCategor
           sortable
           header="isModerate"
           style={{ width: '2vw' }}
-          body={rowData => (rowData.isModerate !== null ? (rowData.isModerate ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData.isModerate !== null ? (rowData.isModerate ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="score"
@@ -279,7 +279,7 @@ export const AllChannelsByCityAndCategory = (props: IAllChannelsByCityAndCategor
           sortable
           header="Размещение"
           style={{ width: '2vw' }}
-          body={rowData => (rowData.isPay !== null ? (rowData.isPay ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData.isPay !== null ? (rowData.isPay ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="comment"

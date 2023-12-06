@@ -220,7 +220,7 @@ export const AllRelChannelsCityCategory = (props: IAllRelChannelsCityCategoryPro
           sortable
           header="isModerate"
           style={{ width: '2vw' }}
-          body={rowData => (rowData?.chanell?.isModerate !== null ? (rowData?.chanell?.isModerate ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData?.chanell?.isModerate !== null ? (rowData?.chanell?.isModerate ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="scoreChannel"
@@ -234,7 +234,7 @@ export const AllRelChannelsCityCategory = (props: IAllRelChannelsCityCategoryPro
           sortable
           header="isShowChannel"
           style={{ width: '2vw' }}
-          body={rowData => (rowData?.isShowChannel !== null ? (rowData?.isShowChannel ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData?.isShowChannel !== null ? (rowData?.isShowChannel ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="chanell.endPublicDate"
@@ -248,7 +248,7 @@ export const AllRelChannelsCityCategory = (props: IAllRelChannelsCityCategoryPro
           sortable
           header="Размещение"
           style={{ width: '2vw' }}
-          body={rowData => (rowData?.chanell?.isPay !== null ? (rowData?.chanell?.isPay ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData?.chanell?.isPay !== null ? (rowData?.chanell?.isPay ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column field="comment" header="Комментарий" body={rowData => rowData?.comment}></Column>
 

@@ -76,6 +76,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private SearchTypeLogRepository searchTypeLogRepository;
 
+    @Autowired
+    private RelCategoryChannelsRepository relCategoryChannelsRepository;
+
+    @Autowired
+    private CountChannelClickPageLogRepository countChannelClickPageLogRepository;
+
     final BotConfig config;
 
     /*static final String HELP_TEXT = "This bot is created to demonstrate Spring capabilities.\n\n" +
@@ -413,12 +419,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
 
-            var categories = categoryRepository
+            List<CategoryNameAndIdDTO> categories = categoryRepository
                 .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
-                //                .findAllNames()
+                //                                .findAllNames()
                 .stream()
                 .filter(cat -> !cat.getName().isEmpty())
                 .filter(cat -> cat.getName().toLowerCase().contains(query.toLowerCase()))
+                .sorted(Comparator.comparing(CategoryNameAndIdDTO::getIsFirst).reversed().thenComparing(CategoryNameAndIdDTO::getScore))
+                .distinct()
                 .skip(page * PAGE_SIZE) // Пропускаем элементы на предыдущих страницах
                 .limit(PAGE_SIZE) // Ограничиваем количество элементов на текущей странице
                 .collect(Collectors.toList());
@@ -451,12 +459,26 @@ public class TelegramBot extends TelegramLongPollingBot {
             answer.setInlineQueryId(inlineQuery.getId());
             answer.setResults(results);
 
-            // Вычисление следующего offset
+            /*// Вычисление следующего offset
+            int nextOffset = (page + 1) * PAGE_SIZE;
+            if (nextOffset >= categories.size()) {
+                nextOffset = 0;
+            }
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            /*// Вычисление следующего offset
             int nextOffset = (page + 1) * PAGE_SIZE;
             if (nextOffset >= categories.size()) {
                 nextOffset = page * PAGE_SIZE; // Оставляем текущий offset без изменений
             }
-            answer.setNextOffset(Integer.toString(nextOffset));
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categoryRepository.findAllNames().size());
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            // более ли менее подходящий вариант
+            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categories.size());
+            answer.setNextOffset(Integer.toString(nextOffset));*/
 
             try {
                 execute(answer); // Отправка ответа на inline-запрос
@@ -1924,14 +1946,16 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите каналы ⬇⬇⬇");
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
-        List<Chanell> chanellList = new ArrayList<>();
+        List<RelCategoryChannels> list = relCategoryChannelsRepository.getAllByCategory_Id(categoryId);
+        String categoryName = list.size() > 0 ? list.get(0).getCategory().getName() : "";
+        //        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
+        //        List<Chanell> chanellList = new ArrayList<>();
 
-        if (category.isPresent()) {
+        /*if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
                 if (chanell.getIsModerate() != null && chanell.getIsModerate() == true) {
-                    /*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
-                    }*/
+                    *//*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
+                    }*//*
                     chanellList.add(chanell);
                 }
             }
@@ -1944,40 +1968,71 @@ public class TelegramBot extends TelegramLongPollingBot {
                     return o1.getName().compareTo(o2.getName());
                 }
             );
-        }
+        }*/
 
-        if (chanellList.isEmpty()) {
+        list =
+            list
+                .stream()
+                .filter(r -> Boolean.TRUE.equals(r.getIsShowChannel()))
+                .sorted(
+                    (RelCategoryChannels o1, RelCategoryChannels o2) -> {
+                        if (o1.getScoreChannel() != null && o2.getScoreChannel() != null) {
+                            return o1.getScoreChannel().compareTo(o2.getScoreChannel());
+                        } else if (o1.getChanell() != null && o1.getChanell() != null) {
+                            if (o1.getChanell().getName() != null && o2.getChanell().getName() != null) {
+                                return o1.getChanell().getName().compareTo(o2.getChanell().getName());
+                            }
+                        }
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                )
+                .collect(Collectors.toList());
+
+        if (list.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
         } else {
             List<String> allChanellsInformationList = new ArrayList<>();
 
-            for (Chanell chanell : chanellList) {
+            /*for (Chanell chanell : chanellList) {
                 var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n" + chanell.getLink() + "\n";
                 allChanellsInformationList.add(chanString);
+            }*/
+
+            for (RelCategoryChannels rel : list) {
+                if (rel.getChanell() != null) {
+                    if (rel.getChanell().getIsModerate()) {
+                        var chanString =
+                            "\n" +
+                            "Имя канала: " +
+                            rel.getChanell().getName() +
+                            " \n" +
+                            "Ссылка на канал: \n" +
+                            rel.getChanell().getLink() +
+                            "\n";
+                        allChanellsInformationList.add(chanString);
+                    }
+                }
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-
-            //            Map<Integer, List<String>> mapInfoChannels = new LinkedHashMap<>();
 
             Map<Integer, List<String>> map = IntStream
                 .range(0, allChanellsInformationList.size())
                 .boxed()
                 .collect(Collectors.groupingBy(i -> i / 3, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
 
-            //            allChanellsInformationList.stream().limit(3).forEach(str-> stringBuilder.append(str));
             map.get(0).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Категория: " +
-                category.get().getName() +
+                categoryName +
                 "\n" +
                 "Каналов в категории: " +
-                chanellList.size() +
-                "\n" +
+                allChanellsInformationList.size() +
+                /*"\n" +
                 "Всего страниц с каналами: " +
                 map.size() +
                 "\n" +
-                "Текущая страница: 1" +
+                "Текущая страница: 1" +*/
                 "\n" +
                 "Выберите каналы: \n " +
                 stringBuilder +
@@ -2038,10 +2093,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             CategoryLog categoryLog = new CategoryLog();
             categoryLog.setChatId(chatId);
             categoryLog.setCatId(categoryId);
-            categoryLog.setName(Optional.ofNullable(category.get().getName()).orElse(null));
-            categoryLog.setScore(Optional.ofNullable(category.get().getScore()).orElse(null));
+            categoryLog.setName(categoryName);
             categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
             categoryLogRepository.save(categoryLog);
+
+            // АУДИТ ПРОЛИСТЫВАНИЙ КАНАЛОВ
+            countChannelClickPageLogRepository.save(new CountChannelClickPageLog(chatId, 1l, categoryId));
         }
     }
 
@@ -2051,14 +2108,35 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
-        List<Chanell> chanellList = new ArrayList<>();
+        List<RelCategoryChannels> list = relCategoryChannelsRepository.getAllByCategory_Id(categoryId);
+        String categoryName = list.size() > 0 ? list.get(0).getCategory().getName() : "";
 
-        if (category.isPresent()) {
+        list =
+            list
+                .stream()
+                .filter(r -> Boolean.TRUE.equals(r.getIsShowChannel()))
+                .sorted(
+                    (RelCategoryChannels o1, RelCategoryChannels o2) -> {
+                        if (o1.getScoreChannel() != null && o2.getScoreChannel() != null) {
+                            return o1.getScoreChannel().compareTo(o2.getScoreChannel());
+                        } else if (o1.getChanell() != null && o1.getChanell() != null) {
+                            if (o1.getChanell().getName() != null && o2.getChanell().getName() != null) {
+                                return o1.getChanell().getName().compareTo(o2.getChanell().getName());
+                            }
+                        }
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                )
+                .collect(Collectors.toList());
+
+        /* Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
+        List<Chanell> chanellList = new ArrayList<>();*/
+
+        /*if (category.isPresent()) {
             for (Chanell chanell : category.get().getChanellIds()) {
                 if (chanell.getIsModerate() == true) {
-                    /*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
-                    }*/
+                    *//*if ((chanell.getCity() == null || chanell.getCity().isEmpty())) {
+                    }*//*
                     chanellList.add(chanell);
                 }
             }
@@ -2071,17 +2149,33 @@ public class TelegramBot extends TelegramLongPollingBot {
                     return o1.getName().compareTo(o2.getName());
                 }
             );
-        }
+        }*/
 
-        if (chanellList.isEmpty()) {
+        if (list.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
         } else {
             List<String> allChanellsInformationList = new ArrayList<>();
 
-            for (Chanell chanell : chanellList) {
+            for (RelCategoryChannels rel : list) {
+                if (rel.getChanell() != null) {
+                    if (rel.getChanell().getIsModerate()) {
+                        var chanString =
+                            "\n" +
+                            "Имя канала: " +
+                            rel.getChanell().getName() +
+                            " \n" +
+                            "Ссылка на канал: \n" +
+                            rel.getChanell().getLink() +
+                            "\n";
+                        allChanellsInformationList.add(chanString);
+                    }
+                }
+            }
+
+            /*for (Chanell chanell : chanellList) {
                 var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n" + chanell.getLink() + "\n";
                 allChanellsInformationList.add(chanString);
-            }
+            }*/
 
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -2093,16 +2187,16 @@ public class TelegramBot extends TelegramLongPollingBot {
             map.get(pageNumberInMap.intValue()).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Категория: " +
-                category.get().getName() +
+                categoryName +
                 "\n" +
                 "Каналов в категории: " +
-                chanellList.size() +
-                "\n" +
+                allChanellsInformationList.size() +
+                /*"\n" +
                 "Всего страниц с каналами: " +
                 map.size() +
                 "\n" +
                 "Текущая страница: " +
-                (pageNumberInMap + 1) +
+                (pageNumberInMap + 1) +*/
                 "\n" +
                 "Выберите каналы: \n " +
                 stringBuilder +
@@ -2160,6 +2254,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
             log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
+
+            // АУДИТ ПРОЛИСТЫВАНИЙ КАНАЛОВ
+            countChannelClickPageLogRepository.save(new CountChannelClickPageLog(chatId, pageNumberInMap + 1, categoryId));
         }
     }
 
@@ -2175,7 +2272,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         );
         message.setText(
             "Категория: " +
-            category.getName().toUpperCase() +
+            category.getName() +
             "\nКаналов в категории: " +
             category.getCountChannelsInCategory() +
             "\n" +
@@ -2198,7 +2295,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var button1 = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
-        button1.setText("Все каналы " + category.getName().toUpperCase() + " 👁👁‍");
+        button1.setText("Все каналы " + category.getName().toString() + " 👁👁‍");
+
+        // Остановился тут
         button1.setCallbackData(ALL_LIST_CH + ":" + categoryId); // ЗАГЛУШКА НА ПОЛУЧЕНИЕ ВСЕХ КАНАЛОВ
         rowInLine.add(button1);
 
@@ -2353,10 +2452,30 @@ public class TelegramBot extends TelegramLongPollingBot {
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
+        List<RelCategoryChannels> list = relCategoryChannelsRepository.getAllByCategory_Id(categoryId);
+
+        list =
+            list
+                .stream()
+                .filter(r -> Boolean.TRUE.equals(r.getIsShowChannel()))
+                .sorted(
+                    (RelCategoryChannels o1, RelCategoryChannels o2) -> {
+                        if (o1.getScoreChannel() != null && o2.getScoreChannel() != null) {
+                            return o1.getScoreChannel().compareTo(o2.getScoreChannel());
+                        } else if (o1.getChanell() != null && o1.getChanell() != null) {
+                            if (o1.getChanell().getName() != null && o2.getChanell().getName() != null) {
+                                return o1.getChanell().getName().compareTo(o2.getChanell().getName());
+                            }
+                        }
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                )
+                .collect(Collectors.toList());
+
+        /*Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId, ZonedDateTime.now().minusDays(1));
         List<Chanell> chanellList = new ArrayList<>();
         if (category.isPresent()) {
-            message.setText("Выберите каналы категории: " + category.get().getName().toUpperCase());
+            message.setText("Выберите каналы категории: " + category.get().getName().toString());
             for (Chanell chanell : category.get().getChanellIds()) {
                 chanellList.add(chanell);
             }
@@ -2369,10 +2488,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                     return o1.getName().compareTo(o2.getName());
                 }
             );
-        }
-        if (chanellList.isEmpty()) {
+        }*/
+        if (list.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
         } else {
+            List<Chanell> chanellList = new ArrayList<>();
+            for (RelCategoryChannels rel : list) {
+                if (rel.getChanell() != null) {
+                    if (Boolean.TRUE.equals(rel.getChanell().getIsModerate())) {
+                        chanellList.add(rel.getChanell());
+                    }
+                }
+            }
+
             List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
             for (int i = 0; i < chanellList.size(); i = i + 2) {

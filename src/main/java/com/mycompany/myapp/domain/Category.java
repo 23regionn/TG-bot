@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -27,14 +28,17 @@ public class Category implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @NotNull
     @Column(name = "is_show")
-    private Boolean isShow; // отображать или нет
+    private Boolean isShow = false; // отображать или нет
 
+    @NotNull
     @Column(name = "is_first")
-    private Boolean isFirst;
+    private Boolean isFirst = false;
 
+    @NotNull
     @Column(name = "score")
-    private Double score; // Рейтинг
+    private Double score = 10000.0; // Рейтинг
 
     @ManyToMany
     @JoinTable(

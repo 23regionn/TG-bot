@@ -183,13 +183,13 @@ export const AllRelCategoriesByCityId = (props: IRelAllCategoriesByCityIdIAllCat
           field="isFirst"
           sortable
           header="isFirst"
-          body={rowData => (rowData.isFirst !== null ? (rowData.isFirst ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData.isFirst !== null ? (rowData.isFirst ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="isShow"
           sortable
           header="isShow"
-          body={rowData => (rowData.isShow !== null ? (rowData.isShow ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData.isShow !== null ? (rowData.isShow ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="score"

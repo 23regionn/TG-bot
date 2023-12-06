@@ -213,4 +213,9 @@ public class RelCategoryChannelsResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+    @GetMapping("/rel-category-channels/by-category-id/{id}")
+    public List<RelCategoryChannels> getAllByCategory_Id(@PathVariable Long id) {
+        return relCategoryChannelsRepository.getAllByCategory_Id(id);
+    }
 }

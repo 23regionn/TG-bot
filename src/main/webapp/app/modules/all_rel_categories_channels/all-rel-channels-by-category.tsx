@@ -185,10 +185,17 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
           )}
         ></Column>
         <Column
+          field="chanell.isModerate"
+          sortable
+          header="isModerate"
+          style={{ width: '2vw' }}
+          body={rowData => (rowData?.chanell?.isModerate !== null ? (rowData?.chanell?.isModerate ? 'Да' : 'Нет') : 'null')}
+        ></Column>
+        <Column
           field="isShowChannel"
           sortable
           header="isShowChannel"
-          body={rowData => (rowData.isShowChannel !== null ? (rowData.isShowChannel ? 'Да' : 'Нет') : null)}
+          body={rowData => (rowData.isShowChannel !== null ? (rowData.isShowChannel ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column
           field="scoreChannel"
@@ -196,6 +203,20 @@ export const AllRelChannelsByCategory = (props: IAllRelChannelsByCategoryProps) 
           header="Порядковый номер"
           style={{ width: '7.5vw' }}
           body={rowData => (rowData.scoreChannel !== null ? rowData.scoreChannel : 'null')}
+        ></Column>
+        <Column
+          field="chanell.endPublicDate"
+          header="Конечная дата"
+          sortable
+          dataType="date"
+          body={rowData => new Date(rowData?.chanell?.endPublicDate).toLocaleDateString()}
+        ></Column>
+        <Column
+          field="chanell.isPay"
+          sortable
+          header="Размещение"
+          style={{ width: '2vw' }}
+          body={rowData => (rowData?.chanell?.isPay !== null ? (rowData?.chanell?.isPay ? 'Да' : 'Нет') : 'null')}
         ></Column>
         <Column style={{ maxWidth: '15vw' }} field="comment" header="Комментарий" body={rowData => rowData?.comment}></Column>
 

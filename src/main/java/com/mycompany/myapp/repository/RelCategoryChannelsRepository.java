@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RelCategoryChannelsRepository extends JpaRepository<RelCategoryChannels, Long> {
     List<RelCategoryChannels> getAllByCategory(Category category);
+    List<RelCategoryChannels> getAllByCategory_Id(Long id);
 }

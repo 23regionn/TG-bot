@@ -10,7 +10,8 @@ public class CategoryNameAndIdDTO {
     private Long id;
 
     private String name;
-    private Double score = 10000.0;
+    //    private Double score = 10000.0;
+    private Double score;
 
     private Boolean isFirst;
 

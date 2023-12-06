@@ -15,10 +15,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="score_channel" type="double">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="is_show_channel" type="boolean">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>

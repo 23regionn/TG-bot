@@ -36,6 +36,15 @@ public class CountChannelClickPageLog implements Serializable {
     @Column(name = "id_city")
     private Long idCity;
 
+    public CountChannelClickPageLog() {}
+
+    public CountChannelClickPageLog(Long chatId, Long pageNumber, Long idCategory) {
+        this.chatId = chatId;
+        this.pageNumber = pageNumber;
+        this.idCategory = idCategory;
+        this.dateLog = ZonedDateTime.now().plusHours(3l);
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;

@@ -98,17 +98,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     )
     CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(@Param("id") Long id); // глянуть*/
 
-    @Query(
-        "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(category, COUNT(chan)) " +
-        "FROM Category category JOIN category.chanellIds chan " +
-        "WHERE category.id = :id AND chan.cityEntity is null and chan.endPublicDate > :currentDate " +
-        "GROUP BY category"
-    )
-    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(
-        @Param("id") Long id,
-        @Param("currentDate") ZonedDateTime currentDate
-    );
-
     /* @Query(
         "SELECT category FROM Category category LEFT JOIN FETCH category.chanellIds chan WHERE category.id = :id AND" +
             " (chan.city = :city)"
@@ -144,8 +133,26 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // Запрос используется в боте для получения списка всех категорий к отображению (в режиме инлайн и при листалке)
     @Query(
         "SELECT DISTINCT c FROM Category c JOIN c.relCategoryChannels rcc  JOIN rcc.chanell ch WHERE c.isShow = true " +
-        "AND rcc.isShowChannel = true and ch.isModerate = true and ch.endPublicDate > :currentDate " +
+        "AND rcc.isShowChannel = true and rcc.scoreChannel is not null and ch.isModerate = true and ch.endPublicDate > :currentDate " +
+        "AND c.score is not null and c.isShow is not null and c.isFirst is not null " +
         "ORDER BY c.isFirst DESC, c.score DESC"
     )
     List<CategoryNameAndIdDTO> findCategoriesForSearchMethodsBot(@Param("currentDate") ZonedDateTime currentDate);
+
+    // Запрос нужен для получения Количества каналов в конкретной категории
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO(c, COUNT(rcc)) " +
+        "FROM Category c JOIN c.relCategoryChannels rcc  JOIN rcc.chanell ch  " +
+        "WHERE c.id = :id " +
+        "AND rcc.isShowChannel = true and rcc.scoreChannel is not null and ch.isModerate = true and ch.endPublicDate > :currentDate " +
+        "GROUP BY c"
+    )
+    com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO findCategoryByIdWithoutCity(
+        @Param("id") Long id,
+        @Param("currentDate") ZonedDateTime currentDate
+    );
+
+    // тест для инлайн режима
+    @Query("select c from Category c")
+    List<CategoryNameAndIdDTO> findAllNames();
 }

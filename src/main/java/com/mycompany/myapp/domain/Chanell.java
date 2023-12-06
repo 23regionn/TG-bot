@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * A Chanell.
@@ -22,8 +23,9 @@ public class Chanell implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Column(name = "name")
-    private String name;
+    private String name = "default";
 
     @Column(name = "link")
     private String link;
@@ -43,8 +45,9 @@ public class Chanell implements Serializable {
     @Column(name = "price_diapozon")
     private Double priceDiapozon;
 
+    @NotNull
     @Column(name = "is_moderate")
-    private Boolean isModerate;
+    private Boolean isModerate = false;
 
     @Column(name = "show_chanell_in_top_by_category")
     private Boolean showChanellInTopByCategory;
@@ -95,8 +98,9 @@ public class Chanell implements Serializable {
     @Column(name = "last_pay_date")
     private ZonedDateTime lastPayDate;
 
+    @NotNull
     @Column(name = "end_public_date")
-    private ZonedDateTime endPublicDate;
+    private ZonedDateTime endPublicDate = ZonedDateTime.now().minusWeeks(1l);
 
     @Column(name = "comment")
     private String comment;
