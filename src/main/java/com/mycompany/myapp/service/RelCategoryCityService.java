@@ -44,6 +44,24 @@ public class RelCategoryCityService {
         return relCategoryCityRepository.getAllByCity(city);
     }
 
+    public Object existBy() {
+        City city = cityRepository
+            .findById(1l)
+            .orElseThrow(
+                () -> {
+                    throw new BadRequestAlertException(CITY_NOT_FOUND, CITY_NAME, ID_NOT_FOUND);
+                }
+            );
+        Category category = categoryRepository
+            .findById(1l)
+            .orElseThrow(
+                () -> {
+                    throw new BadRequestAlertException(CATEGORY_NOT_FOUND, CATEGORY_NAME, ID_NOT_FOUND);
+                }
+            );
+        return relCategoryCityRepository.existsByCategoryAndCity(category, city);
+    }
+
     public RelCategoryCity createRelCategoryCity(RelCategoryCityCreateDTO entity) {
         City city = cityRepository
             .findById(entity.getIdCity())
@@ -60,14 +78,18 @@ public class RelCategoryCityService {
                 }
             );
 
-        RelCategoryCity relCategoryCity = new RelCategoryCity();
-        relCategoryCity.setCategory(category);
-        relCategoryCity.setCity(city);
-        relCategoryCity.setComment(entity.getComment());
-        relCategoryCity.setScore(entity.getScore());
-        relCategoryCity.setIsFirst(entity.getIsFirst());
-        relCategoryCity.setIsShow(entity.getIsShow());
-        return relCategoryCityRepository.save(relCategoryCity);
+        if (!relCategoryCityRepository.existsByCategoryAndCity(category, city)) {
+            RelCategoryCity relCategoryCity = new RelCategoryCity();
+            relCategoryCity.setCategory(category);
+            relCategoryCity.setCity(city);
+            relCategoryCity.setComment(entity.getComment());
+            relCategoryCity.setScore(entity.getScore());
+            relCategoryCity.setIsFirst(entity.getIsFirst());
+            relCategoryCity.setIsShow(entity.getIsShow());
+            return relCategoryCityRepository.save(relCategoryCity);
+        } else {
+            throw new BadRequestAlertException("Категория уже существет", "Нельзя создать дубль ", "Есть в БД");
+        }
     }
 
     public RelCategoryCityInfoDTO getInfoById(Long id) {

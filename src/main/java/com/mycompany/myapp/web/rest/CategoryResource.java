@@ -281,4 +281,9 @@ public class CategoryResource {
         InfoCategoryCityDTO categoryInfo = categoryService.getInfoAboutCategory(cityId, categoryId);
         return new ResponseEntity<>(categoryInfo, HttpStatus.OK);
     }
+
+    @GetMapping("/fake")
+    public Object fake() {
+        return categoryRepository.findCategoriesByCityIdNew(1l, ZonedDateTime.now());
+    }
 }

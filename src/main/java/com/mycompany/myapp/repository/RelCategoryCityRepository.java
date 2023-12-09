@@ -1,5 +1,6 @@
 package com.mycompany.myapp.repository;
 
+import com.mycompany.myapp.domain.Category;
 import com.mycompany.myapp.domain.City;
 import com.mycompany.myapp.domain.RelCategoryCity;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface RelCategoryCityRepository extends JpaRepository<RelCategoryCity
         "FROM RelCategoryCity rel where rel.id = :id"
     )
     com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityInfoDTO getInfoDTOById(@Param("id") Long id);
+
+    Boolean existsByCategoryAndCity(Category category, City city);
 }

@@ -1428,7 +1428,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         //        String nameCity = cityRepository.findById(cityId).get().getCityName();
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO> categoriesFirst = categoryListFromDB
             .stream()
@@ -1686,12 +1687,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<String> finalList = new ArrayList<>();
         finalList =
             cityRepository
-                .getCitiesNames()
+                //                .getCitiesNames()
+                .getCitiesNamesNewRel(ZonedDateTime.now().minusDays(1))
                 .stream()
-                .sorted()
                 .filter(str -> !str.isEmpty())
                 .map(nameCity -> String.valueOf(nameCity.charAt(0)))
                 .distinct()
+                .sorted()
                 .collect(Collectors.toList());
 
         // МОЖНО ВПИСАТЬ - ПОЛУЧИТЬ СПИСОК ВСЕХ ГОРОДОВ
@@ -1743,7 +1745,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<City> finalList = new ArrayList<>();
         finalList =
             cityRepository
-                .getCitiesByFirstLetter(firstLetter)
+                //                .getCitiesByFirstLetter(firstLetter)
+                .getCitiesByFirstLetterNewRel(firstLetter, ZonedDateTime.now().minusDays(1l))
                 .stream()
                 .sorted(
                     (o1, o2) -> {
@@ -2297,7 +2300,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         rowInLine = new ArrayList<>();
         button1.setText("Все каналы " + category.getName().toString() + " 👁👁‍");
 
-        // Остановился тут
         button1.setCallbackData(ALL_LIST_CH + ":" + categoryId); // ЗАГЛУШКА НА ПОЛУЧЕНИЕ ВСЕХ КАНАЛОВ
         rowInLine.add(button1);
 
@@ -2560,6 +2562,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             executeMessage(message, name);
             log.info("Пользователь с имененем " + name + " получил список городов ");
+            // АУДИТ ПРОЛИСТЫВАНИЙ КАНАЛОВ
+            countChannelClickPageLogRepository.save(new CountChannelClickPageLog(chatId, 10000L, categoryId));
         }
     }
 
@@ -2909,7 +2913,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         String nameCity = cityRepository.findById(cityId).get().getCityName();
 
-        message.setText("Выберите категории по городу - " + nameCity + " ⬇⬇⬇");
+        message.setText("Выберите категорию в городе - " + nameCity + " ⬇⬇⬇");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -2919,7 +2923,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         /*List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository
             .findCategoriesByCity(nameCity);*/
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO> categoriesFirst = categoryListFromDB
             .stream()
@@ -3071,14 +3076,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
 
         String nameCity = cityRepository.findById(cityId).get().getCityName();
-        message.setText("Выберите категории по городу - " + nameCity + " ⬇⬇⬇");
+        message.setText("Выберите категорию в городе - " + nameCity + " ⬇⬇⬇");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
 
         List<CategoryNameAndIdDTO> categoryListFirst = categoryListFromDB
             .stream()

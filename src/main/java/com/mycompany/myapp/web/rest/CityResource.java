@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.CityRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -186,5 +187,11 @@ public class CityResource {
     public Set<String> getAllCityNames() {
         log.debug("REST request to get all City Names");
         return cityRepository.getCitiesNames();
+    }
+
+    @GetMapping("/cities-names-new")
+    public Set<String> getCitiesNamesNewRel() {
+        log.debug("REST request to get all City Names new rel");
+        return cityRepository.getCitiesNamesNewRel(ZonedDateTime.now());
     }
 }

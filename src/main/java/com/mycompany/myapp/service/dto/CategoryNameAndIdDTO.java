@@ -33,6 +33,13 @@ public class CategoryNameAndIdDTO {
         }
     }
 
+    public CategoryNameAndIdDTO(Long id, String name, Double score, Boolean isFirst) {
+        this.id = id;
+        this.name = name;
+        this.score = score;
+        this.isFirst = isFirst;
+    }
+
     public Long getId() {
         return id;
     }

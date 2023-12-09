@@ -155,4 +155,16 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // тест для инлайн режима
     @Query("select c from Category c")
     List<CategoryNameAndIdDTO> findAllNames();
+
+    //Запрос выдает список категорий по конкретному городу
+    @Query(
+        "select DISTINCT new com.mycompany.myapp.service.dto.CategoryNameAndIdDTO(relCatCit.id, cat.name, relCatCit.score, relCatCit.isFirst )" +
+        " from Category cat join cat.relCategoryCities relCatCit join relCatCit.city city " +
+        " join relCatCit.relCategoryCityChannels relCCCh join relCCCh.chanell ch" +
+        " where city.id = :cityId " +
+        " and ch.isModerate = true and ch.endPublicDate > :currentDate " +
+        " and relCCCh.size > 0 and relCCCh.isShowChannel = true " +
+        " and relCatCit.isShow = true "
+    )
+    List<CategoryNameAndIdDTO> findCategoriesByCityIdNew(@Param("cityId") Long cityId, @Param("currentDate") ZonedDateTime currentDate);
 }
