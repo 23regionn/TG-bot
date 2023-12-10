@@ -213,9 +213,4 @@ public class RelCategoryCityChannelsResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
-    @GetMapping("/ork")
-    public Object findRelCategoryCityChannelsByRelCategoryCityId() {
-        return relCategoryCityChannelsRepository.findRelCategoryCityChannelsByRelCategoryCityId(1l, ZonedDateTime.now());
-    }
 }
