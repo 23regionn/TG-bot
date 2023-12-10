@@ -32,7 +32,7 @@ public class RelCategoryCityChannels implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "channel_id")
-    @JsonIgnoreProperties(value = { "relCategoryCityChannels" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "relCategoryCityChannels, relCategoryCity" }, allowSetters = true)
     private Chanell chanell;
 
     @ManyToOne

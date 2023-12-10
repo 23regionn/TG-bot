@@ -3,6 +3,7 @@ package com.mycompany.myapp.repository;
 import com.mycompany.myapp.domain.Category;
 import com.mycompany.myapp.service.dto.CategoryNameAndIdDTO;
 import com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO;
+import com.mycompany.myapp.service.dto.category_name.CategoryAndNameDTO;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -167,4 +168,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         " and relCatCit.isShow = true "
     )
     List<CategoryNameAndIdDTO> findCategoriesByCityIdNew(@Param("cityId") Long cityId, @Param("currentDate") ZonedDateTime currentDate);
+
+    // Запрос на получение категории и города по релсу
+    @Query(
+        "SELECT new com.mycompany.myapp.service.dto.category_name.CategoryAndNameDTO(c.id, c.name, city.id, city.cityName) " +
+        " from Category c join c.relCategoryCities rc join rc.city city " +
+        " where rc.id = :relCategoryCityId"
+    )
+    Optional<CategoryAndNameDTO> findByRelCategoryCitiesId(@Param("relCategoryCityId") Long relCategoryCityId);
 }

@@ -6,6 +6,7 @@ import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.TgUserRepositoryService;
 import com.mycompany.myapp.service.dto.CategoryNameAndIdDTO;
 import com.mycompany.myapp.service.dto.CategoryWithCountChanellsDTO;
+import com.mycompany.myapp.service.dto.category_name.CategoryAndNameDTO;
 import com.vdurmont.emoji.EmojiParser;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -81,6 +82,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private CountChannelClickPageLogRepository countChannelClickPageLogRepository;
+
+    @Autowired
+    private RelCategoryCityChannelsRepository relCategoryCityChannelsRepository;
 
     final BotConfig config;
 
@@ -643,10 +647,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             // Для городов
             else if (callbackData.contains(NEXT_PAGE_GOROD_CAT)) {
                 Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
-                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
-                Long cityId = Long.valueOf(callbackData.split(":")[3]);
-                getChanellByCityNameByCategoryIdAndPageNumber(chatId, nameForLog, cityId, categoryId, pageNumber, messageId);
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[2]);
+                //                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                //                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
+                //                Long cityId = Long.valueOf(callbackData.split(":")[3]);
+                getChanellByCityNameByCategoryIdAndPageNumber(chatId, nameForLog, relCategoryCityId, pageNumber, messageId);
             }
             // Для городов _______
             else if (callbackData.contains(ANY_PAGE_GOROD_IN_CAT)) {
@@ -669,10 +674,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Long cityId = Long.valueOf(callbackData.split(":")[1]);
                 getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, true, messageId);
             } else if (callbackData.contains(TEMA_GOROD)) {
-                //                String cityName = String.valueOf(callbackData.split(":")[1]);
-                Long cityId = Long.valueOf(callbackData.split(":")[1]);
+                /*Long cityId = Long.valueOf(callbackData.split(":")[1]);
                 Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                getChanellByCityNameByCategoryId(chatId, nameForLog, cityId, categoryId);
+                getChanellByCityNameByCategoryId(chatId, nameForLog, cityId, categoryId);*/
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
+                getChanellByCityNameByCategoryId(chatId, nameForLog, relCategoryCityId);
             } /*else if(callbackData.contains(PRICEDIAP)){
                 String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
                 String[] strings = callbackData.split(IDCAT);
@@ -1428,8 +1434,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         //        String nameCity = cityRepository.findById(cityId).get().getCityName();
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
-        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityIdNew( //            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+            cityId,
+            ZonedDateTime.now().minusDays(1)
+        );
 
         List<CategoryNameAndIdDTO> categoriesFirst = categoryListFromDB
             .stream()
@@ -2658,7 +2666,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void getChanellByCityNameByCategoryId(long chatId, String name, Long cityId, Long categoryId) {
+    private void getChanellByCityNameByCategoryId(long chatId, String name, Long relCategoryCityId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
@@ -2667,28 +2675,48 @@ public class TelegramBot extends TelegramLongPollingBot {
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        String nameCity = cityRepository.findById(cityId).get().getCityName();
-
-        CategoryNameAndIdDTO category = categoryRepository.findCategoryById(categoryId);
+        CategoryAndNameDTO categoryCity = categoryRepository.findByRelCategoryCitiesId(relCategoryCityId).orElse(new CategoryAndNameDTO());
 
         /*List<Chanell> chanellList = chanellRepository.findChannelsByCityAndCategory(nameCity, categoryId)
             .stream().filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());*/
-        List<Chanell> chanellList = chanellRepository
+        /*List<Chanell> chanellList = chanellRepository
             .findChannelsByCityIDAndCategory(cityId, categoryId, ZonedDateTime.now().minusDays(1))
             .stream()
             .filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
+            .collect(Collectors.toList());*/
+
+        List<RelCategoryCityChannels> rels = relCategoryCityChannelsRepository
+            //            .findChannelsByCityIDAndCategory(cityId, categoryId, ZonedDateTime.now().minusDays(1))
+            .findRelCategoryCityChannelsByRelCategoryCityId(relCategoryCityId, ZonedDateTime.now().minusDays(1))
+            .stream()
+            .filter(c -> Boolean.TRUE.equals(c.getIsShowChannel()))
+            .filter(c -> c.getScoreChannel() != null)
+            .sorted(Comparator.comparing(c -> c.getScoreChannel()))
             .collect(Collectors.toList());
 
-        if (chanellList.isEmpty()) {
+        if (rels.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
         } else {
             List<String> allChanellsInformationList = new ArrayList<>();
-            for (Chanell chanell : chanellList) {
+            /*for (Chanell chanell : chanellList) {
                 var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n" + chanell.getLink() + "\n";
                 allChanellsInformationList.add(chanString);
+            }*/
+            for (RelCategoryCityChannels rel : rels) {
+                if (rel.getChanell() != null) {
+                    var chanString =
+                        "\n" +
+                        "Имя канала: " +
+                        rel.getChanell().getName() +
+                        " \n" +
+                        "Ссылка на канал: \n" +
+                        rel.getChanell().getLink() +
+                        "\n";
+                    allChanellsInformationList.add(chanString);
+                }
             }
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -2700,18 +2728,18 @@ public class TelegramBot extends TelegramLongPollingBot {
             map.get(0).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Город: " +
-                nameCity +
+                categoryCity.getNameCity() +
                 "\n" +
                 "Категория: " +
-                category.getName() +
-                "\n" +
+                categoryCity.getNameCat() +
+                /*"\n" +
                 "Каналов в категории: " +
                 chanellList.size() +
                 "\n" +
                 "Всего страниц с каналами: " +
                 map.size() +
                 "\n" +
-                "Текущая страница: 1" +
+                "Текущая страница: 1" +*/
                 "\n" +
                 "Выберите каналы: \n " +
                 stringBuilder +
@@ -2732,14 +2760,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                 button1.setText("стр.№ 1/" + map.size());
                 button2.setText("▶");
 
-                button1.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + cityId);
-                button2.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + 1 + ":" + categoryId + ":" + cityId);
+                button1.setCallbackData(
+                    ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryCity.getIdCat() + ":" + categoryCity.getIdCity()
+                );
+                //                button2.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + 1 + ":" + categoryCity.getIdCat() + ":" + categoryCity.getIdCity());
+                button2.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + 1 + ":" + relCategoryCityId);
 
                 rowInLine.add(button1);
                 rowInLine.add(button2);
             } else if (map.size() == 1) {
-                button1.setText(nameCity + ": другие категории " + " ✏");
-                button1.setCallbackData(CITY + ":" + cityId);
+                button1.setText(categoryCity.getNameCity() + ": другие категории " + " ✏");
+                button1.setCallbackData(CITY + ":" + categoryCity.getIdCity());
                 rowInLine.add(button1);
                 rowsInLine.add(rowInLine);
 
@@ -2771,15 +2802,19 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = " + msId);
             // АУДИТ ПО НАЖАТИЮ НА КАТЕГОРИИ
+
             CategoryLog categoryLog = new CategoryLog();
             categoryLog.setChatId(chatId);
-            categoryLog.setCatId(categoryId);
-            categoryLog.setName(category.getName());
-            categoryLog.setScore(category.getScore());
+            categoryLog.setCatId(categoryCity.getIdCat());
+            categoryLog.setName(categoryCity.getNameCat());
+            categoryLog.setCityId(categoryCity.getIdCity());
+            categoryLog.setCityName(categoryCity.getNameCity());
             categoryLog.setDateLog(ZonedDateTime.now().plusHours(3l));
-            categoryLog.setCityName(nameCity);
-            categoryLog.setCityId(cityId);
             categoryLogRepository.save(categoryLog);
+
+            countChannelClickPageLogRepository.save(
+                new CountChannelClickPageLog(chatId, 1l, categoryCity.getIdCat(), categoryCity.getIdCity())
+            );
         }
     }
 
@@ -2788,8 +2823,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void getChanellByCityNameByCategoryIdAndPageNumber(
         long chatId,
         String name,
-        Long cityId,
-        Long categoryId,
+        Long relCategoryCityId,
         Long pageNumberInMap,
         long messageId
     ) {
@@ -2801,30 +2835,55 @@ public class TelegramBot extends TelegramLongPollingBot {
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        CategoryNameAndIdDTO category = categoryRepository.findCategoryById(categoryId);
+        /*CategoryNameAndIdDTO category = categoryRepository.findCategoryById(categoryId);
 
-        String nameCity = cityRepository.findById(cityId).get().getCityName();
+        String nameCity = cityRepository.findById(cityId).get().getCityName();*/
+
+        CategoryAndNameDTO categoryCity = categoryRepository.findByRelCategoryCitiesId(relCategoryCityId).orElse(new CategoryAndNameDTO());
 
         /*List<Chanell> chanellList = chanellRepository.findChannelsByCityAndCategory(nameCity, categoryId)
             .stream().filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
             .collect(Collectors.toList());*/
 
-        List<Chanell> chanellList = chanellRepository
+        /*List<Chanell> chanellList = chanellRepository
             .findChannelsByCityIDAndCategory(cityId, categoryId, ZonedDateTime.now().minusDays(1))
             .stream()
             .filter(c -> c.getScore() != null)
             .sorted(Comparator.comparing(Chanell::getScore))
+            .collect(Collectors.toList());*/
+
+        List<RelCategoryCityChannels> rels = relCategoryCityChannelsRepository
+            //            .findChannelsByCityIDAndCategory(cityId, categoryId, ZonedDateTime.now().minusDays(1))
+            .findRelCategoryCityChannelsByRelCategoryCityId(relCategoryCityId, ZonedDateTime.now().minusDays(1))
+            .stream()
+            .filter(c -> Boolean.TRUE.equals(c.getIsShowChannel()))
+            .filter(c -> c.getScoreChannel() != null)
+            .sorted(Comparator.comparing(c -> c.getScoreChannel()))
             .collect(Collectors.toList());
 
-        if (chanellList.isEmpty()) {
+        if (rels.isEmpty()) {
             sendMessage(chatId, "Что-то пошло ни так😆 Попробуйте заново🤣", name);
         } else {
             List<String> allChanellsInformationList = new ArrayList<>();
 
-            for (Chanell chanell : chanellList) {
+            /*for (Chanell chanell : chanellList) {
                 var chanString = "\n" + "Имя канала: " + chanell.getName() + " \n" + "Ссылка на канал: \n" + chanell.getLink() + "\n";
                 allChanellsInformationList.add(chanString);
+            }*/
+
+            for (RelCategoryCityChannels rel : rels) {
+                if (rel.getChanell() != null) {
+                    var chanString =
+                        "\n" +
+                        "Имя канала: " +
+                        rel.getChanell().getName() +
+                        " \n" +
+                        "Ссылка на канал: \n" +
+                        rel.getChanell().getLink() +
+                        "\n";
+                    allChanellsInformationList.add(chanString);
+                }
             }
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -2837,12 +2896,12 @@ public class TelegramBot extends TelegramLongPollingBot {
             map.get(pageNumberInMap.intValue()).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Город: " +
-                nameCity +
+                categoryCity.getNameCity() +
                 "\n" +
                 "Категория: " +
-                category.getName() +
+                categoryCity.getNameCat() +
                 "\n" +
-                "Каналов в категории: " +
+                /*"Каналов в категории: " +
                 chanellList.size() +
                 "\n" +
                 "Всего страниц с каналами: " +
@@ -2850,7 +2909,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "\n" +
                 "Текущая страница: " +
                 (pageNumberInMap + 1) +
-                "\n" +
+                "\n" +*/
                 "Выберите каналы: \n " +
                 stringBuilder +
                 " \n\nЕщё каналы ниже⬇⬇⬇"
@@ -2867,30 +2926,36 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if ((map.size() - 1) > pageNumberInMap && pageNumberInMap != 0) {
                 button1.setText("◀");
-                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":" + categoryId + ":" + cityId);
+                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":" + relCategoryCityId);
 
                 button2.setText("стр.№ " + (pageNumberInMap + 1) + "/" + map.size());
-                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + cityId);
+                button2.setCallbackData(
+                    ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryCity.getIdCat() + ":" + categoryCity.getIdCity()
+                );
                 button3.setText("▶");
-                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + categoryId + ":" + cityId);
+                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + relCategoryCityId);
 
                 rowInLine.add(button1);
                 rowInLine.add(button2);
                 rowInLine.add(button3);
             } else if (map.size() > pageNumberInMap && pageNumberInMap == 0) {
                 button2.setText("стр.№ " + (pageNumberInMap + 1) + "/" + map.size());
-                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + cityId);
+                button2.setCallbackData(
+                    ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryCity.getIdCat() + ":" + categoryCity.getIdCity()
+                );
                 button3.setText("▶");
-                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + categoryId + ":" + cityId);
+                button3.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap + 1) + ":" + relCategoryCityId);
 
                 rowInLine.add(button2);
                 rowInLine.add(button3);
             } else if ((map.size() - 1) == pageNumberInMap) {
                 button1.setText("◀");
-                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":" + categoryId + ":" + cityId);
+                button1.setCallbackData(NEXT_PAGE_GOROD_CAT + ":" + (pageNumberInMap - 1) + ":" + relCategoryCityId);
 
                 button2.setText("стр.№ " + (pageNumberInMap + 1) + "/" + map.size());
-                button2.setCallbackData(ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + categoryId + ":" + cityId);
+                button2.setCallbackData(
+                    ANY_PAGE_GOROD_IN_CAT + ":" + map.size() + ":" + +categoryCity.getIdCat() + ":" + categoryCity.getIdCity()
+                );
 
                 rowInLine.add(button1);
                 rowInLine.add(button2);
@@ -2903,6 +2968,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
             log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
+
+            // АУДИТ ПО НОМЕРУ СТРАНИЦЫ ЛИСТАЛКИ КАНАЛОВ
+            countChannelClickPageLogRepository.save(
+                new CountChannelClickPageLog(chatId, pageNumberInMap + 1, categoryCity.getIdCat(), categoryCity.getIdCity())
+            );
         }
     }
 
@@ -2923,8 +2993,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         /*List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository
             .findCategoriesByCity(nameCity);*/
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
-        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityIdNew( //            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+            cityId,
+            ZonedDateTime.now().minusDays(1)
+        );
 
         List<CategoryNameAndIdDTO> categoriesFirst = categoryListFromDB
             .stream()
@@ -2960,11 +3032,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                 if (i < categoriesToShow.size()) {
                     button1.setText(categoriesToShow.get(i).getName());
-                    button1.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + categoriesToShow.get(i).getId());
+                    //                    button1.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + categoriesToShow.get(i).getId());
+                    button1.setCallbackData(TEMA_GOROD + ":" + categoriesToShow.get(i).getId());
                     rowInLine.add(button1);
                     if (i + 1 < categoriesToShow.size()) {
                         button2.setText(categoriesToShow.get(i + 1).getName());
-                        button2.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + categoriesToShow.get(i + 1).getId());
+                        //                        button2.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + categoriesToShow.get(i + 1).getId());
+                        button2.setCallbackData(TEMA_GOROD + ":" + categoriesToShow.get(i + 1).getId());
                         rowInLine.add(button2);
                     }
                 }
@@ -3060,6 +3134,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 executeMessage(message, name);
             }
             log.info("Пользователь с имененем " + name + " получил список категорий ");
+
+            // Аудит пролистывания страниц категорий
+            searchTypeLogRepository.save(new SearchTypeLog(chatId, true, 1l, cityId));
         }
     }
 
@@ -3083,8 +3160,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         // создание списка со списками с кнопками в ответе на сообщение
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(); // лист со строками для клавиаутуры
 
-        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository//            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
-        .findCategoriesByCityIdNew(cityId, ZonedDateTime.now().minusDays(1));
+        List<CategoryNameAndIdDTO> categoryListFromDB = categoryRepository.findCategoriesByCityIdNew( //            .findCategoriesByCityId(cityId, ZonedDateTime.now().minusDays(1));
+            cityId,
+            ZonedDateTime.now().minusDays(1)
+        );
 
         List<CategoryNameAndIdDTO> categoryListFirst = categoryListFromDB
             .stream()
@@ -3114,11 +3193,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (i < groupedCategories.get(numberInMap).size()) {
                 button1.setText(groupedCategories.get(numberInMap).get(i).getName());
-                button1.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + groupedCategories.get(numberInMap).get(i).getId());
+                //                button1.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + groupedCategories.get(numberInMap).get(i).getId());
+                button1.setCallbackData(TEMA_GOROD + ":" + groupedCategories.get(numberInMap).get(i).getId());
                 rowInLine.add(button1);
                 if (i + 1 < groupedCategories.get(numberInMap).size()) {
                     button2.setText(groupedCategories.get(numberInMap).get(i + 1).getName());
-                    button2.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + groupedCategories.get(numberInMap).get(i + 1).getId());
+                    //                    button2.setCallbackData(TEMA_GOROD + ":" + cityId + ":" + groupedCategories.get(numberInMap).get(i + 1).getId());
+                    button2.setCallbackData(TEMA_GOROD + ":" + groupedCategories.get(numberInMap).get(i + 1).getId());
                     rowInLine.add(button2);
                 }
             }
@@ -3184,6 +3265,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
         log.info("Пользователь с имененем " + name + " получил список страниц категорий ");
+
+        // Аудит пролистывания страниц категорий
+        searchTypeLogRepository.save(new SearchTypeLog(chatId, true, pageNumber.longValue(), cityId));
     }
 
     /*// Список категорий по имени города - старая версия

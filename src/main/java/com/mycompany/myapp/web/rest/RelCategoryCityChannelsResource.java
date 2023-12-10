@@ -9,6 +9,7 @@ import com.mycompany.myapp.service.dto.relCategoryCityChannels.RelCategoryCityCh
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -211,5 +212,10 @@ public class RelCategoryCityChannelsResource {
             .created(new URI("/api/rel-category-city-channels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/ork")
+    public Object findRelCategoryCityChannelsByRelCategoryCityId() {
+        return relCategoryCityChannelsRepository.findRelCategoryCityChannelsByRelCategoryCityId(1l, ZonedDateTime.now());
     }
 }
