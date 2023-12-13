@@ -179,14 +179,7 @@ public class CategoryResource {
     @GetMapping("/categories/{id}")
     public ResponseEntity<Category> getCategory(@PathVariable Long id) {
         log.debug("REST request to get Category : {}", id);
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(id, ZonedDateTime.now().minusDays(1));
-        return ResponseUtil.wrapOrNotFound(category);
-    }
-
-    @GetMapping("/categorie-demo")
-    public ResponseEntity<Category> getCategoryDemo() {
-        log.debug("REST request to get Category : {}");
-        Optional<Category> category = categoryRepository.findOneWithEagerRelationshipsWithCityId(1l, 1l, ZonedDateTime.now().minusDays(1));
+        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(category);
     }
 
@@ -255,35 +248,10 @@ public class CategoryResource {
         return ResponseUtil.wrapOrNotFound(category);
     }
 
-    @GetMapping("/categories/by-city-id/{id}")
-    public ResponseEntity<List<Category>> getCategoryByCityId(@PathVariable Long id) {
-        log.debug("REST request to get Category by - city : {}", id);
-        List<Category> categories = categoryRepository.findCategoriesByCityId(id);
-        return new ResponseEntity<>(categories, HttpStatus.OK);
-    }
-
-    @PostMapping("/categories-add-for-city")
-    public ResponseEntity<Category> addCategoryToCity(@RequestBody CategoryCityDTO dto) {
-        log.debug("REST request to add Category to City : {}", dto);
-        if (dto.getIdCat() == null) {
-            throw new BadRequestAlertException("Category cannot already have an ID", ENTITY_NAME, "id not exists");
-        }
-        if (dto.getIdCity() == null) {
-            throw new BadRequestAlertException("City cannot already have an ID", "City", "id not exists");
-        }
-        Category result = categoryService.addCategoryToCity(dto.getIdCat(), dto.getIdCity());
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @GetMapping("/categories/info-with-city/{cityId}/{categoryId}")
     public ResponseEntity<InfoCategoryCityDTO> getInfoAboutCategoryAndCity(@PathVariable Long cityId, @PathVariable Long categoryId) {
         log.debug("REST request to get info About category by City and Category : {} {}", cityId, categoryId);
         InfoCategoryCityDTO categoryInfo = categoryService.getInfoAboutCategory(cityId, categoryId);
         return new ResponseEntity<>(categoryInfo, HttpStatus.OK);
-    }
-
-    @GetMapping("/fake")
-    public Object fake() {
-        return categoryRepository.findCategoriesByCityIdNew(1l, ZonedDateTime.now());
     }
 }

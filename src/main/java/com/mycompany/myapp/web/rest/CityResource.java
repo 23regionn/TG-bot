@@ -183,12 +183,6 @@ public class CityResource {
             .build();
     }
 
-    @GetMapping("/cities-names")
-    public Set<String> getAllCityNames() {
-        log.debug("REST request to get all City Names");
-        return cityRepository.getCitiesNames();
-    }
-
     @GetMapping("/cities-names-new")
     public Set<String> getCitiesNamesNewRel() {
         log.debug("REST request to get all City Names new rel");

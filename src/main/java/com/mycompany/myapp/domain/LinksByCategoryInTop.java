@@ -105,7 +105,7 @@ public class LinksByCategoryInTop implements Serializable {
     private Chanell chanell;
 
     @ManyToMany(mappedBy = "linksByCategoryInTopIds")
-    @JsonIgnoreProperties(value = { "categoryLogs", "chanellIds", "linksByCategoryInTopIds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "categoryLogs", "linksByCategoryInTopIds" }, allowSetters = true)
     private Set<Category> categoryIds = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

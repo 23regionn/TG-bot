@@ -21,13 +21,6 @@ public class CategoryWithCountChanellsDTO {
         if (category.getId() != null) {
             this.id = category.getId();
         }
-
-        /*if(category.getLong1() != null){
-            this.long1 = category.getLong1();
-        }*/
-        if (category.getChanellIds() != null) {
-            countChannelsInCategory = category.getChanellIds().size();
-        }
     }
 
     public CategoryWithCountChanellsDTO(Category category, long countChan) {
@@ -41,12 +34,7 @@ public class CategoryWithCountChanellsDTO {
             this.id = category.getId();
         }
 
-        /*if(category.getLong1() != null){
-            this.long1 = category.getLong1();
-        }*/
-        if (category.getChanellIds() != null) {
-            this.countChannelsInCategory = countChan;
-        }
+        this.countChannelsInCategory = countChan;
     }
 
     public long getCountChannelsInCategory() {

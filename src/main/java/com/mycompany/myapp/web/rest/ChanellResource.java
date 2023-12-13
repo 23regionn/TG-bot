@@ -214,13 +214,6 @@ public class ChanellResource {
         return ResponseUtil.wrapOrNotFound(chanell);
     }
 
-    @GetMapping("/chanells/by-category-id/{id}")
-    public ResponseEntity<List<Chanell>> getChannelsByCategoryId(@PathVariable Long id) {
-        log.debug("REST request to get Chanell : {}", id);
-        List<Chanell> chanells = channelService.getChannelsByCategoryId(id);
-        return new ResponseEntity<>(chanells, HttpStatus.OK);
-    }
-
     /**
      * {@code DELETE  /chanells/:id} : delete the "id" chanell.
      *
@@ -235,24 +228,6 @@ public class ChanellResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    @PostMapping("/chanells/with-category-id")
-    public ResponseEntity<Chanell> createChannelWithCategoryId(@RequestBody ChanellPostDTO chanellPostDTO) throws URISyntaxException {
-        log.debug("REST request to save ChanellPostDTO from page with channels Category : {}", chanellPostDTO);
-
-        Chanell result = channelService.createChannelByCategory(chanellPostDTO);
-        return ResponseEntity
-            .created(new URI("/api/chanells/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    @GetMapping("/chanells/by-city-id-and-category-id/{cityId}/{categoryId}")
-    public ResponseEntity<List<Chanell>> getChannelsByCityIdAndCategoryId(@PathVariable Long cityId, @PathVariable Long categoryId) {
-        log.debug("REST request to get Chanells by City and Category : {} {}", cityId, categoryId);
-        List<Chanell> chanells = channelService.getChannelsByCityIdAndCategoryId(cityId, categoryId);
-        return new ResponseEntity<>(chanells, HttpStatus.OK);
     }
 
     @GetMapping("/chanells-only-id-and-name")

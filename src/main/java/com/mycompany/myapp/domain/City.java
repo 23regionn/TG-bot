@@ -32,10 +32,6 @@ public class City implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "cityEntity")
-    @JsonIgnoreProperties(value = { "cityEntity" }, allowSetters = true)
-    private Set<Chanell> chanells = new HashSet<>();
-
     @OneToMany(mappedBy = "city")
     @JsonIgnoreProperties(value = { "city" }, allowSetters = true)
     private Set<RelCategoryCity> relCategoryCities = new HashSet<>();
@@ -91,14 +87,6 @@ public class City implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Set<Chanell> getChanells() {
-        return chanells;
-    }
-
-    public void setChanells(Set<Chanell> chanells) {
-        this.chanells = chanells;
     }
 
     public Set<RelCategoryCity> getRelCategoryCities() {

@@ -3,7 +3,6 @@ package com.mycompany.myapp.service;
 import static com.mycompany.myapp.service.Constants.*;
 
 import com.mycompany.myapp.domain.Category;
-import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.domain.City;
 import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
@@ -25,29 +24,6 @@ public class CategoryService {
         this.chanellRepository = chanellRepository;
         this.categoryRepository = categoryRepository;
         this.cityRepository = cityRepository;
-    }
-
-    public Category addCategoryToCity(Long categoryId, Long cityId) {
-        Category category = categoryRepository
-            .findById(categoryId)
-            .orElseThrow(
-                () -> {
-                    throw new BadRequestAlertException(CATEGORY_NOT_FOUND, CATEGORY_NAME, ID_NOT_FOUND);
-                }
-            );
-
-        City city = cityRepository
-            .findById(cityId)
-            .orElseThrow(
-                () -> {
-                    throw new BadRequestAlertException(CITY_NOT_FOUND, CITY_NAME, ID_NOT_FOUND);
-                }
-            );
-
-        Chanell chanell = new Chanell();
-        chanell.setCityEntity(city);
-        chanell = chanellRepository.save(chanell);
-        return categoryRepository.save(category.addChanellId(chanell));
     }
 
     public InfoCategoryCityDTO getInfoAboutCategory(Long cityId, Long categoryId) {

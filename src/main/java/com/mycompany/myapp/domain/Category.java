@@ -42,21 +42,11 @@ public class Category implements Serializable {
 
     @ManyToMany
     @JoinTable(
-        name = "rel_category__chanell_id",
-        joinColumns = @JoinColumn(name = "category_id"),
-        inverseJoinColumns = @JoinColumn(name = "chanell_id_id")
-    )
-    //    @Fetch(value = FetchMode.SUBSELECT)
-    @JsonIgnoreProperties(value = { "linksByCategoryInTops", "chanellLogs", "tGUser", "categoryIds" }, allowSetters = true)
-    private Set<Chanell> chanellIds = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(
         name = "rel_category__links_by_category_in_top_id",
         joinColumns = @JoinColumn(name = "category_id"),
         inverseJoinColumns = @JoinColumn(name = "links_by_category_in_top_id_id")
     )
-    @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell" }, allowSetters = true)
     private Set<LinksByCategoryInTop> linksByCategoryInTopIds = new HashSet<>();
 
     @OneToMany(mappedBy = "category")
@@ -108,31 +98,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Chanell> getChanellIds() {
-        return this.chanellIds;
-    }
-
-    public Category chanellIds(Set<Chanell> chanells) {
-        this.setChanellIds(chanells);
-        return this;
-    }
-
-    public Category addChanellId(Chanell chanell) {
-        this.chanellIds.add(chanell);
-        chanell.getCategoryIds().add(this);
-        return this;
-    }
-
-    public Category removeChanellId(Chanell chanell) {
-        this.chanellIds.remove(chanell);
-        chanell.getCategoryIds().remove(this);
-        return this;
-    }
-
-    public void setChanellIds(Set<Chanell> chanells) {
-        this.chanellIds = chanells;
     }
 
     public Set<LinksByCategoryInTop> getLinksByCategoryInTopIds() {

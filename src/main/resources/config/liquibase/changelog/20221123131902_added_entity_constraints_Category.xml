@@ -9,18 +9,6 @@
     <changeSet id="20221123131902-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="category_id"
-                                 baseTableName="rel_category__chanell_id"
-                                 constraintName="fk_rel_category__chanell_id__category_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="category"/>
-
-        <addForeignKeyConstraint baseColumnNames="chanell_id_id"
-                                 baseTableName="rel_category__chanell_id"
-                                 constraintName="fk_rel_category__chanell_id__chanell_id_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="chanell"/>
-
-        <addForeignKeyConstraint baseColumnNames="category_id"
                                  baseTableName="rel_category__links_by_category_in_top_id"
                                  constraintName="fk_rel_category__links_by_category_in_top_id__category_id"
                                  referencedColumnNames="id"

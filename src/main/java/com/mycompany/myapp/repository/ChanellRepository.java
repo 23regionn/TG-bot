@@ -20,25 +20,8 @@ public interface ChanellRepository extends JpaRepository<Chanell, Long> {
     @Query("select c from Chanell c " + " where c.priceDiapozon = :priceDiapozon")
     Set<Chanell> getAllByPriceDiapozon(@Param("priceDiapozon") Double chatId);
 
-    /* @Query("select c from Chanell c " + " where c.categoryIds = :categoryId")
-    Set<Chanell> getByCategoryId(@Param("categoryId") Set<Category> categoryId);*/
-    //    Set<Chanell> getByCategoryId(@Param("categoryId") Long categoryId);
-
     @Query("select c from Chanell c " + " where c.tGUser = :tgUser")
     List<Chanell> getAllByTGUser(@Param("tgUser") TGUser tgUser);
-
-    @Query(
-        "SELECT DISTINCT ch FROM Chanell ch " +
-        "JOIN ch.categoryIds cat join ch.cityEntity ce " +
-        "WHERE ce.id = :cityId AND cat.id = :category and ch.endPublicDate > :currentDate "
-    )
-    List<Chanell> findChannelsByCityIDAndCategory(
-        @Param("cityId") Long cityId,
-        @Param("category") Long category,
-        @Param("currentDate") ZonedDateTime currentDate
-    );
-
-    List<Chanell> getAllByCategoryIdsAndCityEntity(Category category, City cityEntity);
 
     // Rest- запросы для фронта
     @Query("SELECT new com.mycompany.myapp.service.dto.ChannelNameAndIDDTO(chan.id, chan.name) " + "FROM Chanell chan")

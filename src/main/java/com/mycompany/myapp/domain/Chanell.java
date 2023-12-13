@@ -62,11 +62,6 @@ public class Chanell implements Serializable {
     @JsonIgnoreProperties(value = { "linksByCategoryInTopLogs", "chanell", "categoryIds" }, allowSetters = true)
     private Set<LinksByCategoryInTop> linksByCategoryInTops = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    @JsonIgnoreProperties(value = { "chanells" }, allowSetters = true)
-    private City cityEntity;
-
     @OneToMany(mappedBy = "chanell")
     @JsonIgnoreProperties(value = { "chanell" }, allowSetters = true)
     private Set<RelCategoryChannels> relCategoryChannels = new HashSet<>();
@@ -87,10 +82,6 @@ public class Chanell implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "balance", "chanells", "offerFromCostumers", "reviews", "pays", "tGUserLogs" }, allowSetters = true)
     private TGUser tGUser;
-
-    @ManyToMany(mappedBy = "chanellIds")
-    @JsonIgnoreProperties(value = { "categoryLogs", "chanellIds", "linksByCategoryInTopIds" }, allowSetters = true)
-    private Set<Category> categoryIds = new HashSet<>();
 
     @Column(name = "start_date")
     private ZonedDateTime startDate;
@@ -154,14 +145,6 @@ public class Chanell implements Serializable {
 
     public void setIsPay(Boolean pay) {
         isPay = pay;
-    }
-
-    public City getCityEntity() {
-        return cityEntity;
-    }
-
-    public void setCityEntity(City cityId) {
-        this.cityEntity = cityId;
     }
 
     public Long getId() {
@@ -377,37 +360,6 @@ public class Chanell implements Serializable {
         this.tGUser = tGUser;
     }
 
-    public Set<Category> getCategoryIds() {
-        return this.categoryIds;
-    }
-
-    public Chanell categoryIds(Set<Category> categories) {
-        this.setCategoryIds(categories);
-        return this;
-    }
-
-    public Chanell addCategoryId(Category category) {
-        this.categoryIds.add(category);
-        category.getChanellIds().add(this);
-        return this;
-    }
-
-    public Chanell removeCategoryId(Category category) {
-        this.categoryIds.remove(category);
-        category.getChanellIds().remove(this);
-        return this;
-    }
-
-    public void setCategoryIds(Set<Category> categories) {
-        if (this.categoryIds != null) {
-            this.categoryIds.forEach(i -> i.removeChanellId(this));
-        }
-        if (categories != null) {
-            categories.forEach(i -> i.addChanellId(this));
-        }
-        this.categoryIds = categories;
-    }
-
     public Long getApprovedAdmin() {
         return approvedAdmin;
     }
@@ -504,7 +456,6 @@ public class Chanell implements Serializable {
             ", showChanellInTopByCategory='" + getShowChanellInTopByCategory() + "'" +
             ", approvedAdmin=" + approvedAdmin +
             ", contacts='" + getContacts() + "'" +
-            ", cityId='" + getCityEntity() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", lastPayDate='" + getLastPayDate() + "'" +
             ", endPublicDate='" + getEndPublicDate() + "'" +

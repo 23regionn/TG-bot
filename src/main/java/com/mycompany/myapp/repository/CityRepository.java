@@ -13,19 +13,6 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface CityRepository extends JpaRepository<City, Long> {
-    // Старый запрос
-    @Query(
-        "select c.cityName from City c JOIN c.chanells ch " +
-        "JOIN ch.categoryIds cat" +
-        " where ch.cityEntity is not null and size(cat.chanellIds) > 0"
-    )
-    Set<String> getCitiesNames();
-
-    @Query(
-        "select c from City c JOIN c.chanells ch JOIN ch.categoryIds cat where SUBSTRING(c.cityName, 1, 1) = :firstLetter and size(cat.chanellIds) > 0"
-    )
-    Set<City> getCitiesByFirstLetter(@Param("firstLetter") String firstLetter);
-
     /** Запросы для логики бота */
     //Запрос на получение списка городов для бота, потом из них вырезается первая буква
     @Query(
