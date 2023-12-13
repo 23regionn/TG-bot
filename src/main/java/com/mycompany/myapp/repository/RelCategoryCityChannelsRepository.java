@@ -1,7 +1,6 @@
 package com.mycompany.myapp.repository;
 
-import com.mycompany.myapp.domain.RelCategoryCity;
-import com.mycompany.myapp.domain.RelCategoryCityChannels;
+import com.mycompany.myapp.domain.*;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.*;
@@ -28,4 +27,6 @@ public interface RelCategoryCityChannelsRepository extends JpaRepository<RelCate
         @Param("relCatCit") Long relCatCit,
         @Param("currentDate") ZonedDateTime currentDate
     );
+
+    Boolean existsByChanellAndRelCategoryCity(Chanell chanell, RelCategoryCity relCategoryCity);
 }

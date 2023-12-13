@@ -61,13 +61,17 @@ public class RelCategoryChannelsService {
                 }
             );
 
-        RelCategoryChannels relCategoryChannels = new RelCategoryChannels();
-        relCategoryChannels.setCategory(category);
-        relCategoryChannels.setChanell(chanell);
-        relCategoryChannels.setScoreChannel(createDTO.getScoreChannel());
-        relCategoryChannels.setIsShowChannel(createDTO.getIsShowChannel());
-        relCategoryChannels.setComment(createDTO.getComment());
+        if (!relCategoryChannelsRepository.existsByCategoryAndChanell(category, chanell)) {
+            RelCategoryChannels relCategoryChannels = new RelCategoryChannels();
+            relCategoryChannels.setCategory(category);
+            relCategoryChannels.setChanell(chanell);
+            relCategoryChannels.setScoreChannel(createDTO.getScoreChannel());
+            relCategoryChannels.setIsShowChannel(createDTO.getIsShowChannel());
+            relCategoryChannels.setComment(createDTO.getComment());
 
-        return relCategoryChannelsRepository.save(relCategoryChannels);
+            return relCategoryChannelsRepository.save(relCategoryChannels);
+        } else {
+            throw new BadRequestAlertException("Канал уже существет", "Нельзя создать дубль ", "Есть в БД");
+        }
     }
 }

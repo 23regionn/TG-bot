@@ -66,13 +66,17 @@ public class RelCategoryCityChannelsService {
                 }
             );
 
-        RelCategoryCityChannels relCategoryCityChannels = new RelCategoryCityChannels();
-        relCategoryCityChannels.setComment(createDTO.getComment());
-        relCategoryCityChannels.setScoreChannel(createDTO.getScoreChannel());
-        relCategoryCityChannels.setIsShowChannel(createDTO.getIsShowChannel());
-        relCategoryCityChannels.setChanell(chanell);
-        relCategoryCityChannels.setRelCategoryCity(relCategoryCity);
+        if (!relCategoryCityChannelsRepository.existsByChanellAndRelCategoryCity(chanell, relCategoryCity)) {
+            RelCategoryCityChannels relCategoryCityChannels = new RelCategoryCityChannels();
+            relCategoryCityChannels.setComment(createDTO.getComment());
+            relCategoryCityChannels.setScoreChannel(createDTO.getScoreChannel());
+            relCategoryCityChannels.setIsShowChannel(createDTO.getIsShowChannel());
+            relCategoryCityChannels.setChanell(chanell);
+            relCategoryCityChannels.setRelCategoryCity(relCategoryCity);
 
-        return relCategoryCityChannelsRepository.save(relCategoryCityChannels);
+            return relCategoryCityChannelsRepository.save(relCategoryCityChannels);
+        } else {
+            throw new BadRequestAlertException("Канал уже существет", "Нельзя создать дубль ", "Есть в БД");
+        }
     }
 }
