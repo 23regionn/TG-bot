@@ -3524,12 +3524,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboardRows = new ArrayList<>();
 
         KeyboardRow row1 = new KeyboardRow();
-        row1.add("Каналы по категориям \uD83D\uDCC2");
-        row1.add("Каналы по городам \uD83C\uDFD9");
-        row1.add("Связь с админом ☎");
+        row1.add("Каналы по категориям");
+        row1.add("Каналы по городам");
+        row1.add("Связь с админом");
 
         KeyboardRow row2 = new KeyboardRow();
-        row2.add("Ввести название категории 🔍");
+        row2.add("Ввести название категории");
 
         keyboardRows.add(row1);
         keyboardRows.add(row2);
