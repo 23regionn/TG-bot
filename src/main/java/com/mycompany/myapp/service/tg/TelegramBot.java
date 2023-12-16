@@ -103,9 +103,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     static final String YES_BUTTON = "YES_BUTTON";
     static final String NO_BUTTON = "NO_BUTTON";
-    static final String FIND_CHANNEL = "FIND_CHANNEL";
-    static final String FIND_TEMATICS_FIRST = "FIND_TEMATICS_FIRST";
-    static final String FIND_CITIES = "FIND_CITIES";
+    static final String FIND_CHANNEL = "FIN_CHAN";
+    static final String FIND_TEMATICS_FIRST = "F_TEMA_FI";
+    static final String FIND_CITIES = "FIN_CITIES";
     static final String ADMIN_LINK = "ADMIN_LINK";
     static final String ADD_CHANNEL = "ADD_CHANNEL";
     static final String CATEGORY = "CATEGORY";
@@ -131,17 +131,17 @@ public class TelegramBot extends TelegramLongPollingBot {
     static final String EDIT_СH_PRICE = "EDIT_СH_PRICE";
     static final String ADD_EDIT_DESCRIPTION = "ADD_EDIT_DESCRIPTION";
 
-    static final String NEXT_PAGE_CAT = "NEXT_PAGE_CAT";
-    static final String ANY_PAGE_IN_CAT = "ANY_PAGE_IN_CAT";
-    static final String NEXT_PAGE_GOROD_CAT = "NEXT_PAGE_G_C";
-    static final String ANY_PAGE_GOROD_IN_CAT = "ANY_PAGE_G_IN_C";
+    static final String NEXT_PAGE_CAT = "NEX_PAG_CAT";
+    static final String ANY_PAGE_IN_CAT = "A_PA_IN_CAT";
+    static final String NEXT_PAGE_GOROD_CAT = "NE_P_G_C";
+    static final String ANY_PAGE_GOROD_IN_CAT = "A_PA_G_IN_C";
     static final String GORODA_FIRST_LETTER = "GORODA_F_L";
     static final String ALL_LIST_CH = "ALL_LIST_CH";
     static final String ALL_LIST_GOROD_CHANNEL = "ALL_L_G_CH";
 
-    static final String NEXT_PAGE_WITH_TEMATICS = "NEXT_PAGE_W_T";
-    static final String NEXT_PAGE_WITH_TEMATICS_FOR_CITY = "NEXT_P_W_T_F_C";
-    static final String All_PAGES_TEMATICS = "All_PAGES_TEMATICS";
+    static final String NEXT_PAGE_WITH_TEMATICS = "NE_PAGE_W_T";
+    static final String NEXT_PAGE_WITH_TEMATICS_FOR_CITY = "N_P_W_T_F_C";
+    static final String All_PAGES_TEMATICS = "All_PA_TE";
     static final String All_PAGES_TEMATICS_FOR_CITY = "All_P_T_F_C";
     static final String WORK_WITH_MY_CHANNEL = "WORK_WITH_MY_CHANNEL";
     static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
@@ -2203,9 +2203,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             message.setText(
                 "Категория: " +
                 categoryName +
-                "\n" +
+                /*"\n" +
                 "Каналов в категории: " +
-                allChanellsInformationList.size() +
+                allChanellsInformationList.size() +*/
                 /*"\n" +
                 "Всего страниц с каналами: " +
                 map.size() +
