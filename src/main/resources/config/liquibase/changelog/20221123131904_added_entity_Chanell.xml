@@ -77,6 +77,9 @@
             <column name="is_chat" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="count_views" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -102,6 +105,7 @@
             <column name="score" type="numeric"/>
             <column name="status" type="string"/>
             <column name="count_subscribers" type="numeric"/>
+            <column name="count_views" type="numeric"/>
             <column name="quaility_from_another_sources" type="numeric"/>
             <column name="price_diapozon" type="numeric"/>
             <column name="is_moderate" type="boolean"/>

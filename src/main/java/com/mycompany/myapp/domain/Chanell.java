@@ -39,6 +39,9 @@ public class Chanell implements Serializable {
     @Column(name = "count_subscribers")
     private Long countSubscribers;
 
+    @Column(name = "count_views")
+    private Long countViews;
+
     @Column(name = "quaility_from_another_sources")
     private Double quailityFromAnotherSources;
 
@@ -419,6 +422,14 @@ public class Chanell implements Serializable {
 
     public void setManager(Manager manager) {
         this.manager = manager;
+    }
+
+    public Long getCountViews() {
+        return countViews;
+    }
+
+    public void setCountViews(Long countViews) {
+        this.countViews = countViews;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
