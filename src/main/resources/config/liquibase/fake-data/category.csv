@@ -100,3 +100,10 @@ id;name;score;is_first;is_show
 99;ЗОЖ;30;false;true
 100;Трезвость;30;false;true
 1000;Шоу-бизнес;30;false;true
+1001;Немецкий язык;30;false;true
+1002;Языки Европы;30;false;true
+1003;Языки Азии;30;false;true
+1004;Русский язык;30;false;true
+1005;Охота;30;false;true
+1006;Рыбалка;30;false;true
+1007;Дача;30;false;true
