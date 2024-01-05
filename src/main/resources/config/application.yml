@@ -130,6 +130,8 @@ server:
     session:
       cookie:
         http-only: true
+  ssl:
+    enabled: false
 
 # Properties to be exposed on the /info management endpoint
 info:
@@ -180,8 +182,9 @@ jhipster:
 
 # application:
 bot:
-#  name: Gid_Telegram
-#  token: 5789913711:AAHAWlpA3yTidklgM1lfL9rBG9ewrThpW0Y
+  #  name: Gid_Telegram
+  #  token: 5789913711:AAHAWlpA3yTidklgM1lfL9rBG9ewrThpW0Y
   name: Telegram_channels
   token: 568645835:AAFnBvMcRLAVUiNevSv-pDu30pSShVfWWBw
   owner: 523559144
+  uri: http://82.146.49.160:433

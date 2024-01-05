@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@Configuration
-@EnableScheduling
+//@Configuration
+//@EnableScheduling
 public class BotConfig {
 
     @Value("${bot.name}")
@@ -16,6 +16,9 @@ public class BotConfig {
 
     @Value("${bot.owner}")
     Long ownerId;
+
+    @Value("${bot.uri}")
+    String botUri;
 
     public String getBotName() {
         return botName;
@@ -39,5 +42,9 @@ public class BotConfig {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getBotUri() {
+        return botUri;
     }
 }

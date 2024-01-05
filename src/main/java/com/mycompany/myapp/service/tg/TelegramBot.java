@@ -1,5 +1,7 @@
 package com.mycompany.myapp.service.tg;
 
+import static com.mycompany.myapp.service.tg.Constants.*;
+
 import com.mycompany.myapp.config.tg.BotConfig;
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
@@ -12,37 +14,85 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerInlineQuery;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.InlineQuery;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.inputmessagecontent.InputTextMessageContent;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResult;
-import org.telegram.telegrambots.meta.api.objects.inlinequery.result.InlineQueryResultArticle;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-//@Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
+    @Value("${bot.name}")
+    private String botName;
+
+    @Value("${bot.token}")
+    private String botToken;
+
+    @Value("${bot.owner}")
+    private Long ownerId;
+
+    @Value("${bot.uri}")
+    private String botUri;
+
+    @Override
+    public String getBotUsername() {
+        return botName;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public String getBotUri() {
+        return botUri;
+    }
+
+    @Override
+    public void onUpdateReceived(Update update) {
+        updateController.processUpdate(update);
+    }
+
     private final Logger log = LoggerFactory.getLogger(TelegramBot.class);
+
+    private final UpdateController updateController;
+
+    @PostConstruct
+    public void init() {
+        updateController.registerBot(this);
+
+        List<BotCommand> listofCommands = new ArrayList<>();
+        listofCommands.add(new BotCommand("/start", "Начало работы с ботом"));
+        listofCommands.add(new BotCommand("/help", "Информация о боте"));
+        listofCommands.add(new BotCommand("/search", "Ввести название категории"));
+        listofCommands.add(new BotCommand("/category", "Выберите каналы по категориям"));
+        listofCommands.add(new BotCommand("/cities", "Выберите каналы по городам"));
+        try {
+            this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException e) {
+            log.error("Error setting bot's command list: " + e.getMessage());
+        }
+    }
 
     @Autowired
     private TGUserRepository tgUserRepository;
@@ -51,19 +101,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     private AdminRepository adminRepository;
 
     @Autowired
-    private TgUserRepositoryService tgUserRepositoryService;
+    public TgUserRepositoryService tgUserRepositoryService;
 
     @Autowired
-    private MessegePannelRepository messegePannelRepository;
+    public MessegePannelRepository messegePannelRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    public CategoryRepository categoryRepository;
 
     @Autowired
     private EditChannelsRepository editChannelsRepository;
 
     @Autowired
-    private ChanellRepository chanellRepository;
+    public ChanellRepository chanellRepository;
 
     @Autowired
     private CityRepository cityRepository;
@@ -75,7 +125,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private CategoryLogRepository categoryLogRepository;
 
     @Autowired
-    private SearchTypeLogRepository searchTypeLogRepository;
+    public SearchTypeLogRepository searchTypeLogRepository;
 
     @Autowired
     private RelCategoryChannelsRepository relCategoryChannelsRepository;
@@ -86,817 +136,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private RelCategoryCityChannelsRepository relCategoryCityChannelsRepository;
 
-    final BotConfig config;
-
-    /*static final String HELP_TEXT = "This bot is created to demonstrate Spring capabilities.\n\n" +
-            "You can execute commands from the main menu on the left or by typing a command:\n\n" +
-            "Type /start to see a welcome message\n\n" +
-            "Type /mydata to see data stored about yourself\n\n" +
-            "Type /help to see this message again";*/
-    static final String HELP_TEXT =
-        "Этот бот предоставляет ссылки \n" +
-        "на телеграмм каналы по выбранным категориям. \n\n" +
-        "После команды /start кликните на одну из кнопок \n\n" +
-        " \"Найти каналы по категориям\", \"Найти каналы по городам\".\n\n" +
-        " \"Ввести название категории\".\n\n" +
-        "И далее переходите по ссылкам на каналы.";
-
-    static final String YES_BUTTON = "YES_BUTTON";
-    static final String NO_BUTTON = "NO_BUTTON";
-    static final String FIND_CHANNEL = "FIN_CHAN";
-    static final String FIND_TEMATICS_FIRST = "F_TEMA_FI";
-    static final String FIND_CITIES = "FIN_CITIES";
-    static final String ADMIN_LINK = "ADMIN_LINK";
-    static final String ADD_CHANNEL = "ADD_CHANNEL";
-    static final String CATEGORY = "CATEGORY";
-    static final String CLICK_TEMA = "CLICK_TEMA";
-    static final String CITY = "CITY";
-    static final String UPDATE_GOROD_MESSAGE = "UPDATE_GO_MES";
-    static final String TEMA_GOROD = "TEMA_GOROD";
-    static final String PRICEDIAP = "PRICEDIAP";
-    static final String IDCAT = "IDCAT";
-
-    static final String CHANNEL = "CHANNEL";
-    static final String MY_CHNS = "MY_CHNS";
-
-    private static final int PAGE_SIZE = 50;
-
-    static final String ERROR_TEXT = "Error occurred: ";
-    static final String FIND_CAT_FOR_ADD_CHAN = "FIND_CAT_FOR_ADD_CHAN";
-    static final String ADD_СH_NAME = "ADD_СH_NAME";
-    static final String EDIT_СH_NAME = "EDIT_СH_NAME";
-    static final String ADD_СH_LINK = "ADD_СH_LINK";
-    static final String EDIT_СH_LINK = "EDIT_СH_LINK";
-    static final String ADD_СH_PRICE = "ADD_СH_PRICE";
-    static final String EDIT_СH_PRICE = "EDIT_СH_PRICE";
-    static final String ADD_EDIT_DESCRIPTION = "ADD_EDIT_DESCRIPTION";
-
-    static final String NEXT_PAGE_CAT = "NEX_PAG_CAT";
-    static final String ANY_PAGE_IN_CAT = "A_PA_IN_CAT";
-    static final String NEXT_PAGE_GOROD_CAT = "NE_P_G_C";
-    static final String ANY_PAGE_GOROD_IN_CAT = "A_PA_G_IN_C";
-    static final String GORODA_FIRST_LETTER = "GORODA_F_L";
-    static final String ALL_LIST_CH = "ALL_LIST_CH";
-    static final String ALL_LIST_GOROD_CHANNEL = "ALL_L_G_CH";
-
-    static final String NEXT_PAGE_WITH_TEMATICS = "NE_PAGE_W_T";
-    static final String NEXT_PAGE_WITH_TEMATICS_FOR_CITY = "N_P_W_T_F_C";
-    static final String All_PAGES_TEMATICS = "All_PA_TE";
-    static final String All_PAGES_TEMATICS_FOR_CITY = "All_P_T_F_C";
-    static final String WORK_WITH_MY_CHANNEL = "WORK_WITH_MY_CHANNEL";
-    static final String CREATE_APPROVE_СH = "CREATE_APPROVE_СH";
-    static final String CREATE_DISABLE_СH = "CREATE_DISABLE_СH";
-    static final String CREATE_BAN_CH = "CREATE_BAN_CH";
-
-    static final String EDIT_APPROVE_СH = "EDIT_APPROVE_СH";
-    static final String EDIT_DISABLE_СH = "EDIT_DISABLE_СH";
-    static final String EDIT_BAN_CH = "EDIT_BAN_CH";
-    private static final String MODERATION = "Модерация канала";
-    private static final String EDITING_CHANNEL = "Редактирование канала";
-    private static final String SVYAZ_S_ADMINAMI = "SVYAZ_S_ADMINAMI";
-    private static final String SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU = "SVYAZ_S_ADMINAMI_FROM_TEX_PODD_MENU";
-    private static final String TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN = "TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN";
-    private static final String REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK = "REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK";
-
-    private static final String TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU = "TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU";
-    private static final String REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU = "REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU";
-    private static final String SEND_ADMIN_CHAT_TO_USER = "SEND_ADMIN_CHAT_TO_USER";
-    private static final String SEND_ADMIN_LINK_TO_USER_FROM_MENU = "SEND_ADMIN_LINK_TO_USER_FROM_MENU";
-
-    private static final String В_НАЧАЛО = "В начало";
-    private static final String V_NACHALO = "V_NACHALO";
-    private static final String TEX_PODDERSHKA = "Связаться с тех поддержкой";
-    private static final String МОИ_КАНАЛЫ = "Мои каналы";
-
-    public TelegramBot(BotConfig config) {
-        this.config = config;
-        List<BotCommand> listofCommands = new ArrayList<>();
-        listofCommands.add(new BotCommand("/start", "Начало работы с ботом"));
-        //        listofCommands.add(new BotCommand("/mydata", "get your data stored"));
-        //        listofCommands.add(new BotCommand("/deletedata", "delete my data"));
-        listofCommands.add(new BotCommand("/help", "Информация о боте"));
-        //        listofCommands.add(new BotCommand("/settings", "set your preferences"));
-        listofCommands.add(new BotCommand("/search", "Ввести название категории"));
-        listofCommands.add(new BotCommand("/category", "Выберите каналы по категориям"));
-        listofCommands.add(new BotCommand("/cities", "Выберите каналы по городам"));
-        try {
-            this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
-        } catch (TelegramApiException e) {
-            log.error("Error setting bot's command list: " + e.getMessage());
-        }
+    public TelegramBot(UpdateController updateController) {
+        this.updateController = updateController;
     }
 
-    /*Long currentChatId = null; // DELETE
-    Integer currentMessageId = null;*/
-
-    @Override
-    public String getBotUsername() {
-        return config.getBotName();
-    }
-
-    @Override
-    public String getBotToken() {
-        return config.getToken();
-    }
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-            String nameForLog = update.getMessage().getChat().getFirstName();
-            log.info("Сообщение от пользователя " + nameForLog + ", сообщение: " + messageText);
-            TGUser tgUser;
-            Optional<TGUser> tgUserOptional = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId());
-            tgUser =
-                tgUserOptional.isPresent()
-                    ? tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get()
-                    : null;
-            if (messageText.equals("/start")) {
-                registerUser(update.getMessage());
-                /*if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }*/
-                startCommandReceived(
-                    chatId,
-                    update.getMessage().getChat().getFirstName() != null
-                        ? update.getMessage().getChat().getFirstName()
-                        : update.getMessage().getChat().getUserName() != null ? update.getMessage().getChat().getUserName() : ""
-                );
-            } else if (messageText.equals("/help")) {
-                registerUser(update.getMessage());
-                /*if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }*/
-                sendMessage(chatId, HELP_TEXT, nameForLog);
-            } /*else if(messageText.equals("/register")){
-                if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }
-                register(chatId, nameForLog);
-            }
-            else if(messageText.equals("/oleg")){
-                if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }
-                sendMessage(chatId, "Oleg", nameForLog);
-            }*/else if (messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям")) {
-                /*if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }*/
-                registerUser(update.getMessage());
-                findCategoryFirstPage(chatId, nameForLog, false, 0l);
-            } else if (messageText.equals("Города") || messageText.equals("Каналы по городам") || messageText.equals("/cities")) {
-                /*if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }*/
-                registerUser(update.getMessage());
-                findCityNamesByFirstLetter(chatId, nameForLog);
-            } else if (messageText.equals("/search") || messageText.equals("Ввести название категории")) {
-                registerUser(update.getMessage());
-                sendSearchCategoriesButton(chatId, nameForLog);
-            } /*else if(messageText.equals(МОИ_КАНАЛЫ)){
-                if (tgUserOptional.isPresent()){
-                    resetStepForUser(tgUser);
-                }
-                getMyChannels(chatId, nameForLog);
-            }*/else if (messageText.equals("Связь с админом")) {
-                sendAdminLink(chatId, nameForLog);
-            } // Вроде не работает
-            /*else if(messageText.equals("Ввести название категории 🔍")){
-
-                    // ЛОГИКа в случае нажатия на текст поиск из общего меню с клавиатурой
-                sendAdminLink(chatId, nameForLog);
-            }*/
-            else if (messageText.equals("/channel")) {
-                if (tgUserOptional.isPresent()) {
-                    resetStepForUser(tgUser);
-                }
-                checkFindChannelOrAddChannel(chatId, nameForLog);
-            } else if (messageText.equals(В_НАЧАЛО) || messageText.equals("Вернуться назад")) {
-                if (tgUserOptional.isPresent()) {
-                    resetStepForUser(tgUser);
-                }
-                vNachaloCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-            } else if (messageText.contains("Кликните на категорию ниже")) {
-                InlineKeyboardMarkup mark = update.getMessage().getReplyMarkup();
-                mark
-                    .getKeyboard()
-                    .get(0)
-                    .get(0)
-                    .setCallbackData(update.getMessage().getReplyMarkup().getKeyboard().get(0).get(0).getCallbackData() + chatId);
-                Integer mesId = update.getMessage().getMessageId();
-                //                executeEditTextWithKeyBoardAndDisableWebPreview(chatId, nameForLog, update.getMessage().getText(),
-                //                    mesId, mark);
-                executeDeleteMessage(chatId, nameForLog, mesId);
-                executeMessageWithKeybord(nameForLog, chatId, update.getMessage().getText(), mark);
-                System.out.println("При отправкке заходит сюда " + update.getMessage());
-                searchTypeLogRepository.save(new SearchTypeLog(chatId, true));
-            }
-            // Рассылка пользователям
-            else if (messageText.contains("/send") && config.getOwnerId() == chatId) {
-                var textToSend = EmojiParser.parseToUnicode(messageText.substring(messageText.indexOf(" ")));
-                /*var users = userRepository.findAll(); ЭТОТ ЗАПРОС НЕ ПОДХОДИТ- НУЖНА РАССЫЛКА ВООБЩЕ ВСЕМ ПОЛЬЗОВАТЕЛЯМ.
-                for (User user: users){
-                    sendMessage(user.getChatId(), textToSend);
-                }*/
-                //                sendMessage(chatId, textToSend, nameForLog);
-                sendMessage(chatId, textToSend, nameForLog);
-            } /*  else if (tgUserOptional.isPresent() ){  // Функционал раньше использовался для добавления каналов внутри бота
-                if(tgUser.getCurrentStep() != null){
-                    if(tgUser.getIdCurrentChannelAction() != null){
-                        if(tgUser.getCurrentStep().equals(ADD_СH_NAME)){
-                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
-                            chanell.setName(messageText);
-                            chanellRepository.save(chanell);
-                            tgUser.setCurrentStep(ADD_СH_LINK);
-                            tgUserRepositoryService.saveTgUser(tgUser);
-                            log.info("В канал с id " + chanell.getId() + ", добавленно название: " +  messageText + ", " + nameForLog);
-                            sendMessage(chatId, "Добавить ссылку на канал (скопируйте и вставьте) ⬇⬇⬇", nameForLog);
-                        }
-                        else if(tgUser.getCurrentStep().equals(ADD_СH_LINK)) {
-                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
-                            chanell.setLink(messageText);
-                            chanellRepository.save(chanell);
-                            tgUser.setCurrentStep(ADD_СH_PRICE);
-                            tgUserRepositoryService.saveTgUser(tgUser);
-                            log.info("В канал с id " + chanell.getId() + ", добавленна ссылка : " +  messageText + ", " + nameForLog);
-                            sendMessage(chatId, "Добавить прайс (сумма размещения рекламы) ⬇⬇⬇", nameForLog);
-                        }
-                        else if(tgUser.getCurrentStep().equals(ADD_СH_PRICE)) {
-                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
-                            chanell.setPriceDiapozon(Double.valueOf(messageText));
-                            chanellRepository.save(chanell);
-                            tgUser.setCurrentStep("");
-                            tgUser.setIdCurrentChannelAction(null);
-                            tgUserRepositoryService.saveTgUser(tgUser);
-                            log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
-                            sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
-
-
-                           // Заменить айди админа
-                            sendChannelToModerate(523559144l, chanell.getId());
-                            sendChannelToModerate(1376429566l, chanell.getId());
-                        }
-                        else if(tgUser.getCurrentStep().equals(WORK_WITH_MY_CHANNEL)){ // Менюшка
-                            if(messageText.equals("Изменить название")){
-                                tgUser.setCurrentStep(EDIT_СH_NAME);
-                                tgUserRepositoryService.saveTgUser(tgUser);
-                                sendMessage(chatId, "Введите новое значение для канала ⬇⬇⬇", nameForLog);
-                            }
-                            else if(messageText.equals("Изменить ценовой диапазон")){
-                                tgUser.setCurrentStep(EDIT_СH_PRICE);
-                                tgUserRepositoryService.saveTgUser(tgUser);
-                                sendMessage(chatId, "Введите новое значение для цены ⬇⬇⬇", nameForLog);
-                            }
-                            else if(messageText.equals("Изменить ссылку")){
-                                tgUser.setCurrentStep(EDIT_СH_LINK);
-                                tgUserRepositoryService.saveTgUser(tgUser);
-                                sendMessage(chatId, "Введите новую ссылку на канал ⬇⬇⬇", nameForLog);
-                            }
-                            else if(messageText.equals("Добавить описание")){
-                                tgUser.setCurrentStep(ADD_EDIT_DESCRIPTION);
-                                tgUserRepositoryService.saveTgUser(tgUser);
-                                sendMessage(chatId, "Введите новое описание канала ⬇⬇⬇", nameForLog);
-                            }
-                        }
-                        else if(tgUser.getCurrentStep().equals(EDIT_СH_NAME)
-                                || tgUser.getCurrentStep().equals(EDIT_СH_LINK)
-                                || tgUser.getCurrentStep().equals(EDIT_СH_PRICE)
-                                || tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION)){
-                            // Редактирование имени канала
-                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
-                            EditChannels editChannels = new EditChannels();
-                            editChannels.setIdChannel(chanell.getId());
-                            editChannels.setLastNameChannel(chanell.getName());
-                            editChannels.setNewNameChannel(tgUser.getCurrentStep().equals(EDIT_СH_NAME) ? messageText : chanell.getName());
-                            editChannels.setLastLinkToChannel(chanell.getLink());
-                            editChannels.setNewlastLinkToChannel(tgUser.getCurrentStep().equals(EDIT_СH_LINK) ? messageText : chanell.getLink());
-                            editChannels.setUserName(chanell.getTGUser().getUserName());
-                            editChannels.setNewPriceChannel(tgUser.getCurrentStep().equals(EDIT_СH_PRICE) ? Double.valueOf(messageText) : chanell.getPriceDiapozon());
-                            editChannels.setAddDescriptionAboutChannel(tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION) ? messageText : chanell.getString1());
-                            editChannels.setDateCreateMessage(ZonedDateTime.now());
-                            editChannels.setIsApprovedChanhes(false);
-                            editChannels = editChannelsRepository.save(editChannels);
-
-                            tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
-                            tgUser.setIdCurrentChannelAction(chanell.getId());
-                            tgUserRepositoryService.saveTgUser(tgUser);
-
-                            // Заменить айди админа
-                            sendEditChannelToModerate(523559144l, editChannels.getId());
-                            sendEditChannelToModerate(1376429566l, editChannels.getId());
-                        }
-                        else{
-                            sendMessage(chatId, "Извините, команда не распознана", nameForLog);
-                        }
-                    }
-                    else{
-                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
-                    }
-                }
-                else{
-                    sendMessage(chatId, "Извините, команда не распознана", nameForLog);
-                }
-            }*/else { // Ради дефолтового ответа
-                switch (messageText) {
-                    default:
-                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
-                }
-            }
-        } else if (update.hasInlineQuery()) {
-            InlineQuery inlineQuery = update.getInlineQuery();
-
-            // Обработка запроса и формирование ответа
-            String query = inlineQuery.getQuery();
-            List<InlineQueryResult> results = new ArrayList<>();
-
-            // Получение параметра offset из InlineQuery
-            String offset = inlineQuery.getOffset();
-
-            int page = 0;
-            if (offset != null && !offset.isEmpty()) {
-                try {
-                    page = Integer.parseInt(offset);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            List<CategoryNameAndIdDTO> categories = categoryRepository
-                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
-                //                                .findAllNames()
-                .stream()
-                .filter(cat -> !cat.getName().isEmpty())
-                .filter(cat -> cat.getName().toLowerCase().contains(query.toLowerCase()))
-                .sorted(Comparator.comparing(CategoryNameAndIdDTO::getIsFirst).reversed().thenComparing(CategoryNameAndIdDTO::getScore))
-                .distinct()
-                .skip(page * PAGE_SIZE) // Пропускаем элементы на предыдущих страницах
-                .limit(PAGE_SIZE) // Ограничиваем количество элементов на текущей странице
-                .collect(Collectors.toList());
-
-            InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setMessageText("Кликните на категорию ниже \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Текст в двух местах
-
-            for (int i = 0; i < categories.size(); i++) {
-                String name = categories.get(i).getName();
-
-                InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
-                // создание списка со списками с кнопками в ответе на сообщение
-                List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-                // создание списка с кнопками в ответе на сообщение
-                List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-                var buttonResponse = new InlineKeyboardButton();
-
-                buttonResponse.setText(name); // Содержимое ответа в кнопке
-                buttonResponse.setCallbackData(CLICK_TEMA + ":" + categories.get(i).getId() + ":"); // Привязка кнопки к реагирование на Button в сообщении, типо когда ответ не текст а кол-бек
-                rowInLine.add(buttonResponse);
-
-                rowsInLine.add(rowInLine);
-                markupInLine.setKeyboard(rowsInLine);
-
-                results.add(new InlineQueryResultArticle(("" + i), name, messageContent, markupInLine, null, null, null, null, null, null));
-            }
-
-            // Настройка параметров ответа
-            AnswerInlineQuery answer = new AnswerInlineQuery();
-            answer.setInlineQueryId(inlineQuery.getId());
-            answer.setResults(results);
-
-            /*// Вычисление следующего offset
-            int nextOffset = (page + 1) * PAGE_SIZE;
-            if (nextOffset >= categories.size()) {
-                nextOffset = 0;
-            }
-            answer.setNextOffset(Integer.toString(nextOffset));*/
-
-            /*// Вычисление следующего offset
-            int nextOffset = (page + 1) * PAGE_SIZE;
-            if (nextOffset >= categories.size()) {
-                nextOffset = page * PAGE_SIZE; // Оставляем текущий offset без изменений
-            }
-            answer.setNextOffset(Integer.toString(nextOffset));*/
-
-            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categoryRepository.findAllNames().size());
-            answer.setNextOffset(Integer.toString(nextOffset));*/
-
-            // более ли менее подходящий вариант
-            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categories.size());
-            answer.setNextOffset(Integer.toString(nextOffset));*/
-
-            try {
-                execute(answer); // Отправка ответа на inline-запрос
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        } // Работающий, но старый вариант
-        /*else if (update.hasInlineQuery()) {
-            InlineQuery inlineQuery = update.getInlineQuery();
-
-            // Обработка запроса и формирование ответа
-            String query = inlineQuery.getQuery();
-            List<InlineQueryResult> results = new ArrayList<>();
-
-            var categories = categoryRepository
-                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
-//                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
-                .stream()
-                .filter(cat -> !cat.getName().isEmpty())
-                .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
-                .collect(Collectors.toList()); // Выставить лимит 50
-
-            InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setMessageText("Кликните на категорию ниже ⬇⬇⬇"); // Текст в двух местах
-
-            for (int i = 0; i < categories.size(); i++) {
-                String name = categories.get(i).getName();
-
-                InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
-                // создание списка со списками с кнопками в ответе на сообщение
-                List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-                // создание списка с кнопками в ответе на сообщение
-                List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-                var buttonResponse = new InlineKeyboardButton();
-
-                buttonResponse.setText(name); // Содержимое ответа в кнопке
-                buttonResponse.setCallbackData(CLICK_TEMA + ":" + categories.get(i).getId() + ":"); // Привязка кнопки к реагирование на Button в сообщении, типо когда ответ не текст а кол-бек
-                rowInLine.add(buttonResponse);
-
-                rowsInLine.add(rowInLine);
-                markupInLine.setKeyboard(rowsInLine);
-
-                results.add(new InlineQueryResultArticle(("" + i), name, messageContent, markupInLine, null, null, null, null, null, null));
-            }
-
-            // Настройка параметров ответа
-            AnswerInlineQuery answer = new AnswerInlineQuery();
-            answer.setInlineQueryId(inlineQuery.getId());
-            answer.setResults(results);
-
-            try {
-                execute(answer); // Отправка ответа на inline-запрос
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }*/else if (update.hasCallbackQuery()) {
-            String callbackData = update.getCallbackQuery().getData();
-            Long chatId = null;
-            Integer messageId = null;
-            //            Long chatId = Optional.ofNullable(update.getCallbackQuery().getMessage().getChatId()).orElse(null);
-            //            Integer messageId = Optional.ofNullable(update.getCallbackQuery().getMessage().getMessageId()).orElse(null);
-            //            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-            String nameForLog = "";
-            if (update != null && update.hasCallbackQuery()) {
-                CallbackQuery callbackQuery = update.getCallbackQuery();
-                if (callbackQuery != null && callbackQuery.getMessage() != null) {
-                    Message message = callbackQuery.getMessage();
-                    if (message.getMessageId() != null) {
-                        messageId = message.getMessageId();
-                    }
-                    if (message.getChatId() != null) {
-                        chatId = message.getChatId();
-                    }
-                    if (message.getChat() != null) {
-                        if (message.getChat().getFirstName() != null) {
-                            nameForLog = message.getChat().getFirstName();
-                        }
-                    }
-                }
-            }
-
-            log.info("Сообщение от пользователя " + nameForLog + ", (нажата кнопка): " + callbackData);
-
-            if (callbackData.equals(YES_BUTTON)) {
-                String text = "You pressed YES button";
-                executeEditText(chatId, nameForLog, text, messageId);
-            } else if (callbackData.equals(NO_BUTTON)) {
-                String text = "You pressed NO button";
-                executeEditText(chatId, nameForLog, text, messageId);
-            } /*else if(callbackData.equals(FIND_CHANNEL)){
-//                executeDeleteMessage(chatId, nameForLog, messageId);
-                findCategory(chatId, nameForLog);
-            }
-            else if(callbackData.equals(FIND_CITIES)){
-//                executeDeleteMessage(chatId, nameForLog, messageId);
-                findCityNamesByFirstLetter(chatId, nameForLog);
-            }*/else if (callbackData.contains(FIND_CHANNEL)) {
-                findCategoryFirstPage(chatId, nameForLog, false, messageId); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
-            } else if (callbackData.contains(FIND_CITIES)) {
-                findCityNamesByFirstLetter(chatId, nameForLog); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
-            } else if (callbackData.contains(FIND_TEMATICS_FIRST)) {
-                findCategoryFirstPage(chatId, nameForLog, true, messageId); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
-            } else if (callbackData.contains(All_PAGES_TEMATICS)) {
-                findCategoryAllPages(chatId, nameForLog, messageId);
-            } else if (callbackData.contains(All_PAGES_TEMATICS_FOR_CITY)) {
-                //                String nameCity = String.valueOf(callbackData.split(":")[1]);
-                Long cityId = Long.valueOf(callbackData.split(":")[1]);
-                findCategoryAllPagesByCity(chatId, nameForLog, messageId, cityId);
-            } else if (callbackData.equals(ADMIN_LINK)) {
-                //                executeDeleteMessage(chatId, nameForLog, messageId);
-                sendAdminLink(chatId, nameForLog);
-            } else if (callbackData.contains(NEXT_PAGE_WITH_TEMATICS)) {
-                Integer pageNumber = Integer.valueOf(callbackData.split(":")[1]);
-                Integer numberInMap = Integer.valueOf(callbackData.split(":")[2]);
-                findCategoryNextPage(chatId, nameForLog, pageNumber, messageId, numberInMap);
-            } else if (callbackData.contains(NEXT_PAGE_WITH_TEMATICS_FOR_CITY)) {
-                Integer pageNumber = Integer.valueOf(callbackData.split(":")[1]);
-                //                String nameCity = String.valueOf(callbackData.split(":")[2]);
-                Long cityId = Long.valueOf(callbackData.split(":")[2]);
-                Integer numberInMap = Integer.valueOf(callbackData.split(":")[3]);
-                getCategoriesByCityNameNextPage(chatId, nameForLog, cityId, pageNumber, messageId, numberInMap);
-            }/*else if(callbackData.equals(SEARCH_TEMATICS)){ // При нажатии на текстовы поиск категории
-                currentChatId = chatId;
-            }*/ /*else if(callbackData.equals(ADD_CHANNEL)){
-                String text = "Вы нажали добавить канал";
-                executeEditText(chatId, nameForLog, text,messageId);
-                selectCategory(chatId, nameForLog);
-            }*/
-            else if (callbackData.contains(CATEGORY)) {
-                String text = "Вы нажали на категоррию " + callbackData.replace(CATEGORY, "");
-                Long categoryId = Long.valueOf(callbackData.replace(CATEGORY, ""));
-                //                executeEditText(chatId, nameForLog, text,messageId);
-                //                executeDeleteMessage(chatId, nameForLog, messageId);
-                //                selectPriceDiapozonForGetChanneles(chatId, nameForLog, categoryId);
-                getChanellByCategoryId(chatId, nameForLog, categoryId);
-            } else if (callbackData.contains(CLICK_TEMA)) {
-                String text = "Вы нажали на категоррию " + callbackData.replace(CLICK_TEMA, "");
-                Long categoryId = Long.valueOf(callbackData.split(":")[1]);
-                Long chatIdIn = Long.valueOf(callbackData.split(":")[2]);
-                getChanellByCategoryId(chatIdIn, nameForLog, categoryId);
-            } else if (callbackData.contains(ALL_LIST_CH)) {
-                String text = "Вы нажали на категоррию " + callbackData.replace(ALL_LIST_CH, "");
-                Long categoryId = Long.valueOf(callbackData.split(":")[1]);
-                getChanellByCategoryIdBigButtons(chatId, nameForLog, categoryId);
-            } else if (callbackData.contains(ALL_LIST_GOROD_CHANNEL)) {
-                String text = "Вы нажали на категоррию " + callbackData.replace(ALL_LIST_GOROD_CHANNEL, "");
-                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
-                /*Long categoryId = Long.valueOf(callbackData.split(":")[1]);
-                //                String nameCity = String.valueOf(callbackData.split(":")[2]);
-                Long cityId = Long.valueOf(callbackData.split(":")[2]);*/
-                getChanellByCategoryIdByCityBigButtons(chatId, nameForLog, relCategoryCityId);
-            } else if (callbackData.contains(NEXT_PAGE_CAT)) {
-                String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT, "");
-                Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
-                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                getChanellByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pageNumber, messageId);
-            } else if (callbackData.contains(ANY_PAGE_IN_CAT)) {
-                String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT, "");
-                Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
-                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                getAllPagesButtonsByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pagesCount);
-            }
-            // Для городов
-            else if (callbackData.contains(NEXT_PAGE_GOROD_CAT)) {
-                Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
-                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[2]);
-                //                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                //                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
-                //                Long cityId = Long.valueOf(callbackData.split(":")[3]);
-                getChanellByCityNameByCategoryIdAndPageNumber(chatId, nameForLog, relCategoryCityId, pageNumber, messageId);
-            }
-            // Для городов _______
-            else if (callbackData.contains(ANY_PAGE_GOROD_IN_CAT)) {
-                Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
-                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[2]);
-                /*Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
-                Long cityId = Long.valueOf(callbackData.split(":")[3]);*/
-                getAllPagesButtonsByCategoryIdAndPageNumberByCity(chatId, nameForLog, relCategoryCityId, pagesCount);
-            } else if (callbackData.contains(GORODA_FIRST_LETTER)) {
-                String firstLetterOfCity = String.valueOf(callbackData.split(":")[1]);
-                String text = "Вы нажали на первую букву города - " + firstLetterOfCity;
-                chooseСity(chatId, nameForLog, firstLetterOfCity);
-            } else if (callbackData.contains(CITY)) {
-                //                String cityName = String.valueOf(callbackData.split(":")[1]);
-                Long cityId = Long.valueOf(callbackData.split(":")[1]);
-                //                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityName, false, messageId);
-                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, false, messageId);
-            } else if (callbackData.contains(UPDATE_GOROD_MESSAGE)) {
-                //                String cityName = String.valueOf(callbackData.split(":")[1]);
-                Long cityId = Long.valueOf(callbackData.split(":")[1]);
-                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, true, messageId);
-            } else if (callbackData.contains(TEMA_GOROD)) {
-                /*Long cityId = Long.valueOf(callbackData.split(":")[1]);
-                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
-                getChanellByCityNameByCategoryId(chatId, nameForLog, cityId, categoryId);*/
-                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
-                getChanellByCityNameByCategoryId(chatId, nameForLog, relCategoryCityId);
-            } /*else if(callbackData.contains(PRICEDIAP)){
-                String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
-                String[] strings = callbackData.split(IDCAT);
-                Double price = Double.valueOf(strings[0].replace(PRICEDIAP,""));
-                Long categoryId = Long.valueOf(strings[1]);
-//                executeEditText(chatId, nameForLog, text, messageId);
-
-//                executeDeleteMessage(chatId, nameForLog, messageId);
-                getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
-            }*/else if (callbackData.contains(CHANNEL)) { // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
-                String text = "Вы нажали на channel " + callbackData.replace(CHANNEL, "");
-                Long channelId = Long.valueOf(callbackData.replace(CHANNEL, ""));
-                Optional<Chanell> chanell = chanellRepository.findById(channelId);
-                if (chanell.isPresent()) {
-                    System.out.println(chanell.get().getLink());
-                }
-            } /*else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
-                Long idCategory = Long.valueOf(callbackData.split(":")[1]);
-                addChannelByCategory(chatId, nameForLog, idCategory);
-
-            }*/else if (callbackData.contains("Кликните на категорию ниже")) {
-                //                currentChatId = chatId;
-                // ничего не должно происходить
-            } /*else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
-//                addChannelName(chatId, nameForLog, idChannel, tgUserId);
-            }*/else if (callbackData.contains(CREATE_APPROVE_СH)) {
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                approveCreateChannel(idChannel);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    messegePannelRepository.delete(ms);
-                }
-            } else if (callbackData.contains(CREATE_DISABLE_СH)) {
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                String whyFailureINT = null;
-                switch (String.valueOf(callbackData.split(":")[2])) {
-                    case "2":
-                        whyFailureINT = (" не совпадение админа канала и вас ");
-                        break;
-                    case "3":
-                        whyFailureINT = (" не корректное название ");
-                        break;
-                    case "4":
-                        whyFailureINT = (" не правильная ссылка ");
-                        break;
-                    case "5":
-                        whyFailureINT = (" не верно указана цена ");
-                        break;
-                    case "6":
-                        whyFailureINT = (" канал относится к запретным ");
-                        break;
-                    default:
-                        whyFailureINT = ("");
-                        break;
-                }
-                disableCreateChannel(idChannel, whyFailureINT);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    messegePannelRepository.delete(ms);
-                }
-            } else if (callbackData.contains(CREATE_BAN_CH)) {
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                banCreateChannel(idChannel);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    messegePannelRepository.delete(ms);
-                }
-            } else if (callbackData.contains(EDIT_APPROVE_СH)) {
-                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
-                approveEditingChannel(idEditChannel);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    messegePannelRepository.delete(ms);
-                }
-            } else if (callbackData.contains(EDIT_DISABLE_СH)) {
-                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
-                String whyFailureINT = null;
-                switch (String.valueOf(callbackData.split(":")[2])) {
-                    case "2":
-                        whyFailureINT = (" не совпадение админа канала и вас ");
-                        break;
-                    case "3":
-                        whyFailureINT = (" не корректное название ");
-                        break;
-                    case "4":
-                        whyFailureINT = (" не правильная ссылка ");
-                        break;
-                    case "5":
-                        whyFailureINT = (" не верно указана цена ");
-                        break;
-                    case "6":
-                        whyFailureINT = (" канал относится к запретным ");
-                        break;
-                    case "8":
-                        whyFailureINT = (" не корректное описание ");
-                        break;
-                    default:
-                        whyFailureINT = ("");
-                        break;
-                }
-                disableEditChannel(idEditChannel, whyFailureINT);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    messegePannelRepository.delete(ms);
-                }
-            } else if (callbackData.contains(EDIT_BAN_CH)) {
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                banEditChannel(idChannel);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-            } else if (callbackData.equals(V_NACHALO)) {
-                vNachaloCommandReceived(chatId, nameForLog);
-            } else if (callbackData.contains(TEX_PODDERSHKA)) {
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                // Заменить айди админа
-                // Рассылка админам сообщения о необходимости связаться с участником процесса
-                sendMessageToTehPoddershkaAfterOtkonitKanal(523559144l, idChannel);
-                sendMessageToTehPoddershkaAfterOtkonitKanal(1376429566l, idChannel);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                vNachaloCommandReceived(chatId, nameForLog);
-            } else if (callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN)) { //
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
-                        continue;
-                    }
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
-                Chanell chanell = chanellRepository.findById(idChannel).get();
-                chanell.setApprovedAdmin(chatId);
-                chanellRepository.save(chanell);
-            } else if (callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK)) { // При нажатии на Отклонить
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
-                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    }
-                }
-            } else if (callbackData.contains(SEND_ADMIN_CHAT_TO_USER)) { //
-                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
-                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
-                Chanell chanell = chanellRepository.findById(idChannel).get();
-                sendMessage(
-                    chanell.gettGUser().getChatId(),
-                    "Не смогли найти ссылку на чат с Вами \n" + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin,
-                    nameForLog
-                );
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-            }
-            //////////////// Связь с админом - закомментированная
-            else if (callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU)) { //
-                Long userChatId = Long.valueOf(callbackData.split(":")[1]);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatId.toString(), SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
-                        continue;
-                    }
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
-            } else if (callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU)) { // При нажатии на Отклонить
-                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    /*if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
-                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                    }*/
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-            } else if (callbackData.contains(SEND_ADMIN_LINK_TO_USER_FROM_MENU)) { //
-                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
-                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
-                sendMessage(
-                    userChatID,
-                    "Не смогли найти ссылку на чат с Вами \n" + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin,
-                    nameForLog
-                );
-                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
-                for (MessegePannel ms : messegePannels) {
-                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
-                }
-            } else if (callbackData.contains(MY_CHNS)) {
-                Long channelID = Long.valueOf(callbackData.split(":")[1]);
-                String channelName = chanellRepository.findById(channelID).get().getName();
-                String answer = "Выберите действие в меню : " + channelName;
-                TGUser tgUser = tgUserRepositoryService
-                    .getOneChatIdAndDeleteFalse(update.getCallbackQuery().getMessage().getChatId())
-                    .get();
-                tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
-                tgUser.setIdCurrentChannelAction(channelID);
-                tgUserRepositoryService.saveTgUser(tgUser);
-                sendMessageWithKeyBoardWithAllMyChannels(chatId, answer, nameForLog, channelID);
-            }
-        }
-    }
-
-    private void register(long chatId, String name) {
+    public void register(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Do you really want to register?");
@@ -928,7 +172,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
-    private void checkFindChannelOrAddChannel(long chatId, String name) {
+    public void checkFindChannelOrAddChannel(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите действие " + "\uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Обязательное для телеграмма-апи поле
@@ -976,41 +220,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, name);
     }
 
-    /*private void checkFindChannelOrAddChannel(long chatId, String name){
-
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите действие");
-
-        // создание клавиатуры с кнопками в ответе на сообщение
-        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
-        // создание списка со списками с кнопками в ответе на сообщение
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        // создание списка с кнопками в ответе на сообщение
-        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-        var findChannelButton = new InlineKeyboardButton();
-
-        findChannelButton.setText("Найти каналы"); // Содержимое ответа в кнопке
-        findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
-
-        var addChannelButton = new InlineKeyboardButton();
-
-        addChannelButton.setText("Разместить канал");
-        addChannelButton.setCallbackData(ADD_CHANNEL);
-
-        rowInLine.add(findChannelButton);
-        rowInLine.add(addChannelButton);
-
-        rowsInLine.add(rowInLine);
-
-        markupInLine.setKeyboard(rowsInLine);
-        message.setReplyMarkup(markupInLine);
-
-        executeMessage(message, name);
-    }*/
-
     // Найти категории
-    private void findCategoryFirstPage(long chatId, String name, boolean isEditMessage, long messageId) {
+    public void findCategoryFirstPage(long chatId, String name, boolean isEditMessage, long messageId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите категорию \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1138,7 +349,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Найти категории - следующая страница
-    private void findCategoryNextPage(long chatId, String name, Integer pageNumber, long messageId, Integer numberInMap) {
+    public void findCategoryNextPage(long chatId, String name, Integer pageNumber, long messageId, Integer numberInMap) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите категорию \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1311,7 +522,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Найти категории - все страницы с категориями
-    private void findCategoryAllPages(long chatId, String name, long messageId) {
+    public void findCategoryAllPages(long chatId, String name, long messageId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите номер страницы с категорией \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1423,7 +634,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил список страниц категорий ");
     }
 
-    private void findCategoryAllPagesByCity(long chatId, String name, long messageId, Long cityId) {
+    public void findCategoryAllPagesByCity(long chatId, String name, long messageId, Long cityId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите номер страницы с категорией \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1675,7 +886,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }*/
 
     // Найти города  - НОВЫЙ ВАРИАНТ, В КОТОРОМ ОТОБРАЗЯТСЯ ПЕРВЫЕ БУКВЫ ГОРОДОВ
-    private void findCityNamesByFirstLetter(long chatId, String name) {
+    public void findCityNamesByFirstLetter(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите первую букву города \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1734,7 +945,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил список букв городов ");
     }
 
-    private void chooseСity(long chatId, String name, String firstLetter) {
+    public void chooseСity(long chatId, String name, String firstLetter) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите город \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -1954,7 +1165,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }*/
 
     // Возвращает список каналов текстовым сообщением, подлежащим изменению
-    private void getChanellByCategoryId(long chatId, String name, Long categoryId) {
+    public void getChanellByCategoryId(long chatId, String name, Long categoryId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите каналы \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -2119,7 +1330,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     // Возвращает список каналов текстовым сообщением, подлежащим изменению,
     // Приняв с кнопки NEXT_PAGE_CAT инфу о номере страницы и категории
-    private void getChanellByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageNumberInMap, long messageId) {
+    public void getChanellByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageNumberInMap, long messageId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
@@ -2278,7 +1489,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Метод отдает все кнопки со страницами на эту категорию, плюс кнопку со всеми каналами в категории
-    private void getAllPagesButtonsByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageCount) {
+    public void getAllPagesButtonsByCategoryIdAndPageNumber(long chatId, String name, Long categoryId, Long pageCount) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
@@ -2369,7 +1580,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
     }
 
-    private void getAllPagesButtonsByCategoryIdAndPageNumberByCity(long chatId, String name, Long relCategoryCityId, Long pageCount) {
+    public void getAllPagesButtonsByCategoryIdAndPageNumberByCity(long chatId, String name, Long relCategoryCityId, Long pageCount) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         //        Optional<Category> category = categoryRepository.findOneWithEagerRelationships(categoryId);
@@ -2466,7 +1677,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил список городов  + вернулся номер сообщения  = ");
     }
 
-    private void getChanellByCategoryIdBigButtons(long chatId, String name, Long categoryId) {
+    public void getChanellByCategoryIdBigButtons(long chatId, String name, Long categoryId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Выберите каналы \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -2589,7 +1800,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void getChanellByCategoryIdByCityBigButtons(long chatId, String name, Long relCategoryCityId) {
+    public void getChanellByCategoryIdByCityBigButtons(long chatId, String name, Long relCategoryCityId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         //        message.setText(cityName + ": каналы "  + + "⬇⬇⬇");
@@ -2702,7 +1913,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         );
     }
 
-    private void getChanellByCityNameByCategoryId(long chatId, String name, Long relCategoryCityId) {
+    public void getChanellByCityNameByCategoryId(long chatId, String name, Long relCategoryCityId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
@@ -2860,7 +2071,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     // Возвращает список каналов текстовым сообщением, подлежащим изменению,
     // Приняв с кнопки NEXT_GOROD_PAGE_CAT инфу о номере страницы и категории
-    private void getChanellByCityNameByCategoryIdAndPageNumber(
+    public void getChanellByCityNameByCategoryIdAndPageNumber(
         long chatId,
         String name,
         Long relCategoryCityId,
@@ -3022,7 +2233,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Список категорий по имени города - версия с пролистыванием страниц, первая страница
-    private void getCategoriesByCityNameFirstPage(long chatId, String name, Long cityId, boolean isEditMessage, long messageId) {
+    public void getCategoriesByCityNameFirstPage(long chatId, String name, Long cityId, boolean isEditMessage, long messageId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
 
@@ -3186,7 +2397,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     // Список категорий по имени города - версия с пролистыванием страниц, следущие страницы
-    private void getCategoriesByCityNameNextPage(
+    public void getCategoriesByCityNameNextPage(
         long chatId,
         String name,
         Long cityId,
@@ -3447,7 +2658,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 */
 
-    private void registerUser(Message msg) {
+    public void registerUser(Message msg) {
         var chatId = msg.getChatId();
         var chat = msg.getChat();
         var userId = msg.getChat().getId();
@@ -3488,23 +2699,23 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void startCommandReceived(long chatId, String name) {
+    public void startCommandReceived(long chatId, String name) {
         String answer = EmojiParser.parseToUnicode("Добро пожаловать, " + name + " :blush:");
         sendMessageWithBaseKeyBoard(chatId, answer, name); // Отправить базовое сообщение с клавиатурой
         checkFindChannelOrAddChannel(chatId, name); // отправить ответное сообщение с базовой  клавиатурой
     }
 
-    private void vNachaloCommandReceived(long chatId, String name) {
+    public void vNachaloCommandReceived(long chatId, String name) {
         checkFindChannelOrAddChannel(chatId, name);
         sendMessageWithBaseKeyBoard(chatId, "☝☝☝☝☝", name); //// отправить ответное сообщение с базовой  клавиатурой
     }
 
-    private void vNachaloCommandReceivedWithOutBaseKeyBoard(long chatId, String name) {
+    public void vNachaloCommandReceivedWithOutBaseKeyBoard(long chatId, String name) {
         checkFindChannelOrAddChannel(chatId, name);
     }
 
     // отправить ответное сообщение без клавиатуры
-    private void sendMessage(long chatId, String textToSend, String nameForLog) {
+    public void sendMessage(long chatId, String textToSend, String nameForLog) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
@@ -3514,7 +2725,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     // отправить ответное сообщение с базовой  клавиатурой
 
-    private void sendMessageWithBaseKeyBoard(long chatId, String textToSend, String nameForLog) {
+    public void sendMessageWithBaseKeyBoard(long chatId, String textToSend, String nameForLog) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
@@ -3570,7 +2781,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, nameForLog);
     }*/
 
-    private void executeEditText(long chatId, String nameForLog, String textMessage, long messageId) {
+    public void executeEditText(long chatId, String nameForLog, String textMessage, long messageId) {
         // Вместо отправки ответа ниже на кнопках - меняется сообщение
         // в котором был задан вопрос
         EditMessageText message = new EditMessageText();
@@ -3586,7 +2797,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void executeEditTextWithKeyBoardAndDisableWebPreview(
+    public void executeEditTextWithKeyBoardAndDisableWebPreview(
         long chatId,
         String nameForLog,
         String textMessage,
@@ -3611,7 +2822,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void executeDeleteMessage(long chatId, String nameForLog, long messageId) {
+    public void executeDeleteMessage(long chatId, String nameForLog, long messageId) {
         // Вместо отправки ответа ниже на кнопках - удаляется сообщение
         // в котором был задан вопрос
 
@@ -3627,7 +2838,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void executeMessage(SendMessage message, String nameForLog) {
+    public void executeMessage(SendMessage message, String nameForLog) {
         try {
             execute(message);
             log.info("Ответ пользователю " + nameForLog + ", answer: " + message.getText());
@@ -3636,7 +2847,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void executeMessageWithKeybord(String nameForLog, long chatId, String textMessage, InlineKeyboardMarkup markupInLine) {
+    public void executeMessageWithKeybord(String nameForLog, long chatId, String textMessage, InlineKeyboardMarkup markupInLine) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textMessage);
@@ -3651,7 +2862,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private int executeMessageReturnMessageID(SendMessage message, String nameForLog) {
+    public int executeMessageReturnMessageID(SendMessage message, String nameForLog) {
         try {
             var method = execute(message);
             log.info("Ответ пользователю " + nameForLog + ", answer: " + message.getText());
@@ -3761,7 +2972,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 */
 
-    private void sendChannelToModerate(long adminId, long channelId) {
+    public void sendChannelToModerate(long adminId, long channelId) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         String msText = new String(
             "МОДЕРАЦИЯ КАНАЛА: \n" +
@@ -3856,7 +3067,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         messegePannelRepository.save(msPan);
     }
 
-    private void sendEditChannelToModerate(long adminId, long editChannelId) {
+    public void sendEditChannelToModerate(long adminId, long editChannelId) {
         EditChannels editChannels = editChannelsRepository.findById(editChannelId).get();
         Chanell chanell = chanellRepository.findById(editChannels.getIdChannel()).get();
         String msText = new String(
@@ -3975,7 +3186,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         messegePannelRepository.save(msPan);
     }
 
-    private void sendMessageToTehPoddershkaAfterOtkonitKanal(long adminId, long channelId) {
+    public void sendMessageToTehPoddershkaAfterOtkonitKanal(long adminId, long channelId) {
         TGUser admin = tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get();
         Chanell chanell = chanellRepository.findById(channelId).get();
         String msText = new String(
@@ -4050,7 +3261,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         messegePannelRepository.save(msPan);
     }
 
-    private void sendMessageToTehPoddershkaFromMenu(long adminId, long userId) {
+    public void sendMessageToTehPoddershkaFromMenu(long adminId, long userId) {
         TGUser admin = tgUserRepositoryService.getOneChatIdAndDeleteFalse(adminId).get();
         TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(userId).get();
         String msText = new String(
@@ -4112,13 +3323,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         messegePannelRepository.save(msPan);
     }
 
-    private void resetStepForUser(TGUser tgUser) {
+    public void resetStepForUser(TGUser tgUser) {
         tgUser.setCurrentStep("");
         tgUser.setIdCurrentChannelAction(null);
         tgUserRepositoryService.saveTgUser(tgUser);
     }
 
-    private void approveCreateChannel(long channelId) {
+    public void approveCreateChannel(long channelId) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         chanell.setIsModerate(true);
         //        chanell.setIsActive(true);
@@ -4135,7 +3346,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         vNachaloCommandReceivedWithOutBaseKeyBoard(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
     }
 
-    private void approveEditingChannel(long editingChannelId) {
+    public void approveEditingChannel(long editingChannelId) {
         EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
         editChannel.setIsApprovedChanhes(true);
         editChannelsRepository.save(editChannel);
@@ -4159,7 +3370,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         vNachaloCommandReceivedWithOutBaseKeyBoard(chanell.getTGUser().getChatId(), chanell.getTGUser().getFirstName());
     }
 
-    private void disableCreateChannel(long channelId, String whyFailure) {
+    public void disableCreateChannel(long channelId, String whyFailure) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         chanell.setIsModerate(false);
         //        chanell.setIsActive(false);
@@ -4191,7 +3402,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, chanell.getTGUser().getFirstName());
     }
 
-    private void disableEditChannel(long editingChannelId, String whyFailure) {
+    public void disableEditChannel(long editingChannelId, String whyFailure) {
         EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
         editChannel.setIsApprovedChanhes(true);
         editChannelsRepository.save(editChannel);
@@ -4223,7 +3434,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         executeMessage(message, chanell.getTGUser().getFirstName());
     }
 
-    private void banCreateChannel(long channelId) {
+    public void banCreateChannel(long channelId) {
         Chanell chanell = chanellRepository.findById(channelId).get();
         TGUser tgUser = tgUserRepositoryService.getOneChatIdAndDeleteFalse(chanell.gettGUser().getChatId()).get();
         tgUser.setBlocked(true);
@@ -4232,7 +3443,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь- " + tgUser.getFirstName() + ", был заблокирован");
     }
 
-    private void banEditChannel(long editingChannelId) {
+    public void banEditChannel(long editingChannelId) {
         EditChannels editChannel = editChannelsRepository.findById(editingChannelId).get();
         editChannel.setIsApprovedChanhes(true);
         editChannelsRepository.save(editChannel);
@@ -4244,18 +3455,18 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь- " + tgUser.getFirstName() + ", был заблокирован");
     }
 
-    private Set<MessegePannel> getAllWhatWeWantDeleteByChannelID(long channelId, String action) {
+    public Set<MessegePannel> getAllWhatWeWantDeleteByChannelID(long channelId, String action) {
         Set<MessegePannel> messagePannels = messegePannelRepository.getByChannelIdAndStatus(channelId, action);
         return messagePannels;
     }
 
-    private Set<MessegePannel> getAllWhatWeWantDeleteByChatId(String chatId, String action) {
+    public Set<MessegePannel> getAllWhatWeWantDeleteByChatId(String chatId, String action) {
         Set<MessegePannel> messegePannels = messegePannelRepository.getByChatIdAndStatus(chatId, action);
         return messegePannels;
     }
 
     // Метод даёт список каналов для конкретного пользователя
-    private void getMyChannels(long chatId, String name) {
+    public void getMyChannels(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         //        message.setText("Список Ваших каналов ⬇⬇⬇");
@@ -4307,7 +3518,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил список своих каналов ");
     }
 
-    private void sendMessageWithKeyBoardWithAllMyChannels(long chatId, String textToSend, String nameForLog, Long channelID) {
+    public void sendMessageWithKeyBoardWithAllMyChannels(long chatId, String textToSend, String nameForLog, Long channelID) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
@@ -4350,7 +3561,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chatId, stringBuilder.toString(), nameForLog);
     }
 
-    private void sendSearchCategoriesButton(long chatId, String name) {
+    public void sendSearchCategoriesButton(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Кликните на кнопку для поиска категорий \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
@@ -4380,8 +3591,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         log.info("Пользователь с имененем " + name + " получил кнопку для текстового поиска категорий ");
     }
 
-    @Scheduled(fixedDelay = 60000)
-    private void sendAds() {
+    //    @Scheduled(fixedDelay = 60000)
+    public void sendAds() {
         /*var ads = adsRepository.findAll();
         var users = userRepository.findAll();
         for(Ads ad: ads) {

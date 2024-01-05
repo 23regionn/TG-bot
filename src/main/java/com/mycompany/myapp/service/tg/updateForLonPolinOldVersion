@@ -1,0 +1,696 @@
+@Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String messageText = update.getMessage().getText();
+            long chatId = update.getMessage().getChatId();
+            String nameForLog = update.getMessage().getChat().getFirstName();
+            log.info("Сообщение от пользователя " + nameForLog + ", сообщение: " + messageText);
+            TGUser tgUser;
+            Optional<TGUser> tgUserOptional = tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId());
+            tgUser =
+                tgUserOptional.isPresent()
+                    ? tgUserRepositoryService.getOneChatIdAndDeleteFalse(update.getMessage().getChatId()).get()
+                    : null;
+            if (messageText.equals("/start")) {
+                registerUser(update.getMessage());
+                /*if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }*/
+                startCommandReceived(
+                    chatId,
+                    update.getMessage().getChat().getFirstName() != null
+                        ? update.getMessage().getChat().getFirstName()
+                        : update.getMessage().getChat().getUserName() != null ? update.getMessage().getChat().getUserName() : ""
+                );
+            } else if (messageText.equals("/help")) {
+                registerUser(update.getMessage());
+                /*if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }*/
+                sendMessage(chatId, HELP_TEXT, nameForLog);
+            } /*else if(messageText.equals("/register")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                register(chatId, nameForLog);
+            }
+            else if(messageText.equals("/oleg")){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                sendMessage(chatId, "Oleg", nameForLog);
+            }*/else if (messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям")) {
+                /*if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }*/
+                registerUser(update.getMessage());
+                findCategoryFirstPage(chatId, nameForLog, false, 0l);
+            } else if (messageText.equals("Города") || messageText.equals("Каналы по городам") || messageText.equals("/cities")) {
+                /*if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }*/
+                registerUser(update.getMessage());
+                findCityNamesByFirstLetter(chatId, nameForLog);
+            } else if (messageText.equals("/search") || messageText.equals("Ввести название категории")) {
+                registerUser(update.getMessage());
+                sendSearchCategoriesButton(chatId, nameForLog);
+            } /*else if(messageText.equals(МОИ_КАНАЛЫ)){
+                if (tgUserOptional.isPresent()){
+                    resetStepForUser(tgUser);
+                }
+                getMyChannels(chatId, nameForLog);
+            }*/else if (messageText.equals("Связь с админом")) {
+                sendAdminLink(chatId, nameForLog);
+            } // Вроде не работает
+            /*else if(messageText.equals("Ввести название категории 🔍")){
+
+                    // ЛОГИКа в случае нажатия на текст поиск из общего меню с клавиатурой
+                sendAdminLink(chatId, nameForLog);
+            }*/
+            else if (messageText.equals("/channel")) {
+                if (tgUserOptional.isPresent()) {
+                    resetStepForUser(tgUser);
+                }
+                checkFindChannelOrAddChannel(chatId, nameForLog);
+            } else if (messageText.equals(В_НАЧАЛО) || messageText.equals("Вернуться назад")) {
+                if (tgUserOptional.isPresent()) {
+                    resetStepForUser(tgUser);
+                }
+                vNachaloCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+            } else if (messageText.contains("Кликните на категорию ниже")) {
+                InlineKeyboardMarkup mark = update.getMessage().getReplyMarkup();
+                mark
+                    .getKeyboard()
+                    .get(0)
+                    .get(0)
+                    .setCallbackData(update.getMessage().getReplyMarkup().getKeyboard().get(0).get(0).getCallbackData() + chatId);
+                Integer mesId = update.getMessage().getMessageId();
+                //                executeEditTextWithKeyBoardAndDisableWebPreview(chatId, nameForLog, update.getMessage().getText(),
+                //                    mesId, mark);
+                executeDeleteMessage(chatId, nameForLog, mesId);
+                executeMessageWithKeybord(nameForLog, chatId, update.getMessage().getText(), mark);
+                System.out.println("При отправкке заходит сюда " + update.getMessage());
+                searchTypeLogRepository.save(new SearchTypeLog(chatId, true));
+            }
+            // Рассылка пользователям
+            else if (messageText.contains("/send") && config.getOwnerId() == chatId) {
+                var textToSend = EmojiParser.parseToUnicode(messageText.substring(messageText.indexOf(" ")));
+                /*var users = userRepository.findAll(); ЭТОТ ЗАПРОС НЕ ПОДХОДИТ- НУЖНА РАССЫЛКА ВООБЩЕ ВСЕМ ПОЛЬЗОВАТЕЛЯМ.
+                for (User user: users){
+                    sendMessage(user.getChatId(), textToSend);
+                }*/
+                //                sendMessage(chatId, textToSend, nameForLog);
+                sendMessage(chatId, textToSend, nameForLog);
+            } /*  else if (tgUserOptional.isPresent() ){  // Функционал раньше использовался для добавления каналов внутри бота
+                if(tgUser.getCurrentStep() != null){
+                    if(tgUser.getIdCurrentChannelAction() != null){
+                        if(tgUser.getCurrentStep().equals(ADD_СH_NAME)){
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setName(messageText);
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep(ADD_СH_LINK);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавленно название: " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Добавить ссылку на канал (скопируйте и вставьте) ⬇⬇⬇", nameForLog);
+                        }
+                        else if(tgUser.getCurrentStep().equals(ADD_СH_LINK)) {
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setLink(messageText);
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep(ADD_СH_PRICE);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавленна ссылка : " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Добавить прайс (сумма размещения рекламы) ⬇⬇⬇", nameForLog);
+                        }
+                        else if(tgUser.getCurrentStep().equals(ADD_СH_PRICE)) {
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            chanell.setPriceDiapozon(Double.valueOf(messageText));
+                            chanellRepository.save(chanell);
+                            tgUser.setCurrentStep("");
+                            tgUser.setIdCurrentChannelAction(null);
+                            tgUserRepositoryService.saveTgUser(tgUser);
+                            log.info("В канал с id " + chanell.getId() + ", добавлен прайс для рекламы : " +  messageText + ", " + nameForLog);
+                            sendMessage(chatId, "Канал добавлен и проходит модерацию ", nameForLog);
+
+
+                           // Заменить айди админа
+                            sendChannelToModerate(523559144l, chanell.getId());
+                            sendChannelToModerate(1376429566l, chanell.getId());
+                        }
+                        else if(tgUser.getCurrentStep().equals(WORK_WITH_MY_CHANNEL)){ // Менюшка
+                            if(messageText.equals("Изменить название")){
+                                tgUser.setCurrentStep(EDIT_СH_NAME);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое значение для канала ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Изменить ценовой диапазон")){
+                                tgUser.setCurrentStep(EDIT_СH_PRICE);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое значение для цены ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Изменить ссылку")){
+                                tgUser.setCurrentStep(EDIT_СH_LINK);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новую ссылку на канал ⬇⬇⬇", nameForLog);
+                            }
+                            else if(messageText.equals("Добавить описание")){
+                                tgUser.setCurrentStep(ADD_EDIT_DESCRIPTION);
+                                tgUserRepositoryService.saveTgUser(tgUser);
+                                sendMessage(chatId, "Введите новое описание канала ⬇⬇⬇", nameForLog);
+                            }
+                        }
+                        else if(tgUser.getCurrentStep().equals(EDIT_СH_NAME)
+                                || tgUser.getCurrentStep().equals(EDIT_СH_LINK)
+                                || tgUser.getCurrentStep().equals(EDIT_СH_PRICE)
+                                || tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION)){
+                            // Редактирование имени канала
+                            Chanell chanell = chanellRepository.findById(tgUser.getIdCurrentChannelAction()).get();
+                            EditChannels editChannels = new EditChannels();
+                            editChannels.setIdChannel(chanell.getId());
+                            editChannels.setLastNameChannel(chanell.getName());
+                            editChannels.setNewNameChannel(tgUser.getCurrentStep().equals(EDIT_СH_NAME) ? messageText : chanell.getName());
+                            editChannels.setLastLinkToChannel(chanell.getLink());
+                            editChannels.setNewlastLinkToChannel(tgUser.getCurrentStep().equals(EDIT_СH_LINK) ? messageText : chanell.getLink());
+                            editChannels.setUserName(chanell.getTGUser().getUserName());
+                            editChannels.setNewPriceChannel(tgUser.getCurrentStep().equals(EDIT_СH_PRICE) ? Double.valueOf(messageText) : chanell.getPriceDiapozon());
+                            editChannels.setAddDescriptionAboutChannel(tgUser.getCurrentStep().equals(ADD_EDIT_DESCRIPTION) ? messageText : chanell.getString1());
+                            editChannels.setDateCreateMessage(ZonedDateTime.now());
+                            editChannels.setIsApprovedChanhes(false);
+                            editChannels = editChannelsRepository.save(editChannels);
+
+                            tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
+                            tgUser.setIdCurrentChannelAction(chanell.getId());
+                            tgUserRepositoryService.saveTgUser(tgUser);
+
+                            // Заменить айди админа
+                            sendEditChannelToModerate(523559144l, editChannels.getId());
+                            sendEditChannelToModerate(1376429566l, editChannels.getId());
+                        }
+                        else{
+                            sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                        }
+                    }
+                    else{
+                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                    }
+                }
+                else{
+                    sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                }
+            }*/else { // Ради дефолтового ответа
+                switch (messageText) {
+                    default:
+                        sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                }
+            }
+        } else if (update.hasInlineQuery()) {
+            InlineQuery inlineQuery = update.getInlineQuery();
+
+            // Обработка запроса и формирование ответа
+            String query = inlineQuery.getQuery();
+            List<InlineQueryResult> results = new ArrayList<>();
+
+            // Получение параметра offset из InlineQuery
+            String offset = inlineQuery.getOffset();
+
+            int page = 0;
+            if (offset != null && !offset.isEmpty()) {
+                try {
+                    page = Integer.parseInt(offset);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            List<CategoryNameAndIdDTO> categories = categoryRepository
+                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
+                //                                .findAllNames()
+                .stream()
+                .filter(cat -> !cat.getName().isEmpty())
+                .filter(cat -> cat.getName().toLowerCase().contains(query.toLowerCase()))
+                .sorted(Comparator.comparing(CategoryNameAndIdDTO::getIsFirst).reversed().thenComparing(CategoryNameAndIdDTO::getScore))
+                .distinct()
+                .skip(page * PAGE_SIZE) // Пропускаем элементы на предыдущих страницах
+                .limit(PAGE_SIZE) // Ограничиваем количество элементов на текущей странице
+                .collect(Collectors.toList());
+
+            InputTextMessageContent messageContent = new InputTextMessageContent();
+            messageContent.setMessageText("Кликните на категорию ниже \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Текст в двух местах
+
+            for (int i = 0; i < categories.size(); i++) {
+                String name = categories.get(i).getName();
+
+                InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+                // создание списка со списками с кнопками в ответе на сообщение
+                List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+                // создание списка с кнопками в ответе на сообщение
+                List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+                var buttonResponse = new InlineKeyboardButton();
+
+                buttonResponse.setText(name); // Содержимое ответа в кнопке
+                buttonResponse.setCallbackData(CLICK_TEMA + ":" + categories.get(i).getId() + ":"); // Привязка кнопки к реагирование на Button в сообщении, типо когда ответ не текст а кол-бек
+                rowInLine.add(buttonResponse);
+
+                rowsInLine.add(rowInLine);
+                markupInLine.setKeyboard(rowsInLine);
+
+                results.add(new InlineQueryResultArticle(("" + i), name, messageContent, markupInLine, null, null, null, null, null, null));
+            }
+
+            // Настройка параметров ответа
+            AnswerInlineQuery answer = new AnswerInlineQuery();
+            answer.setInlineQueryId(inlineQuery.getId());
+            answer.setResults(results);
+
+            /*// Вычисление следующего offset
+            int nextOffset = (page + 1) * PAGE_SIZE;
+            if (nextOffset >= categories.size()) {
+                nextOffset = 0;
+            }
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            /*// Вычисление следующего offset
+            int nextOffset = (page + 1) * PAGE_SIZE;
+            if (nextOffset >= categories.size()) {
+                nextOffset = page * PAGE_SIZE; // Оставляем текущий offset без изменений
+            }
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categoryRepository.findAllNames().size());
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            // более ли менее подходящий вариант
+            /*int nextOffset = Math.min((page + 1) * PAGE_SIZE, categories.size());
+            answer.setNextOffset(Integer.toString(nextOffset));*/
+
+            try {
+                execute(answer); // Отправка ответа на inline-запрос
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        } // Работающий, но старый вариант
+        /*else if (update.hasInlineQuery()) {
+            InlineQuery inlineQuery = update.getInlineQuery();
+
+            // Обработка запроса и формирование ответа
+            String query = inlineQuery.getQuery();
+            List<InlineQueryResult> results = new ArrayList<>();
+
+            var categories = categoryRepository
+                .findCategoriesHaveChanellsAndIsShowTrue(ZonedDateTime.now().minusDays(1))
+//                .findCategoriesForSearchMethodsBot(ZonedDateTime.now().minusDays(1))
+                .stream()
+                .filter(cat -> !cat.getName().isEmpty())
+                .filter(cat -> cat.getName().toLowerCase().startsWith(query.toLowerCase()))
+                .collect(Collectors.toList()); // Выставить лимит 50
+
+            InputTextMessageContent messageContent = new InputTextMessageContent();
+            messageContent.setMessageText("Кликните на категорию ниже ⬇⬇⬇"); // Текст в двух местах
+
+            for (int i = 0; i < categories.size(); i++) {
+                String name = categories.get(i).getName();
+
+                InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+                // создание списка со списками с кнопками в ответе на сообщение
+                List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+                // создание списка с кнопками в ответе на сообщение
+                List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+                var buttonResponse = new InlineKeyboardButton();
+
+                buttonResponse.setText(name); // Содержимое ответа в кнопке
+                buttonResponse.setCallbackData(CLICK_TEMA + ":" + categories.get(i).getId() + ":"); // Привязка кнопки к реагирование на Button в сообщении, типо когда ответ не текст а кол-бек
+                rowInLine.add(buttonResponse);
+
+                rowsInLine.add(rowInLine);
+                markupInLine.setKeyboard(rowsInLine);
+
+                results.add(new InlineQueryResultArticle(("" + i), name, messageContent, markupInLine, null, null, null, null, null, null));
+            }
+
+            // Настройка параметров ответа
+            AnswerInlineQuery answer = new AnswerInlineQuery();
+            answer.setInlineQueryId(inlineQuery.getId());
+            answer.setResults(results);
+
+            try {
+                execute(answer); // Отправка ответа на inline-запрос
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }*/else if (update.hasCallbackQuery()) {
+            String callbackData = update.getCallbackQuery().getData();
+            Long chatId = null;
+            Integer messageId = null;
+            //            Long chatId = Optional.ofNullable(update.getCallbackQuery().getMessage().getChatId()).orElse(null);
+            //            Integer messageId = Optional.ofNullable(update.getCallbackQuery().getMessage().getMessageId()).orElse(null);
+            //            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+            String nameForLog = "";
+            if (update != null && update.hasCallbackQuery()) {
+                CallbackQuery callbackQuery = update.getCallbackQuery();
+                if (callbackQuery != null && callbackQuery.getMessage() != null) {
+                    Message message = callbackQuery.getMessage();
+                    if (message.getMessageId() != null) {
+                        messageId = message.getMessageId();
+                    }
+                    if (message.getChatId() != null) {
+                        chatId = message.getChatId();
+                    }
+                    if (message.getChat() != null) {
+                        if (message.getChat().getFirstName() != null) {
+                            nameForLog = message.getChat().getFirstName();
+                        }
+                    }
+                }
+            }
+
+            log.info("Сообщение от пользователя " + nameForLog + ", (нажата кнопка): " + callbackData);
+
+            if (callbackData.equals(YES_BUTTON)) {
+                String text = "You pressed YES button";
+                executeEditText(chatId, nameForLog, text, messageId);
+            } else if (callbackData.equals(NO_BUTTON)) {
+                String text = "You pressed NO button";
+                executeEditText(chatId, nameForLog, text, messageId);
+            } /*else if(callbackData.equals(FIND_CHANNEL)){
+//                executeDeleteMessage(chatId, nameForLog, messageId);
+                findCategory(chatId, nameForLog);
+            }
+            else if(callbackData.equals(FIND_CITIES)){
+//                executeDeleteMessage(chatId, nameForLog, messageId);
+                findCityNamesByFirstLetter(chatId, nameForLog);
+            }*/else if (callbackData.contains(FIND_CHANNEL)) {
+                findCategoryFirstPage(chatId, nameForLog, false, messageId); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
+            } else if (callbackData.contains(FIND_CITIES)) {
+                findCityNamesByFirstLetter(chatId, nameForLog); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
+            } else if (callbackData.contains(FIND_TEMATICS_FIRST)) {
+                findCategoryFirstPage(chatId, nameForLog, true, messageId); // ОДНО и ТОЖЕ С ТЕМ ЧТО ВЫШЕ
+            } else if (callbackData.contains(All_PAGES_TEMATICS)) {
+                findCategoryAllPages(chatId, nameForLog, messageId);
+            } else if (callbackData.contains(All_PAGES_TEMATICS_FOR_CITY)) {
+                //                String nameCity = String.valueOf(callbackData.split(":")[1]);
+                Long cityId = Long.valueOf(callbackData.split(":")[1]);
+                findCategoryAllPagesByCity(chatId, nameForLog, messageId, cityId);
+            } else if (callbackData.equals(ADMIN_LINK)) {
+                //                executeDeleteMessage(chatId, nameForLog, messageId);
+                sendAdminLink(chatId, nameForLog);
+            } else if (callbackData.contains(NEXT_PAGE_WITH_TEMATICS)) {
+                Integer pageNumber = Integer.valueOf(callbackData.split(":")[1]);
+                Integer numberInMap = Integer.valueOf(callbackData.split(":")[2]);
+                findCategoryNextPage(chatId, nameForLog, pageNumber, messageId, numberInMap);
+            } else if (callbackData.contains(NEXT_PAGE_WITH_TEMATICS_FOR_CITY)) {
+                Integer pageNumber = Integer.valueOf(callbackData.split(":")[1]);
+                //                String nameCity = String.valueOf(callbackData.split(":")[2]);
+                Long cityId = Long.valueOf(callbackData.split(":")[2]);
+                Integer numberInMap = Integer.valueOf(callbackData.split(":")[3]);
+                getCategoriesByCityNameNextPage(chatId, nameForLog, cityId, pageNumber, messageId, numberInMap);
+            }/*else if(callbackData.equals(SEARCH_TEMATICS)){ // При нажатии на текстовы поиск категории
+                currentChatId = chatId;
+            }*/ /*else if(callbackData.equals(ADD_CHANNEL)){
+                String text = "Вы нажали добавить канал";
+                executeEditText(chatId, nameForLog, text,messageId);
+                selectCategory(chatId, nameForLog);
+            }*/
+            else if (callbackData.contains(CATEGORY)) {
+                String text = "Вы нажали на категоррию " + callbackData.replace(CATEGORY, "");
+                Long categoryId = Long.valueOf(callbackData.replace(CATEGORY, ""));
+                //                executeEditText(chatId, nameForLog, text,messageId);
+                //                executeDeleteMessage(chatId, nameForLog, messageId);
+                //                selectPriceDiapozonForGetChanneles(chatId, nameForLog, categoryId);
+                getChanellByCategoryId(chatId, nameForLog, categoryId);
+            } else if (callbackData.contains(CLICK_TEMA)) {
+                String text = "Вы нажали на категоррию " + callbackData.replace(CLICK_TEMA, "");
+                Long categoryId = Long.valueOf(callbackData.split(":")[1]);
+                Long chatIdIn = Long.valueOf(callbackData.split(":")[2]);
+                getChanellByCategoryId(chatIdIn, nameForLog, categoryId);
+            } else if (callbackData.contains(ALL_LIST_CH)) {
+                String text = "Вы нажали на категоррию " + callbackData.replace(ALL_LIST_CH, "");
+                Long categoryId = Long.valueOf(callbackData.split(":")[1]);
+                getChanellByCategoryIdBigButtons(chatId, nameForLog, categoryId);
+            } else if (callbackData.contains(ALL_LIST_GOROD_CHANNEL)) {
+                String text = "Вы нажали на категоррию " + callbackData.replace(ALL_LIST_GOROD_CHANNEL, "");
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
+                /*Long categoryId = Long.valueOf(callbackData.split(":")[1]);
+                //                String nameCity = String.valueOf(callbackData.split(":")[2]);
+                Long cityId = Long.valueOf(callbackData.split(":")[2]);*/
+                getChanellByCategoryIdByCityBigButtons(chatId, nameForLog, relCategoryCityId);
+            } else if (callbackData.contains(NEXT_PAGE_CAT)) {
+                String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT, "");
+                Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                getChanellByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pageNumber, messageId);
+            } else if (callbackData.contains(ANY_PAGE_IN_CAT)) {
+                String text = "Вы нажали на следующую страницу " + callbackData.replace(NEXT_PAGE_CAT, "");
+                Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                getAllPagesButtonsByCategoryIdAndPageNumber(chatId, nameForLog, categoryId, pagesCount);
+            }
+            // Для городов
+            else if (callbackData.contains(NEXT_PAGE_GOROD_CAT)) {
+                Long pageNumber = Long.valueOf(callbackData.split(":")[1]);
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[2]);
+                //                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                //                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
+                //                Long cityId = Long.valueOf(callbackData.split(":")[3]);
+                getChanellByCityNameByCategoryIdAndPageNumber(chatId, nameForLog, relCategoryCityId, pageNumber, messageId);
+            }
+            // Для городов _______
+            else if (callbackData.contains(ANY_PAGE_GOROD_IN_CAT)) {
+                Long pagesCount = Long.valueOf(callbackData.split(":")[1]);
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[2]);
+                /*Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                //                String nameCity = String.valueOf(callbackData.split(":")[3]);
+                Long cityId = Long.valueOf(callbackData.split(":")[3]);*/
+                getAllPagesButtonsByCategoryIdAndPageNumberByCity(chatId, nameForLog, relCategoryCityId, pagesCount);
+            } else if (callbackData.contains(GORODA_FIRST_LETTER)) {
+                String firstLetterOfCity = String.valueOf(callbackData.split(":")[1]);
+                String text = "Вы нажали на первую букву города - " + firstLetterOfCity;
+                chooseСity(chatId, nameForLog, firstLetterOfCity);
+            } else if (callbackData.contains(CITY)) {
+                //                String cityName = String.valueOf(callbackData.split(":")[1]);
+                Long cityId = Long.valueOf(callbackData.split(":")[1]);
+                //                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityName, false, messageId);
+                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, false, messageId);
+            } else if (callbackData.contains(UPDATE_GOROD_MESSAGE)) {
+                //                String cityName = String.valueOf(callbackData.split(":")[1]);
+                Long cityId = Long.valueOf(callbackData.split(":")[1]);
+                getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, true, messageId);
+            } else if (callbackData.contains(TEMA_GOROD)) {
+                /*Long cityId = Long.valueOf(callbackData.split(":")[1]);
+                Long categoryId = Long.valueOf(callbackData.split(":")[2]);
+                getChanellByCityNameByCategoryId(chatId, nameForLog, cityId, categoryId);*/
+                Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
+                getChanellByCityNameByCategoryId(chatId, nameForLog, relCategoryCityId);
+            } /*else if(callbackData.contains(PRICEDIAP)){
+                String text = "Вы нажали на price " + callbackData.replace(PRICEDIAP,"");
+                String[] strings = callbackData.split(IDCAT);
+                Double price = Double.valueOf(strings[0].replace(PRICEDIAP,""));
+                Long categoryId = Long.valueOf(strings[1]);
+//                executeEditText(chatId, nameForLog, text, messageId);
+
+//                executeDeleteMessage(chatId, nameForLog, messageId);
+                getChanellByPriceDiapozon(chatId, nameForLog, price, categoryId);
+            }*/else if (callbackData.contains(CHANNEL)) { // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
+                String text = "Вы нажали на channel " + callbackData.replace(CHANNEL, "");
+                Long channelId = Long.valueOf(callbackData.replace(CHANNEL, ""));
+                Optional<Chanell> chanell = chanellRepository.findById(channelId);
+                if (chanell.isPresent()) {
+                    System.out.println(chanell.get().getLink());
+                }
+            } /*else if(callbackData.contains(FIND_CAT_FOR_ADD_CHAN)){ // ИСПОЛЬЗУЕТСЯ
+                Long idCategory = Long.valueOf(callbackData.split(":")[1]);
+                addChannelByCategory(chatId, nameForLog, idCategory);
+
+            }*/else if (callbackData.contains("Кликните на категорию ниже")) {
+                //                currentChatId = chatId;
+                // ничего не должно происходить
+            } /*else if(callbackData.contains(ADD_СH_NAME)){ // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Long tgUserId = Long.valueOf(callbackData.split(":")[2]);
+//                addChannelName(chatId, nameForLog, idChannel, tgUserId);
+            }*/else if (callbackData.contains(CREATE_APPROVE_СH)) {
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                approveCreateChannel(idChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            } else if (callbackData.contains(CREATE_DISABLE_СH)) {
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                String whyFailureINT = null;
+                switch (String.valueOf(callbackData.split(":")[2])) {
+                    case "2":
+                        whyFailureINT = (" не совпадение админа канала и вас ");
+                        break;
+                    case "3":
+                        whyFailureINT = (" не корректное название ");
+                        break;
+                    case "4":
+                        whyFailureINT = (" не правильная ссылка ");
+                        break;
+                    case "5":
+                        whyFailureINT = (" не верно указана цена ");
+                        break;
+                    case "6":
+                        whyFailureINT = (" канал относится к запретным ");
+                        break;
+                    default:
+                        whyFailureINT = ("");
+                        break;
+                }
+                disableCreateChannel(idChannel, whyFailureINT);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            } else if (callbackData.contains(CREATE_BAN_CH)) {
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                banCreateChannel(idChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            } else if (callbackData.contains(EDIT_APPROVE_СH)) {
+                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
+                approveEditingChannel(idEditChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            } else if (callbackData.contains(EDIT_DISABLE_СH)) {
+                Long idEditChannel = Long.valueOf(callbackData.split(":")[1]);
+                String whyFailureINT = null;
+                switch (String.valueOf(callbackData.split(":")[2])) {
+                    case "2":
+                        whyFailureINT = (" не совпадение админа канала и вас ");
+                        break;
+                    case "3":
+                        whyFailureINT = (" не корректное название ");
+                        break;
+                    case "4":
+                        whyFailureINT = (" не правильная ссылка ");
+                        break;
+                    case "5":
+                        whyFailureINT = (" не верно указана цена ");
+                        break;
+                    case "6":
+                        whyFailureINT = (" канал относится к запретным ");
+                        break;
+                    case "8":
+                        whyFailureINT = (" не корректное описание ");
+                        break;
+                    default:
+                        whyFailureINT = ("");
+                        break;
+                }
+                disableEditChannel(idEditChannel, whyFailureINT);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idEditChannel, EDITING_CHANNEL);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    messegePannelRepository.delete(ms);
+                }
+            } else if (callbackData.contains(EDIT_BAN_CH)) {
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                banEditChannel(idChannel);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, MODERATION);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            } else if (callbackData.equals(V_NACHALO)) {
+                vNachaloCommandReceived(chatId, nameForLog);
+            } else if (callbackData.contains(TEX_PODDERSHKA)) {
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                // Заменить айди админа
+                // Рассылка админам сообщения о необходимости связаться с участником процесса
+                sendMessageToTehPoddershkaAfterOtkonitKanal(523559144l, idChannel);
+                sendMessageToTehPoddershkaAfterOtkonitKanal(1376429566l, idChannel);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                vNachaloCommandReceived(chatId, nameForLog);
+            } else if (callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_THE_CHAN)) { //
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
+                        continue;
+                    }
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
+                Chanell chanell = chanellRepository.findById(idChannel).get();
+                chanell.setApprovedAdmin(chatId);
+                chanellRepository.save(chanell);
+            } else if (callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_CHAN_CLICK)) { // При нажатии на Отклонить
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
+                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    }
+                }
+            } else if (callbackData.contains(SEND_ADMIN_CHAT_TO_USER)) { //
+                Long idChannel = Long.valueOf(callbackData.split(":")[1]);
+                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
+                Chanell chanell = chanellRepository.findById(idChannel).get();
+                sendMessage(
+                    chanell.gettGUser().getChatId(),
+                    "Не смогли найти ссылку на чат с Вами \n" + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin,
+                    nameForLog
+                );
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChannelID(idChannel, SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            }
+            //////////////// Связь с админом - закомментированная
+            else if (callbackData.contains(TAKE_TO_WORK_AFTER_FALSE_CONTACTING_FROM_MENU)) { //
+                Long userChatId = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatId.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    if (ms.getIdAdmin().equals(chatId)) { // либо поставить отрицание и воткнуть строку удаления сообщения
+                        continue;
+                    }
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+                sendMessage(chatId, "При завершение общения с пользователем, нажмите - Отклонить/Завершить", nameForLog);
+            } else if (callbackData.contains(REJECT_FINISH_CONTACTING_FOR_ME_AFTER_FROM_MENU)) { // При нажатии на Отклонить
+                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    /*if(ms.getIdAdmin().equals(chatId)){ // либо поставить отрицание и воткнуть строку удаления сообщения
+                        executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                    }*/
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            } else if (callbackData.contains(SEND_ADMIN_LINK_TO_USER_FROM_MENU)) { //
+                Long userChatID = Long.valueOf(callbackData.split(":")[1]);
+                String linkToAdmin = String.valueOf(callbackData.split(":")[2]);
+                sendMessage(
+                    userChatID,
+                    "Не смогли найти ссылку на чат с Вами \n" + " свяжитесь с админом самостоятельно - " + "@" + linkToAdmin,
+                    nameForLog
+                );
+                Set<MessegePannel> messegePannels = getAllWhatWeWantDeleteByChatId(userChatID.toString(), SVYAZ_S_ADMINAMI);
+                for (MessegePannel ms : messegePannels) {
+                    executeDeleteMessage(ms.getIdAdmin(), nameForLog, ms.getIdMessage());
+                }
+            } else if (callbackData.contains(MY_CHNS)) {
+                Long channelID = Long.valueOf(callbackData.split(":")[1]);
+                String channelName = chanellRepository.findById(channelID).get().getName();
+                String answer = "Выберите действие в меню : " + channelName;
+                TGUser tgUser = tgUserRepositoryService
+                    .getOneChatIdAndDeleteFalse(update.getCallbackQuery().getMessage().getChatId())
+                    .get();
+                tgUser.setCurrentStep(WORK_WITH_MY_CHANNEL);
+                tgUser.setIdCurrentChannelAction(channelID);
+                tgUserRepositoryService.saveTgUser(tgUser);
+                sendMessageWithKeyBoardWithAllMyChannels(chatId, answer, nameForLog, channelID);
+            }
+        }
+    }
