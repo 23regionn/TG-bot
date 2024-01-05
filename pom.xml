@@ -82,6 +82,7 @@
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.8.0.2131</sonar-maven-plugin.version>
+        <telegrambot.starter.version>6.1.0</telegrambot.starter.version>
         <!-- jhipster-needle-maven-property -->
     </properties>
 
@@ -99,11 +100,16 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
-<!--            <version>5.6.0</version>-->
             <version>6.1.0</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>${telegrambot.starter.version}</version>
         </dependency>
 
         <dependency>

@@ -12,13 +12,12 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-@Slf4j
-@Component
+//@Slf4j
+//@Component
 public class BotInitializer {
 
     private final Logger log = LoggerFactory.getLogger(BotInitializer.class);
-
-    @Autowired
+    /*@Autowired
     TelegramBot bot;
 
     @EventListener({ ContextRefreshedEvent.class })
@@ -36,5 +35,5 @@ public class BotInitializer {
             // попытка повторного рестарта
             telegramBotsApi.registerBot(bot);
         }
-    }
+    }*/
 }
