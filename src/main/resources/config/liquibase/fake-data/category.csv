@@ -107,3 +107,11 @@ id;name;score;is_first;is_show
 1005;Охота;30;false;true
 1006;Рыбалка;30;false;true
 1007;Дача;30;false;true
+1008;Игры для консолей;30;false;true
+1011;Мобильные игры;30;false;true
+1010;CS:Go Dota 2;30;false;true
+1009;Киберспорт;30;false;true
+1012;World of Tanks;30;false;true
+1013;Genshin Impact;30;false;true
+1014;Мемы;30;false;true
+1015;Юмор;30;false;true
