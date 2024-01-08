@@ -2,7 +2,6 @@ package com.mycompany.myapp.service.tg;
 
 import static com.mycompany.myapp.service.tg.Constants.*;
 
-import com.mycompany.myapp.config.tg.BotConfig;
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.TgUserRepositoryService;
@@ -21,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -36,7 +38,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class TelegramBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramWebhookBot {
 
     @Value("${bot.name}")
     private String botName;
@@ -68,9 +70,19 @@ public class TelegramBot extends TelegramLongPollingBot {
         return botUri;
     }
 
-    @Override
+    /*@Override
     public void onUpdateReceived(Update update) {
         updateController.processUpdate(update);
+    }*/
+
+    @Override
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+        return null;
+    }
+
+    @Override
+    public String getBotPath() {
+        return "/update";
     }
 
     private final Logger log = LoggerFactory.getLogger(TelegramBot.class);
@@ -91,6 +103,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: " + e.getMessage());
+        }
+
+        try {
+            var setWebhook = SetWebhook.builder().url(botUri).build();
+            this.setWebhook(setWebhook);
+        } catch (TelegramApiException e) {
+            log.error(String.valueOf(e));
         }
     }
 
