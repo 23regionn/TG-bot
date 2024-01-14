@@ -115,3 +115,8 @@ id;name;score;is_first;is_show
 1013;Genshin Impact;30;false;true
 1014;Мемы;30;false;true
 1015;Юмор;30;false;true
+1016;Футбол;30;true;true
+1017;Теннис;30;false;true
+1018;Баскетбол;30;false;true
+1019;Единоборства;30;false;true
+1020;Хоккей;30;false;true

@@ -184,7 +184,12 @@ jhipster:
 bot:
   name: Gid_Telegram
   token: 5789913711:AAHAWlpA3yTidklgM1lfL9rBG9ewrThpW0Y
+  rename: TestGidPoTelegramBot
+  #  name: OlegTestBot
+  #  token: 5617005559:AAE74-hkBPMVNqs947nYEZReeYjv4Kb6Voc
+  #  rename: OlezhanTestBot
   #  name: Telegram_channels
   #  token: 568645835:AAFnBvMcRLAVUiNevSv-pDu30pSShVfWWBw
+  #  rename: Olezhanbot
   owner: 523559144
   uri: http://82.146.49.160:433

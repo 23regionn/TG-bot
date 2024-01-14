@@ -2,7 +2,6 @@ package com.mycompany.myapp.service.tg;
 
 import static com.mycompany.myapp.service.tg.Constants.*;
 
-import com.mycompany.myapp.config.tg.BotConfig;
 import com.mycompany.myapp.domain.*;
 import com.mycompany.myapp.repository.*;
 import com.mycompany.myapp.service.TgUserRepositoryService;
@@ -50,6 +49,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.uri}")
     private String botUri;
 
+    @Value("${bot.rename}")
+    private String rename;
+
     @Override
     public String getBotUsername() {
         return botName;
@@ -66,6 +68,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public String getBotUri() {
         return botUri;
+    }
+
+    public String getRename() {
+        return rename;
     }
 
     @Override
@@ -87,6 +93,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/search", "Ввести название категории"));
         listofCommands.add(new BotCommand("/category", "Выберите каналы по категориям"));
         listofCommands.add(new BotCommand("/cities", "Выберите каналы по городам"));
+        listofCommands.add(new BotCommand("/menu", "Меню"));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -1225,14 +1232,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (RelCategoryChannels rel : list) {
                 if (rel.getChanell() != null) {
                     if (rel.getChanell().getIsModerate()) {
-                        var chanString =
-                            "\n" +
-                            "Имя канала: " +
-                            rel.getChanell().getName() +
-                            " \n" +
-                            "Ссылка на канал: \n" +
-                            rel.getChanell().getLink() +
-                            "\n";
+                        String linkText = rel.getChanell().getName();
+                        String url = rel.getChanell().getLink();
+                        var chanString = "<a href=\"" + url + "\"> 👉 " + linkText + "</a>" + " \n\n";
                         allChanellsInformationList.add(chanString);
                     }
                 }
@@ -1243,12 +1245,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             Map<Integer, List<String>> map = IntStream
                 .range(0, allChanellsInformationList.size())
                 .boxed()
-                .collect(Collectors.groupingBy(i -> i / 3, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+                .collect(Collectors.groupingBy(i -> i / 5, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
 
             map.get(0).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Категория: " +
+                "<b>" +
                 categoryName +
+                "</b>" +
                 /*"\n" +
                 "Каналов в категории: " +
                 allChanellsInformationList.size() +*/
@@ -1258,12 +1262,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "\n" +
                 "Текущая страница: 1" +*/
                 "\n" +
-                "Выберите каналы: \uD83D\uDC47 \n " +
+                "<u>Выберите каналы:</u> \uD83D\uDC47 \n\n" +
+                //                    stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
-                " \n\nЕщё каналы ниже \uD83D\uDC47" +
-                "\uD83D\uDC47" +
-                "\uD83D\uDC47"
+                MENU
+                //                stringBuilder +
+                //                "Ещё каналы ниже \uD83D\uDC47" +
+                //                "\uD83D\uDC47" +
+                //                "\uD83D\uDC47" +
+                //                "\uD83D\uDC47"
             );
+
+            message.setParseMode("HTML");
 
             message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
 
@@ -1385,14 +1395,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (RelCategoryChannels rel : list) {
                 if (rel.getChanell() != null) {
                     if (rel.getChanell().getIsModerate()) {
-                        var chanString =
-                            "\n" +
-                            "Имя канала: " +
-                            rel.getChanell().getName() +
-                            " \n" +
-                            "Ссылка на канал: \n" +
-                            rel.getChanell().getLink() +
-                            "\n";
+                        String linkText = rel.getChanell().getName();
+                        String url = rel.getChanell().getLink();
+                        var chanString = "<a href=\"" + url + "\"> 👉 " + linkText + "</a>" + " \n\n";
                         allChanellsInformationList.add(chanString);
                     }
                 }
@@ -1408,12 +1413,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             Map<Integer, List<String>> map = IntStream
                 .range(0, allChanellsInformationList.size())
                 .boxed()
-                .collect(Collectors.groupingBy(i -> i / 3, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+                .collect(Collectors.groupingBy(i -> i / 5, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
 
             map.get(pageNumberInMap.intValue()).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Категория: " +
+                "<b>" +
                 categoryName +
+                "</b>" +
                 /*"\n" +
                 "Каналов в категории: " +
                 allChanellsInformationList.size() +*/
@@ -1424,13 +1431,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "Текущая страница: " +
                 (pageNumberInMap + 1) +*/
                 "\n" +
-                "Выберите каналы: \uD83D\uDC47 \n " +
+                "<u>Выберите каналы:</u> \uD83D\uDC47 \n\n" +
+                //                stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
+                MENU
+                /*stringBuilder +
                 " \n\nЕщё каналы ниже \uD83D\uDC47" +
                 "\uD83D\uDC47" +
-                "\uD83D\uDC47"
+                "\uD83D\uDC47"*/
             );
 
+            message.setParseMode("HTML");
             message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
 
             // создание клавиатуры с кнопками в ответе на сообщение
@@ -1954,14 +1965,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             }*/
             for (RelCategoryCityChannels rel : rels) {
                 if (rel.getChanell() != null) {
-                    var chanString =
+                    String linkText = rel.getChanell().getName();
+                    String url = rel.getChanell().getLink();
+                    /*var chanString =
                         "\n" +
                         "Имя канала: " +
                         rel.getChanell().getName() +
                         " \n" +
                         "Ссылка на канал: \n" +
                         rel.getChanell().getLink() +
-                        "\n";
+                        "\n";*/
+                    var chanString = "<a href=\"" + url + "\"> 👉 " + linkText + "</a>" + " \n\n";
                     allChanellsInformationList.add(chanString);
                 }
             }
@@ -1970,15 +1984,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             Map<Integer, List<String>> map = IntStream
                 .range(0, allChanellsInformationList.size())
                 .boxed()
-                .collect(Collectors.groupingBy(i -> i / 3, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+                .collect(Collectors.groupingBy(i -> i / 5, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
 
             map.get(0).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Город: " +
+                "<b>" +
                 categoryCity.getNameCity() +
+                "</b>" +
                 "\n" +
                 "Категория: " +
+                "<b>" +
                 categoryCity.getNameCat() +
+                "</b>" +
                 /*"\n" +
                 "Каналов в категории: " +
                 chanellList.size() +
@@ -1988,14 +2006,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "\n" +
                 "Текущая страница: 1" +*/
                 "\n" +
-                "Выберите каналы: \uD83D\uDC47" +
-                "\n " +
+                "<u>Выберите каналы:</u> \uD83D\uDC47" +
+                "\n\n" +
+                //                stringBuilder +
+                //                                        stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
-                " \n\nЕщё каналы ниже\uD83D\uDC47" +
+                MENU
+                /*" \n\nЕщё каналы ниже\uD83D\uDC47" +
                 "\uD83D\uDC47" +
-                "\uD83D\uDC47"
+                "\uD83D\uDC47"*/
             );
 
+            message.setParseMode("HTML");
             message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
 
             List<InlineKeyboardButton> rowInLine = new ArrayList<>();
@@ -2125,14 +2147,17 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             for (RelCategoryCityChannels rel : rels) {
                 if (rel.getChanell() != null) {
-                    var chanString =
+                    String linkText = rel.getChanell().getName();
+                    String url = rel.getChanell().getLink();
+                    /*var chanString =
                         "\n" +
                         "Имя канала: " +
                         rel.getChanell().getName() +
                         " \n" +
                         "Ссылка на канал: \n" +
                         rel.getChanell().getLink() +
-                        "\n";
+                        "\n";*/
+                    var chanString = "<a href=\"" + url + "\"> 👉 " + linkText + "</a>" + " \n\n";
                     allChanellsInformationList.add(chanString);
                 }
             }
@@ -2142,32 +2167,40 @@ public class TelegramBot extends TelegramLongPollingBot {
             Map<Integer, List<String>> map = IntStream
                 .range(0, allChanellsInformationList.size())
                 .boxed()
-                .collect(Collectors.groupingBy(i -> i / 3, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
+                .collect(Collectors.groupingBy(i -> i / 5, Collectors.mapping(allChanellsInformationList::get, Collectors.toList())));
 
             map.get(pageNumberInMap.intValue()).forEach(str -> stringBuilder.append(str));
             message.setText(
                 "Город: " +
+                "<b>" +
                 categoryCity.getNameCity() +
+                "</b>" +
                 "\n" +
                 "Категория: " +
+                "<b>" +
                 categoryCity.getNameCat() +
-                "\n" +
-                /*"Каналов в категории: " +
+                "</b>" +
+                /*"\n" +
+                "Каналов в категории: " +
                 chanellList.size() +
                 "\n" +
                 "Всего страниц с каналами: " +
                 map.size() +
                 "\n" +
-                "Текущая страница: " +
-                (pageNumberInMap + 1) +
-                "\n" +*/
-                "Выберите каналы: \uD83D\uDC47 \n " +
+                "Текущая страница: 1" +*/
+                "\n" +
+                "<u>Выберите каналы:</u> \uD83D\uDC47" +
+                "\n\n" +
+                //                stringBuilder +
+                //                                        stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
-                " \n\nЕщё каналы ниже \uD83D\uDC47" +
+                MENU
+                /*" \n\nЕщё каналы ниже\uD83D\uDC47" +
                 "\uD83D\uDC47" +
-                "\uD83D\uDC47"
+                "\uD83D\uDC47"*/
             );
 
+            message.setParseMode("HTML");
             message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
 
             List<InlineKeyboardButton> rowInLine = new ArrayList<>();
@@ -2811,6 +2844,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setText(textMessage);
         message.setMessageId((int) messageId);
 
+        message.setParseMode("HTML");
         message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
         message.setReplyMarkup(markupInLine);
 

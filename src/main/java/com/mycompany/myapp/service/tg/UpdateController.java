@@ -64,6 +64,9 @@ public class UpdateController {
             } else if (messageText.equals("/help")) {
                 telegramBot.registerUser(update.getMessage());
                 telegramBot.sendMessage(chatId, HELP_TEXT, nameForLog);
+            } else if (messageText.equals("/start menu") || messageText.equals(MENU)) {
+                telegramBot.registerUser(update.getMessage());
+                telegramBot.checkFindChannelOrAddChannel(chatId, nameForLog);
             } else if (messageText.equals("/category") || messageText.equals("Категории") || messageText.equals("Каналы по категориям")) {
                 telegramBot.registerUser(update.getMessage());
                 telegramBot.findCategoryFirstPage(chatId, nameForLog, false, 0l);
