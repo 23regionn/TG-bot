@@ -76,7 +76,8 @@ public class ChanellResource {
      * or with status {@code 500 (Internal Server Error)} if the chanell couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/chanells/{id}")
+
+    /*@PutMapping("/chanells/{id}")
     public ResponseEntity<Chanell> updateChanell(@PathVariable(value = "id", required = false) final Long id, @RequestBody Chanell chanell)
         throws URISyntaxException {
         log.debug("REST request to update Chanell : {}, {}", id, chanell);
@@ -96,8 +97,7 @@ public class ChanellResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, chanell.getId().toString()))
             .body(result);
-    }
-
+    }*/
     /**
      * {@code PATCH  /chanells/:id} : Partial updates given fields of an existing chanell, field will ignore if it is null
      *
@@ -163,12 +163,12 @@ public class ChanellResource {
                     if (chanell.getPriceForPay() != null) {
                         existingChanell.setPriceForPay(chanell.getPriceForPay());
                     }
-                    if (chanell.getStartDate() != null) {
+                    /*if (chanell.getStartDate() != null) {
                         existingChanell.setStartDate(chanell.getStartDate());
                     }
                     if (chanell.getLastPayDate() != null) {
                         existingChanell.setLastPayDate(chanell.getLastPayDate());
-                    }
+                    }*/
                     if (chanell.getEndPublicDate() != null) {
                         existingChanell.setEndPublicDate(chanell.getEndPublicDate());
                     }
@@ -183,6 +183,10 @@ public class ChanellResource {
                 }
             )
             .map(chanellRepository::save);
+
+        if (result.isPresent()) {
+            Chanell channelAfterUpdate = result.get();
+        }
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -223,7 +227,7 @@ public class ChanellResource {
     @DeleteMapping("/chanells/{id}")
     public ResponseEntity<Void> deleteChanell(@PathVariable Long id) {
         log.debug("REST request to delete Chanell : {}", id);
-        chanellRepository.deleteById(id);
+        //        chanellRepository.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

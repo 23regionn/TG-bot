@@ -88,7 +88,7 @@ public class UpdateController {
                     telegramBot.resetStepForUser(tgUser);
                 }
                 telegramBot.vNachaloCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-            } else if (messageText.contains("Кликните на категорию ниже")) {
+            } else if (messageText.contains("Кликните на категорию")) {
                 InlineKeyboardMarkup mark = update.getMessage().getReplyMarkup();
                 mark
                     .getKeyboard()
@@ -97,7 +97,10 @@ public class UpdateController {
                     .setCallbackData(update.getMessage().getReplyMarkup().getKeyboard().get(0).get(0).getCallbackData() + chatId);
                 Integer mesId = update.getMessage().getMessageId();
                 telegramBot.executeDeleteMessage(chatId, nameForLog, mesId);
-                telegramBot.executeMessageWithKeybord(nameForLog, chatId, update.getMessage().getText(), mark);
+                //                telegramBot.executeMessageWithKeybord(nameForLog, chatId, update.getMessage().getText(), mark);
+                String input = update.getMessage().getText().replaceAll("[\\p{So}]", "").strip();
+                String answer = "<u>" + input + ": </u>👇👇👇";
+                telegramBot.executeMessageWithKeybord(nameForLog, chatId, answer, mark);
                 System.out.println("При отправкке заходит сюда " + update.getMessage());
                 telegramBot.searchTypeLogRepository.save(new SearchTypeLog(chatId, true));
             }
@@ -143,7 +146,7 @@ public class UpdateController {
                 .collect(Collectors.toList());
 
             InputTextMessageContent messageContent = new InputTextMessageContent();
-            messageContent.setMessageText("Кликните на категорию ниже \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Текст в двух местах
+            messageContent.setMessageText("Кликните на категорию \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Текст в двух местах
 
             for (int i = 0; i < categories.size(); i++) {
                 String name = categories.get(i).getName();
@@ -229,6 +232,11 @@ public class UpdateController {
                 Integer numberInMap = Integer.valueOf(callbackData.split(":")[3]);
                 telegramBot.getCategoriesByCityNameNextPage(chatId, nameForLog, cityId, pageNumber, messageId, numberInMap);
             } else if (callbackData.contains(CATEGORY)) {
+                if (update.getCallbackQuery() != null) {
+                    if (update.getCallbackQuery().getMessage() != null) {
+                        telegramBot.registerUser(update.getCallbackQuery().getMessage());
+                    }
+                }
                 Long categoryId = Long.valueOf(callbackData.replace(CATEGORY, ""));
                 telegramBot.getChanellByCategoryId(chatId, nameForLog, categoryId);
             } else if (callbackData.contains(CLICK_TEMA)) {
@@ -271,6 +279,11 @@ public class UpdateController {
                 Long cityId = Long.valueOf(callbackData.split(":")[1]);
                 telegramBot.getCategoriesByCityNameFirstPage(chatId, nameForLog, cityId, true, messageId);
             } else if (callbackData.contains(TEMA_GOROD)) {
+                if (update.getCallbackQuery() != null) {
+                    if (update.getCallbackQuery().getMessage() != null) {
+                        telegramBot.registerUser(update.getCallbackQuery().getMessage());
+                    }
+                }
                 Long relCategoryCityId = Long.valueOf(callbackData.split(":")[1]);
                 telegramBot.getChanellByCityNameByCategoryId(chatId, nameForLog, relCategoryCityId);
             } else if (callbackData.contains(CHANNEL)) { // ВРОДЕ НЕ ИСПОЛЬЗУЕТСЯ
@@ -280,7 +293,7 @@ public class UpdateController {
                 if (chanell.isPresent()) {
                     System.out.println(chanell.get().getLink());
                 }
-            } else if (callbackData.contains("Кликните на категорию ниже")) {
+            } else if (callbackData.contains("Кликните на категорию")) {
                 //                currentChatId = chatId;
                 // ничего не должно происходить
             } else if (callbackData.contains(CREATE_APPROVE_СH)) {

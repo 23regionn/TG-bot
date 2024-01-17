@@ -182,8 +182,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void checkFindChannelOrAddChannel(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите действие " + "\uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Обязательное для телеграмма-апи поле
-
+        message.setText("<u>Выберите действие:</u> " + "\uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"); // Обязательное для телеграмма-апи поле
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         // создание списка со списками с кнопками в ответе на сообщение
@@ -195,24 +194,23 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> rowInLine4 = new ArrayList<>();
 
         var findChannelButton = new InlineKeyboardButton();
-
-        var searchCategory = new InlineKeyboardButton();
-        searchCategory.setText("Ввести название категории 🔍"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
-
-        findChannelButton.setText("Найти каналы по категориям \uD83D\uDCC2"); // Содержимое ответа в кнопке
+        findChannelButton.setText("Найти каналы по категориям"); // Содержимое ответа в кнопке
         findChannelButton.setCallbackData(FIND_CHANNEL); // Привязка кнопки к реагирование на FIND_CHANEL в сообщении, типо когда ответ не текст а кол-бек
 
+        var searchCategory = new InlineKeyboardButton();
+        searchCategory.setText("Ввести название категории"); // Содержимое ответа в кнопке
+        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+
         var findCitiesButton = new InlineKeyboardButton();
-        findCitiesButton.setText("Найти каналы по городам \uD83C\uDFD9"); //     Содержимое ответа в кнопке
+        findCitiesButton.setText("Найти каналы по городам"); //     Содержимое ответа в кнопке
         findCitiesButton.setCallbackData(FIND_CITIES); // Привязка кнопки к реагирование на FIND_CITIES в сообщении, типо когда ответ не текст а кол-бек
 
         var linkToAdmin = new InlineKeyboardButton();
-        linkToAdmin.setText("Связь с админом ☎"); // Содержимое ответа в кнопке
+        linkToAdmin.setText("Связь с админом"); // Содержимое ответа в кнопке
         linkToAdmin.setCallbackData(ADMIN_LINK); // Привязка кнопки к реагирование на ADMIN_LINK в сообщении, типо когда ответ не текст а кол-бек
 
-        rowInLine.add(searchCategory);
-        rowInLine2.add(findChannelButton);
+        rowInLine.add(findChannelButton);
+        rowInLine2.add(searchCategory);
         rowInLine3.add(findCitiesButton);
         rowInLine4.add(linkToAdmin);
 
@@ -223,6 +221,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
+        message.setParseMode("HTML");
 
         executeMessage(message, name);
     }
@@ -231,7 +230,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void findCategoryFirstPage(long chatId, String name, boolean isEditMessage, long messageId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите категорию \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите категорию:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -346,6 +345,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
+        message.setParseMode("HTML");
+
         if (isEditMessage == true) {
             executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
         } else {
@@ -359,7 +360,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void findCategoryNextPage(long chatId, String name, Integer pageNumber, long messageId, Integer numberInMap) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите категорию \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите категорию:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -521,6 +522,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
+
+        message.setParseMode("HTML");
 
         //        executeMessage(message, name);
         executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
@@ -896,7 +899,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void findCityNamesByFirstLetter(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите первую букву города \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите первую букву города:</u> " + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -948,6 +951,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
+        message.setParseMode("HTML");
+
         executeMessage(message, name);
         log.info("Пользователь с имененем " + name + " получил список букв городов ");
     }
@@ -955,7 +960,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void chooseСity(long chatId, String name, String firstLetter) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите город \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите город:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -1021,6 +1026,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
+
+        message.setParseMode("HTML");
 
         executeMessage(message, name);
         log.info("Пользователь с имененем " + name + " получил список городов ");
@@ -1265,6 +1272,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "<u>Выберите каналы:</u> \uD83D\uDC47 \n\n" +
                 //                    stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
+                MENU_RU +
                 MENU
                 //                stringBuilder +
                 //                "Ещё каналы ниже \uD83D\uDC47" +
@@ -1434,6 +1442,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 "<u>Выберите каналы:</u> \uD83D\uDC47 \n\n" +
                 //                stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
+                MENU_RU +
                 MENU
                 /*stringBuilder +
                 " \n\nЕщё каналы ниже \uD83D\uDC47" +
@@ -1511,15 +1520,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         );
         message.setText(
             "Категория: " +
+            "<b>" +
             category.getName() +
+            "</b>" +
             "\nКаналов в категории: " +
+            "<b>" +
             category.getCountChannelsInCategory() +
-            "\n" +
+            "</b>" +
+            /*"\n" +
             "Всего страниц: " +
-            pageCount +
+            pageCount +*/
             "\n\n" +
-            "Выберите одну из страниц \uD83D\uDC47" +
-            "\nИли получите все  \uD83D\uDC47" +
+            //            "Выберите одну из страниц \uD83D\uDC47" +
+            "Выберите одну из страниц " +
+            "\n<u>Или получите все каналы:</u>  \uD83D\uDC47" +
             "\uD83D\uDC47" +
             "\uD83D\uDC47" +
             " \n\n"
@@ -1537,7 +1551,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var button1 = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
-        button1.setText("Все каналы " + category.getName().toString() + " 👁👁‍");
+        button1.setText("Все каналы " + category.getName() + " 👁👁‍");
 
         button1.setCallbackData(ALL_LIST_CH + ":" + categoryId); // ЗАГЛУШКА НА ПОЛУЧЕНИЕ ВСЕХ КАНАЛОВ
         rowInLine.add(button1);
@@ -1608,9 +1622,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         message.setText(
             "Город: " +
+            "<b>" +
             categoryCity.getNameCity() +
+            "</b>" +
             "\nКатегория: " +
+            "<b>" +
             categoryCity.getNameCat() +
+            "</b>" +
             /*"\nКаналов в категории: " +
             category.getCountChannelsInCategory() +
             "\n\n" +
@@ -1618,7 +1636,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             pageCount +*/
             "\n\n" +
             "Выберите одну из страниц \uD83D\uDC47" +
-            "\nИли получите все каналы \uD83D\uDC47" +
+            "\n<u>Или получите все каналы:</u> \uD83D\uDC47" +
             "\uD83D\uDC47" +
             "\uD83D\uDC47" +
             " \n\n"
@@ -1691,7 +1709,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void getChanellByCategoryIdBigButtons(long chatId, String name, Long categoryId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Выберите каналы \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите каналы:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -1804,6 +1822,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             markupInLine.setKeyboard(rowsInLine);
             message.setReplyMarkup(markupInLine);
 
+            message.setParseMode("HTML");
+
             executeMessage(message, name);
             log.info("Пользователь с имененем " + name + " получил список городов ");
             // АУДИТ ПРОЛИСТЫВАНИЙ КАНАЛОВ
@@ -1815,7 +1835,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         //        message.setText(cityName + ": каналы "  + + "⬇⬇⬇");
-        message.setText("Выберите каналы \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Выберите каналы:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -1916,6 +1936,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             markupInLine.setKeyboard(rowsInLine);
             message.setReplyMarkup(markupInLine);
 
+            message.setParseMode("HTML");
             executeMessage(message, name);
             log.info("Пользователь с имененем " + name + " получил список городов ");
         }
@@ -2011,6 +2032,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 //                stringBuilder +
                 //                                        stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
+                MENU_RU +
                 MENU
                 /*" \n\nЕщё каналы ниже\uD83D\uDC47" +
                 "\uD83D\uDC47" +
@@ -2194,6 +2216,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 //                stringBuilder +
                 //                                        stringBuilder + "<a href=\"https://t.me/" + rename + "?start=menu\">Меню</a>"
                 stringBuilder +
+                MENU_RU +
                 MENU
                 /*" \n\nЕщё каналы ниже\uD83D\uDC47" +
                 "\uD83D\uDC47" +
@@ -2272,7 +2295,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         String nameCity = cityRepository.findById(cityId).get().getCityName();
 
-        message.setText("Выберите категорию в городе - " + nameCity + " \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText(
+            "<u>Выберите категорию в городе</u> - " + "<b>" + nameCity + "</b>" + " \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"
+        );
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -2417,6 +2442,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             markupInLine.setKeyboard(rowsInLine);
             message.setReplyMarkup(markupInLine);
 
+            message.setParseMode("HTML");
+
             if (isEditMessage == true) {
                 executeEditTextWithKeyBoardAndDisableWebPreview(chatId, name, message.getText(), messageId, markupInLine);
             } else {
@@ -2442,7 +2469,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
 
         String nameCity = cityRepository.findById(cityId).get().getCityName();
-        message.setText("Выберите категорию в городе - " + nameCity + " \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText(
+            "<u>Выберите категорию в городе</u> - " + "<b>" + nameCity + "</b>" + " \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47"
+        );
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -2692,6 +2721,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 */
 
     public void registerUser(Message msg) {
+        System.out.println("ТУТ = " + msg);
+        System.out.println("ТУТ = " + msg);
+        System.out.println("ТУТ = " + msg);
+        System.out.println("ТУТ = " + msg);
+
         var chatId = msg.getChatId();
         var chat = msg.getChat();
         var userId = msg.getChat().getId();
@@ -2699,7 +2733,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             TGUser user = new TGUser();
             user.setChatId(chatId);
             user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
-            user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
+            user.setUserName(chat.getUserName() != null ? chat.getUserName() : null);
             //            user.setIdTgUser(userId);
             user.setRegistrationDate(ZonedDateTime.now());
             user.setIsDelete(false);
@@ -2722,7 +2756,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 TGUser user = new TGUser();
                 user.setChatId(chatId);
                 user.setFirstName(chat.getFirstName() != null ? chat.getFirstName() : null);
-                user.setUserName(chat.getUserName().toString() != null ? chat.getUserName().toString() : null);
+                user.setUserName(chat.getUserName() != null ? chat.getUserName() : null);
                 //                user.setIdTgUser(userId);
                 user.setRegistrationDate(ZonedDateTime.now());
                 user.setIsDelete(false);
@@ -2733,7 +2767,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void startCommandReceived(long chatId, String name) {
-        String answer = EmojiParser.parseToUnicode("Добро пожаловать, " + name + " :blush:");
+        //        String answer = EmojiParser.parseToUnicode("Добро пожаловать, <b>" + name + "</b> 👋🖐:blush:");
+        String answer = EmojiParser.parseToUnicode("Добро пожаловать, " + name + " 👋");
         sendMessageWithBaseKeyBoard(chatId, answer, name); // Отправить базовое сообщение с клавиатурой
         checkFindChannelOrAddChannel(chatId, name); // отправить ответное сообщение с базовой  клавиатурой
     }
@@ -2779,6 +2814,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         keyboardRows.add(row2);
         keyboardMarkup.setKeyboard(keyboardRows);
         message.setReplyMarkup(keyboardMarkup);
+        message.setParseMode("HTML");
 
         executeMessage(message, nameForLog);
     }
@@ -2886,6 +2922,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.setChatId(String.valueOf(chatId));
         message.setText(textMessage);
 
+        message.setParseMode("HTML");
         message.disableWebPagePreview(); // Отключает отображение баннеров для перехода в канал
         message.setReplyMarkup(markupInLine);
         try {
@@ -3107,13 +3144,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         String msText = new String(
             "МОДЕРАЦИЯ КАНАЛА: \n" +
             "Пользователь: @" +
-            chanell.getTGUser().getFirstName().toString() +
+            chanell.getTGUser().getFirstName() +
             "\n" +
             "ID: " +
             chanell.getTGUser().getChatId().toString() +
             "\n" +
             "Текущее Имя канала: " +
-            chanell.getName().toString() +
+            chanell.getName() +
             "\n" +
             "Пользователь хочет изменить имя на " +
             editChannels.getNewNameChannel() +
@@ -3598,7 +3635,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void sendSearchCategoriesButton(long chatId, String name) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Кликните на кнопку для поиска категорий \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
+        message.setText("<u>Кликните ниже:</u> \uD83D\uDC47" + "\uD83D\uDC47" + "\uD83D\uDC47");
 
         // создание клавиатуры с кнопками в ответе на сообщение
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup(); //клавиаутра
@@ -3610,7 +3647,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         var searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
-        searchCategory.setText("Ввести название категории 🔍"); // Содержимое ответа в кнопке
+        searchCategory.setText("Ввести название категории"); // Содержимое ответа в кнопке
         searchCategory.setSwitchInlineQueryCurrentChat(" ");
         rowInLine.add(searchCategory);
         rowsInLine.add(rowInLine);
@@ -3621,6 +3658,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         markupInLine.setKeyboard(rowsInLine);
         message.setReplyMarkup(markupInLine);
 
+        message.setParseMode("HTML");
         executeMessage(message, name);
         log.info("Пользователь с имененем " + name + " получил кнопку для текстового поиска категорий ");
     }

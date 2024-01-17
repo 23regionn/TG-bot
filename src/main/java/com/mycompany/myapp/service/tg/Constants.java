@@ -30,7 +30,8 @@ public class Constants {
     public static final String ADD_EDIT_DESCRIPTION = "ADD_EDIT_DESCRIPTION";
     public static final String NEXT_PAGE_CAT = "NEX_PAG_CAT";
     public static final String ANY_PAGE_IN_CAT = "A_PA_IN_CAT";
-    public static final String MENU = "/menu";
+    public static final String MENU = "/menu</u>";
+    public static final String MENU_RU = "<u>Меню 👉 ";
     public static final String NEXT_PAGE_GOROD_CAT = "NE_P_G_C";
     public static final String ANY_PAGE_GOROD_IN_CAT = "A_PA_G_IN_C";
     public static final String GORODA_FIRST_LETTER = "GORODA_F_L";
