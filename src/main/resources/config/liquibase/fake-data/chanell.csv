@@ -1646,3 +1646,577 @@ id;name;link;count_subscribers;count_views;is_moderate;start_date;last_pay_date;
 3531;Новости Росавиации;https://t.me/favtrf;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
 3532;AviaSpotter;https://t.me/AviaSpotter;3000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
 3533;Аэропорт Южно-Сахалинск 🛫;https://t.me/airportus;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3534;AVIA.RU - Гражданская авиация;https://t.me/aviaru_news;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3535;ФИЛЬМЫ КИНО СЕРИАЛЫ;https://t.me/kino_hd2;1454000;35000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3536;Кинопоиск: фильмы и сериалы;https://t.me/kinopoisk;564000;54000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3537;Киноманы 🍿 фильмы сериалы;https://t.me/kinomanies;512000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3538;ФИЛЬМЫ СЕРИАЛЫ 2023;https://t.me/k1noxa103;444000;15000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3539;КИНОМИКС - Про фильмы и сериалы;https://t.me/kinoremix;430000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3540;Фильмы | Сериалы;https://t.me/movies_filmy;340000;95000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3541;Кино Фильмы Сериалы;https://t.me/kinotik1;304000;40000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3542;МУВИС | Фильмы и сериалы;https://t.me/kinofilmy_seriali;293000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3543;ICINEMA | Все о кино | Фильмы 2024 года | Сериалы | Мультфильмы;https://t.me/iKinox;110000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3544;Русские Фильмы Сериалы;https://t.me/kinogatorr;90000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3545;KINO RIMS 💜 | Фильмы Кино Сериалы;https://t.me/KINORIMS;75000;12000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3546;Все о Фильмах и Сериалах;https://t.me/vse_o_serialah;46000;24000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3547;Кинобот | Фильмы | Сериалы 2024;https://t.me/kinobot1;43000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3548;Ток Шоу! * Фильмы и сериалы;https://t.me/serialirossiyskie;38000;23000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3549;Фильмы | Сериалы | Музыка;https://t.me/Film_tgtop;31000;19000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3550;Слово Пацана | Фильмы и сериалы;https://t.me/smotret_filmy_serialy_onlayn;31000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3551;Зубарев/zubarefff — Фильмы | Архив | Записи | Сериалы;https://t.me/zubareffffilms;30000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3552;Фильмы | Сериалы | Новинки;https://t.me/movie_peace;30000;20000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3553;Фильмы | Сериалы | Киностудии;https://t.me/filmi_ob;29000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3554;Иви | О кино, фильмах и сериалах;https://t.me/official_iviru;28000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3555;Фильмы | Сериалы | Интересное;https://t.me/reals_serial;27000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3556;Русские фильмы и сериалы - RosserialHD.ru;https://t.me/rosserialhd;26000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3557;Что посмотреть | Рекомендация фильмов и сериалов;https://t.me/recfilm_channel;24000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3558;Мультики и Мультфильмы Мультсериалы Фильмы;https://t.me/multiki7;25000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3559;ГРЭЙМ | Фильмы Сериалы Новинки Кино 2024;https://t.me/graimmovie;22000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3560;ФИЛЬМЫ | СЕРИАЛЫ | 8.16🎬🍿;https://t.me/kinotv816;19000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3561;Немецкие фильмы и сериалы 🇩🇪;https://t.me/deutsche_filme_serie;16000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3562;FILMIX🍿🍿🎥| Фильмы и Сериалы 2022🎬📹📺📽️🎥🎞️🍿 Для наших дорогих подписчиков ♥️💗;https://t.me/filmix_1;15000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3563;КиноHot - Про Фильмы и Сериалы;https://t.me/kinohot_channel;14000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3564;Фильмы и сериалы;https://t.me/kinoiseriali7;14000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3565;Good Story Media | Сериалы | Фильмы;https://t.me/good_story_media;13000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3566;🎬 Кино | Фильмы | Сериалы;https://t.me/kinofilm_today;11000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3567;🍿КИНОШКА 🎬 Фильмы + Сериалы = бесплатно ;https://t.me/kinoshka_go;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3568;КИНОШНЫЕ | Фильмы и Сериалы;https://t.me/kinoshnie;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3569;Кинобот | Фильмы Сериалы 2024;https://t.me/kinobot12345;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3570;🎥AI FILMS | ФИЛЬМЫ СЕРИАЛЫ КИНО;https://t.me/aikfilm;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3571;Фильмы | Сериалы | Новинки 2023;https://t.me/kinostar_t;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3572;ПОТОМ ПОСМОТРЮ | ФИЛЬМЫ И СЕРИАЛЫ;https://t.me/potom_posmotryu;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3573;Viewer | Фильмы и сериалы;https://t.me/viewerfilms;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3574;Мир фильмов и сериалов;https://t.me/Mir_Filmov_AnastasiaFOX;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3575;Сериалы и фильмы;https://t.me/mdramus;6000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3576;Dokkino (Документальные фильмы и сериалы);https://t.me/dokkino21;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3577;Марвел: Фильмы. Сериалы.;https://t.me/marvel_q;5000;12000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3578;ТУРЕЦКИЙ | СЕРИАЛЫ | ФИЛЬМЫ 🍿;https://t.me/turetskie_filmi;5000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3579;Фильмы | Сериалы | Подборки фильмов | Подборки сериалов | Подборки мультиков;https://t.me/kino_ratings;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3580;Новости кино Marvel DC Фильмы Сериалы Разборы Обзоры Комиксы | МОГУЧИЙ МСТИТЕЛЬ;https://t.me/mmstitel;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3581;Фильмы Сериалы Мультфильмы;https://t.me/filmy_mult;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3582;Фильмы | Кино | Сериалы;https://t.me/SeeFullHD;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3583;Библиотека Фильмов и Сериалов;https://t.me/biblio_anime;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3584;Mediabay - Онлайн ТВ, Фильмы и Сериалы;https://t.me/tvmediabay;4000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3585;MaxiFilmer: фильмы, сериалы, аниме;https://t.me/maxifilmer;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3586;WB Партнеры;https://t.me/wbsellerofficial;213000;33000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3587;Ozon Marketplace;https://t.me/ozonmarketplace;86000;12000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3588;Wildbox.News;https://t.me/wildbox_news;80000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3589;Акулы Wildberries;https://t.me/wbsharks;70000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3590;Хогвартс маркетплейсов;https://t.me/marketplace_hogwarts;44000;14000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3591;Курятник 🪺 Все о продвижении на Wildberries .;https://t.me/kudahiko;31000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3592;Рыжий М.;https://t.me/redmilliard;28000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3593;Семья на Wildberries;https://t.me/sellermp;26000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3594;Новак Павел wb и ozon;https://t.me/novak_WB;24000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3595;Отменили CTR | Реклама на Маркетплейсах;https://t.me/ekspertmp;23000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3596;💜💜💜Андрей: Про маркетплейс Wildberries и не только (>1 млн продаж);https://t.me/andrey_pro_business;17000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3597;Эстетичный wildberries 🎀;https://t.me/aestheticsbez;189000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3598;Годнота на Wildberries 💕;https://t.me/wb_godnota;92000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3599;woopme| wildberries;https://t.me/woopmewb;60000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3600;Находки OZON WB;https://t.me/wildberriesy;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3601;Автоматизация WILBERRIES;https://t.me/robo_wb;14000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3602;Max / Продвижение на Wildberries / LET`S ROCK on WB;https://t.me/maxprowb;12000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3603;Просто о маркетплейсах;https://t.me/vsegdaprosto;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3604;Елена Меньшенина;https://t.me/mensheninalena;10000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3605;Аналитик на миллиард | Wildberries;https://t.me/wbbillion;10000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3606;🇨🇳Wildberries & Китай | Ирина Агафонова;https://t.me/irina_china_wb;10000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3607;Никакой магии - только цифры.;https://t.me/nikakoymagii;10000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3608;⚡️Polagushin | Фешн на WB;https://t.me/polagushin_clo;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3609;Основатель mkeeper;https://t.me/mkeeper;9000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3610;Влад / Fullstats - Маркетинг на wildberries;https://t.me/fbs_wildberries;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3611;Финансы WB – Виноградов Алексей;https://t.me/wbfinance;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3612;Вита | Про маркетплейсы;https://t.me/vitaecom;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3613;Юрист Wildberries I WB I Вайлдберриз SKEYLO;https://t.me/skeylowb;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3614;Тигран | Путь на Wildberries и Ozon;https://t.me/tigranwb;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3615;Суета на Wildberries и Ozon;https://t.me/suetanawb;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3616;Дмитрий | WB простыми словами;https://t.me/dmitrysell;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3617;OZON;https://t.me/ozonru;335000;68000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3618;🩵 Нюша про | Находки WB OZON |Товары для дома | Стильные образы;https://t.me/nyusha_pro;111000;60000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3619;Пуговка | Находки с WB, OZON;https://t.me/pugovka00;89000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3620;Ozon и партнёры: live news;https://t.me/ozonapvz;53000;14000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3621;Ozon Learning (АПВЗ);https://t.me/apvzozonlearning;47000;40000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3622;Ozon fresh;https://t.me/ozonfresh;46000;14000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3623;Косметика | Красота | Находки с WB | Вайлдбериз;https://t.me/nahodki_na_wb_ozon_kosmetika;44000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3624;Фулфилмент Wildberries Ozon;https://t.me/fulfilmentcmt;43000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3625;Семейный Wildberries | Ozon | Скидки |;https://t.me/wb_famiily;42000;23000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3626;WB - OZON скидки до 90%😱🔥;https://t.me/wb_skidkamam;36000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3627;РАСПРОДАЖИ WILDBERRIES и OZON;https://t.me/salewildberries2;36000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3628;ОБЗОРЫ С Wildberries и Ozon;https://t.me/WB_Ozon_noxodki;35000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3629;Скидки Ozon | Находки ozon;https://t.me/ozon_skidki0;27000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3630;Ozon HQ;https://t.me/ozonhq;23000;8000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3631;🛍НАХОДКИ WB OZON🛍;https://t.me/angelnaxodki;20000;8000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3632;Сказочный WILDBERRIES/OZON;https://t.me/sub100ka;20000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3633;Ozon Travel;https://t.me/ozontravel_official;15000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3634;Ozon Банк;https://t.me/ozon_bank_official;12000;19000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3635;Ozon Tech;https://t.me/ozon_tech;11000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3636;Ozøn Design;https://t.me/ozondesign;11000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3637;Ozon Books;https://t.me/ozonbooks;10000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3638;ШЭР/Шеринг. Экология. Рациональность;https://t.me/etosher;67000;9000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3639;Экологиня;https://t.me/ecomisli;58000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3640;Ресайкл🌏💚♻️;https://t.me/recyclemagru;57000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3641;Экология без фанатизма️;https://t.me/ecodays;30000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3642;Эколог Жора Каваносян;https://t.me/ecozhora;28000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3643;Экология | Энергетика | ESG;https://t.me/ecologia_i_energetika;23000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3644;Сортировочная;https://t.me/sortirovochnaya;20000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3645;Неустойчивое развитие;https://t.me/nongreta;12000;9000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3646;РЭО ♻️💚;https://t.me/reo_ru;12000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3647;Экология России;https://t.me/ekologiya_rf;12000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3648;Земля касается каждого;https://t.me/earthtouches_me;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3649;Устойчивое Развитие - ESG - экология;https://t.me/urzvt;11000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3650;100%_Зелёного 💚;https://t.me/greenpercent;9000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3651;Экология и Человек;https://t.me/eco8man;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3652;Green GR | Рашид Исмаилов;https://t.me/green2018;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3653;Экология производства;https://t.me/eco_industry;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3654;ЕкоРубрика;https://t.me/ecorubric;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3655;Новости Минприроды РФ;https://t.me/minprirody;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3656;СКОЛКОВО про устойчивое развитие;https://t.me/skolkovo_esg;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3657;АРВЭ | Ассоциация развития возобновляемой энергетики;https://t.me/rreda_official;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3658;Гринж;https://t.me/greeenge;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3659;•Пушистые Новости Москвы! | Москва животные | Pets;https://t.me/pusmoskva_4043;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3660;Экологическая вахта;https://t.me/ecologicalvahta;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3661;ЭкоАктивист;https://t.me/EcoAktivist1;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3662;Циркулярка;https://t.me/circulary;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3663;ЭКОсводка38;https://t.me/ecosvodka38;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3664;Java библиотека;https://t.me/javalib;29000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3665;Библиотека джависта | Java, Spring, Maven, Hibernate;https://t.me/javaproglib;25000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3666;Senior Java Developer;https://t.me/seniorjavist;22000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3667;Книги для Java программиста;https://t.me/bookofgeek;20000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3668;Java Learning;https://t.me/Java_per_month;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3669;Java книги по программированию;https://t.me/booksjava;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3670;Java Guru 🤓;https://t.me/javatasks;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3671;Библиотека Java разработчика;https://t.me/BookJava;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3672;Java: fill the gaps;https://t.me/java_fillthegaps;10000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3673;Чашечка Java;https://t.me/a_cup_of_java;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3674;Java Job | Вакансии | Работа;https://t.me/job_javadevs;10000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3675;Дорогу осилит идущий. Java;https://t.me/ViamSupervadetVadens;9000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3676;Java Books;https://t.me/java_library;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3677;Java jobs — вакансии для java-разработчиков;https://t.me/javadevjob;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3678;Java Memes → Айти Memes;https://t.me/java_memes;6000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3679;Java задачи с собеседований;https://t.me/javaquiz;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3680;JavaRush;https://t.me/javarush_original;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3681;Java Книги. Книги по программированию на Java;https://t.me/javabooksarchive;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3682;Front-end Job Offers;https://t.me/runello_rus_frontend;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3683;javaswag;https://t.me/javaswag;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3684;Kata Academy;https://t.me/kata_academy;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3685;Java задачки тесты;https://t.me/javaquize;4000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3686;Java News;https://t.me/java_newss;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3687;Книги по Java | Books Java 📚;https://t.me/java_360;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3688;Java | Фишки и трюки;https://t.me/java_tips_and_tricks;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3689;Java Interview Tasks;https://t.me/java_interview_tasks;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3690;JavaScript Job Offers;https://t.me/runello_rus_javascript;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3691;Java guru;https://t.me/java_guru;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3692;Python School;https://t.me/PythonAA;100000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3693;Python обучающий;https://t.me/pythonist24;77000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3694;[PYTHON:TODAY];https://t.me/python2day;58000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3695;Python Academy;https://t.me/python_academy;58000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3696;Python Hacks;https://t.me/python_secrets;51000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3697;Python и 1000 программ;https://t.me/py_1000_prog;42000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3698;Python Books. Книги по питону;https://t.me/pythonbooks;41000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3699;Senior Python Developer;https://t.me/seniorpy;41000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3701;Библиотека питониста | Python, Django, Flask;https://t.me/pyproglib;40000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3702;Python Learning;https://t.me/Python_per_month;29000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3703;Pythonist.ru - образование по питону;https://t.me/pythonist_ru;27000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3704;Zen of Python;https://t.me/zen_of_python;23000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3705;Библиотека Python разработчика;https://t.me/BookPython;20000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3706;📚Python Books;https://t.me/pythonlbooks;18000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3707;Python Expert | Программирование;https://t.me/pythonexpert_it;16000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3708;Python Community;https://t.me/Python_Community_ru;16000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3709;Python задачки;https://t.me/pythonquestions;14000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3710;PythonBoost - сообщество питонистов;https://t.me/pythonboost;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3711;Python Education;https://t.me/python_education_it;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3712;Python | CMD;https://t.me/cmd_python;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3713;Разъяснивший Python;https://t.me/python_pssss;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3714;Задачи по Python и машинному обучению;https://t.me/python_tasks;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3715;Книги Python;https://t.me/pythonlib;12000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3716;Книги по Python. Книги по программированию на Python;https://t.me/pythonbooksarchive;11000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3717;PythonCamp;https://t.me/pycodecamp;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3718;Просто Python | Data science | ML | AI;https://t.me/pro100python1;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3719;Python: задачки и вопросы;https://t.me/quiz_python;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3720;Datalytics;https://t.me/datalytx;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3721;Python tricks | Хитрости Питона;https://t.me/python_tricks;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3722;About Python [ru];https://t.me/python_tesst;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3723;🐍 PythonGuru — работа и стажировки для программистов;https://t.me/gurupython;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3724;Python Lounge: работа и стажировки для программистов;https://t.me/python_lounge;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3725;Книги по Python | Books Python 📚;https://t.me/python_360;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3726;Python Quiz;https://t.me/pythonquizes;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3727;Добро пожаловать в мир Python;https://t.me/Welcome_Python;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3728;PythonTalk;https://t.me/pythontalk_ru;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3729;Реальный Python;https://t.me/python_real;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3730;PythonDigest;https://t.me/py_digest;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3731;Amazing Python 🐍;https://t.me/pythonamazing;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3733;Код на салфетке;https://t.me/press_any_button;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3734;Макеты для верстки;https://t.me/figma2html;50000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3735;Сайтодел | GitHub, Верстка, Сайты, FullStack;https://t.me/sitodel;40000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3736;Frontender's notes [ru];https://t.me/frontendnoteschannel;37000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3737;Макеты Figma;https://t.me/figma_maketss;30000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3738;Веб-страница;https://t.me/tproger_web;29000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3739;Senior Frontend - javascript, html, css;https://t.me/seniorFront;27000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3740;Библиотека фронтендера | Frontend, JS, JavaScript, React.js, Angular.js, Vue.js;https://t.me/frontendproglib;22000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3741;Senior Frontend Developer;https://t.me/senior_front;21000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3742;xCode Journal;https://t.me/xCode_Journal;21000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3743;JavaScript test;https://t.me/js_test;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3744;Frontend Interview - собеседования по Javascript / Html / Css;https://t.me/frontendInterview;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3745;Javascript;https://t.me/javascriptv;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3746;codepen.js;https://t.me/codepen_js;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3747;Figma макеты для верстки;https://t.me/figma_start;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3748;JavaScript заметки;https://t.me/notesjs;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3749;Node.JS [ru] | Серверный JavaScript;https://t.me/we_use_js;9000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3750;Frontender Libs - обзор библиотек JS / CSS;https://t.me/sWebDev;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3751;Frontend Головного Мозга;https://t.me/frontend_mind;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3752;Html Gram;https://t.me/HtmlGram1;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3753;Сети и точка;https://t.me/it_fullstak;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3754;Фронтенд Гайд;https://t.me/frontend_dev5;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3755;Простой JavaScript;https://t.me/simple_js;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3756;JavaScript задачи с собеседований;https://t.me/javascriptquiz;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3757;Войти в IT | Frontend;https://t.me/sign_in_it;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3758;CSS доширак;https://t.me/css_doshik;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3759;JavaScript тесты;https://t.me/tests_js;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3760;HowProgrammingWorks - JavaScript and Node.js Programming;https://t.me/HowProgrammingWorks;5000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3761;CodeRoll | Frontend;https://t.me/coderoll;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3762;Работа — вёрстка и фронтенд;https://t.me/job_webdev;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3763;Роман Бодрый | ПРО Веб-разработку;https://t.me/bodrii_developer;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3764;Вёрстка сайтов | HTML, CSS, JS;https://t.me/free_html_lessons;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3765;Проекты на Javascript | HTML | CSS;https://t.me/wb_code;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3766;Front Wars | JavaScript, HTML, CSS;https://t.me/FrontWars;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3767;Frontend Portal;https://t.me/FrontendPortal;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3768;Learn frontend tips;https://t.me/tips_frontend;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3769;Tests front-end;https://t.me/tests_frontend;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3770;Сайты как страсть;https://t.me/maxgraph;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3771;Катерина. Про Frontend;https://t.me/katrin_profrontend;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3772;Django Unleashed Framework;https://t.me/django_prog;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3773;Reactify | Frontend Разработка;https://t.me/reactify_IT;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3774;Figma - Templates;https://t.me/FigmaTemp1ate;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3775;Mood: Frontend;https://t.me/frontend_mood;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3776;HolyJS — канал конференции;https://t.me/holyjs_channel;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3777;True Frontender;https://t.me/truefrontender;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3778;Библиотека пхпшника | PHP, Laravel, Symfony, CodeIgniter;https://t.me/phpproglib;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3779;Laravel World;https://t.me/laravel_it;7000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3780;WebCraft - ремесло веб разработки;https://t.me/web_craft;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3781;Frontend Portal;https://t.me/FrontendPortal;7000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3782;PHP задачи с собеседований;https://t.me/phpquiz;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3783;Пятиминутка PHP;https://t.me/tg_5minphp;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3784;Серьезный тестировщик 🐞;https://t.me/serious_tester;34000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3785;Тестировщик от бога;https://t.me/godoftesting;31000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3786;Книги по тестированию;https://t.me/booksqa;14000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3787;Job for QA;https://t.me/forallqa;13000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3788;QApedia | Тестирование;https://t.me/qa_wiki;13000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3789;Тестировщик QA;https://t.me/testirovshik_qa;11000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3790;Библиотека тестировщика | QA, тестирование, quality assurance, manual testing, autotesting, ручное тестирование, автотесты;https://t.me/testerlib;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3791;Tester of QA;https://t.me/testerofqa;7000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3792;QA Memes;https://t.me/qa_memes;3000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3793;ProQuality Community;https://t.me/ProQuality_Community;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3794;QA Zone: Общество тестировщиков | Тестирование ПО;https://t.me/channel4qa;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3795;Типичный QA;https://t.me/typical_qa;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3796;Протестировал;https://t.me/sqaunderhood;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3797;Никаких багов;https://t.me/it_and_balance;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3798;Alexey QA note;https://t.me/dev_qa;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3799;Горящий Тестер 🐞 QA, Тестирование;https://t.me/burning_tester;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3800;QA.GURU;https://t.me/qa_guru;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3801;QA, Тестирование, Обучение;https://t.me/qakrotovchannel;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3802;Arzamas;https://t.me/ArzamasLive;47000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3803;Signal;https://t.me/meduzasignal;43000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3804;Радио «Комсомольская правда»;https://t.me/radiokp;25000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3805;Кино Огонь;https://t.me/kinoogon_official;17000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3806;Общим планом;https://t.me/obschimplanom;16000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3807;МУЗЛОФТ;https://t.me/MUZ_LOFT;15000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3808;linkmeup;https://t.me/linkmeup_podcast;13000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3809;Подкаст Матерь Бложья;https://t.me/Mom_of_blogs;12000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3810;Zavtracast;https://t.me/zavtracast;12000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3811;📻Подкасты радио Эхо Москвы;https://t.me/echomskpodcast;11000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3812;В предыдущих сериях;https://t.me/previouslyon_podcast;9000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3813;контент 40+;https://t.me/content40plus;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3814;Либо🔺Либо;https://t.me/libolibostudio;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3815;Гусьгусь;https://t.me/saygoosegoose;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3816;Бака! Подкаст об аниме;https://t.me/podcastbaka;5000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3817;Психология с Александрой Яковлевой | подкаст;https://t.me/psy_with_yakovleva;5000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3818;BeardyCast;https://t.me/beardycast;4000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3819;Алена о мышлении🧠;https://t.me/alenaborjesson;4000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3820;Podcasts.ru;https://t.me/podcasts;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3821;Богема, подкасты и маркетинг;https://t.me/bogema_prod;3000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3822;Четыре мнения;https://t.me/the4opinions;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3823;Blitz and Chips и Жуть;https://t.me/grishaprorokov;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3824;Ты — это важно;https://t.me/important_mental;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3825;Первый Подкастовый | Подкасты;https://t.me/karaulpodcast;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3826;Red Barn podcasts;https://t.me/RedBarn_ru;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3827;"Хочу 𝐂𝟑!" Оля для преподавателей о работе и жизни.;https://t.me/olchegarova_cae;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3828;Толковальня;https://t.me/studio_tolk;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3829;Чернозём | У шамана три беды;https://t.me/ges_chz;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3830;Жертва научпопа;https://t.me/nonficpodcast;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3831;Шаги по стеклу | Эхолот | Ботаника подкаст;https://t.me/golubchik;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3832;NextMedia;https://t.me/nextmediapodcast;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3833;Золотое Яблоко;https://t.me/goldapple;321000;50000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3834;Роскошь бутиков;https://t.me/zhidkovskiy_beauty;133000;33000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3835;КОСМЕТИЧКА;https://t.me/kosmeti4ka_opt;86000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3836;MOLLY COSMETICS;https://t.me/mollycosmeticc;74000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3837;Уходом единым;https://t.me/uhodom_edinym;66000;16000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3838;КРАСОТА ТРЕБУЕТ КЭШ;https://t.me/beautycash;51000;9000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3839;Косметичка: Косметика| Макияж + Wildberries;https://t.me/moda5u;35000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3840;Мать флаконов;https://t.me/smelldate;29000;8000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3841;Ansaligy. Патчей много не бывает;https://t.me/ansaligy;27000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3842;Гримёрка;https://t.me/grimerkaa;25000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3843;очень много косметики;https://t.me/myatnayajvachka;21000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3844;Бьюти баночки;https://t.me/beautyjars;19000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3845;БАНКИ & ТЮБИКИ;https://t.me/bankiitubiki;17000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3846;ГЕВ МУА;https://t.me/smspodrugaaa;17000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3847;Ненудный нюд;https://t.me/makeup_stories;17000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3848;Прыщавая Кейта;https://t.me/prishyavayakeita;16000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3849;Asian;https://t.me/korea_xs;16000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3850;Freebie;https://t.me/skidka_wow;16000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3851;KOSMETOS;https://t.me/kosmetos;15000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3852;ГЛАВНАЯ ПО БЬЮТИ;https://t.me/beauty_glavnaya;15000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3853;Уроки макияжа;https://t.me/vkusnyj;12000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3854;Это не лечится;https://t.me/beautyholique;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3855;KOSMETACH;https://t.me/kosmetach_me;8000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3856;Бьютиголенькая;https://t.me/beautyrepeat;8000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3857;БаночкиДоПятисот;https://t.me/bankido500;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3858;Бьютимафия;https://t.me/mafiabeau;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3859;Красавица и Уходище;https://t.me/beautybyliza;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3860;Блестеть не вредно;https://t.me/glittertea;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3861;Макияж | Makeup;https://t.me/makiyag;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3862;Dasha Lebedeva ✨ макияж/косметика/бьюти/скидки;https://t.me/lebedeva_dari_live;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3863;Beauty pleasure✨;https://t.me/beauty_pleasure;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3864;Вгоняю в краску;https://t.me/beautynachille;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3865;Патчи, джинсы и просекко;https://t.me/dobavit_v_wishlist;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3866;Заябанка;https://t.me/zaebanki;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3867;Косметический завод;https://t.me/DubrovinaVlada;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3868;what i love;https://t.me/whatilove;5000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3869;дневник визажидзе;https://t.me/irenmake;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3870;BEAUTYHOLIC;https://t.me/your_skin_care;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3871;Сделай мне красиво;https://t.me/beauty_noise;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3872;Zabava из глянца;https://t.me/zabavaruss;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3873;Make routine great again;https://t.me/helloitsme_ann;2000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3874;СПОРТШИК;https://t.me/sportyandshik;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3875;Бьюти без мути;https://t.me/netmonetki;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3876;душное бьюти;https://t.me/Itsmybeauty;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3877;Меняю лифчик на мэйкап;https://t.me/alla_krasit;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3878;ВБшница | Косметика и вещи с Wildberries;https://t.me/wbsnitsa;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3879;Послушаем или понюхаем?;https://t.me/parf_bardo;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3880;Сказки Снежной Королевы;https://t.me/holodskazki;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3881;Всемогущий макияж | SIDORA'S BEAUTY WORLD;https://t.me/sidoraek_world;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3882;Евгения. Алхимия Парфюма;https://t.me/alhimiaaromatov;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3883;ОП, МАНИКЮРЧИК | НОГТИ;https://t.me/op_manic;300000;36000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3884;Nails | Маникюр на зиму ❄️;https://t.me/nailsluv;216000;13000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3885;Маникюр | Ногти | Дизайн 2024;https://t.me/modnailru;198000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3886;Маникюр | Дизайн ногтей;https://t.me/nails_nogotki;196000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3887;МАНИКЮР💅НОГТИ;https://t.me/dizayn_nogtey_foto;93000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3888;IDEAL Маникюр | Ногти;https://t.me/manikyur_nogty;88000;16000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3889;Поговорим о маникюре 💅🏻;https://t.me/+K3_SxwIGn0wzZTli;65000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3890;Оп, маникюр чик 💕| Маникюр на зиму;https://t.me/nogti_rrr;65000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3891;Маникюр | Дизайн ногтей;https://t.me/manikyurs;37000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3892;🔴 Дизайн ногтей | Маникюр;https://t.me/nogtibel;33000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3893;Дизайн ногтей | Маникюр;https://t.me/manickure;27000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3894;Маникюр;https://t.me/manik_styl;26000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3895;Маникюр и Дизайн ногтей 💅;https://t.me/manikyur_1;25000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3896;ИДЕИ ДЛЯ МАНИКЮРА;https://t.me/maaanic;18000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3897;Красота | Маникюр | Ногти;https://t.me/nailsac;17000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3898;Ноготки | Маникюр;https://t.me/norotki;16000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3899;Маникюр 💅🏻;https://t.me/nogotkkkii;15000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3900;эстетика маникюра;https://t.me/manikour;12000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3901;nerazocharuymenya;https://t.me/nerazocharuymenya1;8000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3902;Дизайн ногтей | Маникюр;https://t.me/uroknogotki;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3903;Маникюр для заек 🐰;https://t.me/manikzay;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3904;Маникюр Москва | Идеи маникюра;https://t.me/manikyur_moskvax;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3905;Нетипичный маникюр;https://t.me/fotonails;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3906;Дизайн ногтей / Маникюр;https://t.me/manicure753;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3907;ФОРУМ NAIL МАСТЕРОВ МАНИКЮРА ПЕДИКЮРА НАРАЩИВАНИЯ НОГТЕЙ КЛУБ ЧАТ СООБЩЕСТВО НЕИЛ НЭИЛ;https://t.me/nail_forum;4000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3908;маникюрчик;https://t.me/nailsour;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3909;Mononails - Топ идеи маникюра❤️;https://t.me/mononails;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3910;NAILS IDEAS | МАНИКЮР;https://t.me/nails_ideas_manicure;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3911;Дизайн-Телега 🔥;https://t.me/design_telega;113000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3912;Што такое фотошоп?;https://t.me/photosed;109000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3913;Учебник дизайнера;https://t.me/dsgn_tutorial;106000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3914;Designdealer;https://t.me/designdealer;101000;15000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3915;Секси-шрифт. Кириллица;https://t.me/sexyfont;70000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3916;Мокапошная;https://t.me/mokaposhnaya;61000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3917;Premiere Pro | Motion Design;https://t.me/premiere_pro;58000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3918;After Effects | Motion Design;https://t.me/after_effects_motion;57000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3919;Приватка дизайнера;https://t.me/prvtdsgn;40000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3920;Design.RAR;https://t.me/designrar;39000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3921;Дизайн образование;https://t.me/dsgn_edu;39000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3922;Оди;https://t.me/awdee;34000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3923;СПNЗЖУ DESIGN;https://t.me/thedesigner;33000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3924;Шрифтач | Дизайн;https://t.me/shriftach;32000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3925;Дизайн-переводчик;https://t.me/design_translator;30000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3926;4Design;https://t.me/fourdesign;30000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3927;Макеты Figma;https://t.me/figma_maketss;30000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3928;Шрифтовик | Бесплатные шрифты;https://t.me/fontovik;25000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3929;Сейф Дизайнера;https://t.me/seif_designera;25000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3930;Секси-цвет. Твое вдохновение;https://t.me/sexycolors;25000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3931;design teacher | Туториалы для дизайнеров;https://t.me/dsgn_teacher;22000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3932;moCUPS | Мокапы для дизайнеров;https://t.me/moCUPS;19000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3933;Много дизайна;https://t.me/dsgn_tochka;18000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3934;Designer Notes;https://t.me/designwrite;16000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3935;Какой Шрифт?;https://t.me/font_abc;15000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3936;Palette Paradise | Дизайн;https://t.me/PaletteParadise;15000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3937;Уха дизайнера;https://t.me/uha_dsgn;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3938;Design Lessons;https://t.me/designlessons;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3939;Polygon Station | 3D | CG;https://t.me/polygonstation;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3940;Всё для UI дизайнера 📦;https://t.me/ui_tools;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3941;DESIGN WORLD;https://t.me/DesignWorld;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3942;Про дизайн – легко!;https://t.me/tutdesigner;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3943;Наука Дизайна;https://t.me/naukadsgn;13000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3944;After Effects Community;https://t.me/AEcomu;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3945;Dezzigners;https://t.me/dezzigners;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3946;Дизайн в карточках;https://t.me/descards;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3947;Fonts Best;https://t.me/fonts_best;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3948;3D Models Education;https://t.me/educ3ds;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3949;Hot Motion;https://t.me/hot_mtn;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3950;Подвинь пиксель;https://t.me/movepx;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3951;Lorem ipsum;https://t.me/ipsum;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3952;Мокапыч;https://t.me/mokapych;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3953;Hot Illustrator;https://t.me/hot_lustra;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3954;Вебдизайнерская;https://t.me/webdsgnsky;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3955;Hot Design;https://t.me/hot_dsgn;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3956;Дизайн Склад. Полезное дизайнерам;https://t.me/skladis;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3957;Безупречный цвет;https://t.me/colorpaletteandsheme;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3958;Hard Client • Daily;https://t.me/hardclient_daily;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3959;Всё для видеомонтажа;https://t.me/dzhmaterials;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3960;Vision Island. Инструменты для дизайнеров;https://t.me/visionislandinstruments;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3961;Дизайн Бухта;https://t.me/dsgnbay;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3962;20-й круг правок;https://t.me/krygpravok;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3963;Дизайн завтрак 🥪;https://t.me/ux_brunch;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3964;Дизайнерская;https://t.me/dsgnerskaya;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3965;Designstarz;https://t.me/designstarz;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3966;Digital Deer | UI-AI | Дизайн и нейросети;https://t.me/design_deer;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3967;ок, согласовано;https://t.me/notypicmarketing;209000;32000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3968;кабачковая икра по акции;https://t.me/sale_caviar;182000;40000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3969;Психология Маркетинга;https://t.me/marketpsy;180000;17000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3970;олдскульный маркетинг;https://t.me/marketingold;169000;13000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3971;Креатив со звездочкой;https://t.me/creative;143000;23000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3972;Marketing Day;https://t.me/marketer_one;125000;9000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3973;Русский маркетинг;https://t.me/smmrus;125000;13000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3974;Передали коллегам;https://t.me/collegi;110000;20000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3975;Передали коллегам📺 бумеры смотрят телек;https://t.me/boomers_TV;106000;13000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3976;Маркетинговый ход;https://t.me/MarketingPloy;75000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3977;Партизанский Маркетинг;https://t.me/GuerrillaMarketing;70000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3978;Русский диджитал;https://t.me/rudigital;68000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3979;Главред Максим Ильяхов;https://t.me/glvrdru;63000;9000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3980;Бескромный;https://t.me/dbeskromny;33000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3981;дедлайн вчера;https://t.me/skip_deadline;33000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3982;Gutnik Oleg · Digital Marketing;https://t.me/websstudio;32000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3983;UnderПяр;https://t.me/underpyar;31000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3984;Sostav;https://t.me/sostav;31000;8000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3985;Авоська маркетинга;https://t.me/marketingfuture;24000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3986;Надо было вчера;https://t.me/nadobulovchera;21000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3987;O digital;https://t.me/odigital;14000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3988;Push Marketing;https://t.me/Push_Marketing;14000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3989;Digital Review;https://t.me/digital_review;13000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3990;Кладовая Маркетолога;https://t.me/marketklad;12000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3991;Нади про контент и продажи;https://t.me/nadyprokontent;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3992;TexTerra: всё про маркетинг;https://t.me/TexterraBlog;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3993;Шабаршин - Боги Маркетинга;https://t.me/bestadchannel;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3994;Дайджест копирайтера;https://t.me/copywritersdigest;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3995;Вот Ньювс ⚡️;https://t.me/news_vot;8000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3996;Александр Львов;https://t.me/boringmarketer;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3997;Умный маркетинг;https://t.me/umnyi_marketing;8000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3998;Маркетолог 2.0;https://t.me/marketolog_ukr;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+3999;Nikita Petenko;https://t.me/prhype;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4000;Инфлюенсер +1 | Роман Абдуллин;https://t.me/roman_abdullin_plus;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4001;Ирина про Telegram и трафик;https://t.me/irina_trafik;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4002;Sosindex;https://t.me/sosindex;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4003;Берегулина Светлана про маркетинг и рост;https://t.me/marketingmass;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4004;Marketing Evangelist;https://t.me/marketingevangelist;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4005;Корбут и коллеги | Маркетинг;https://t.me/coreboot_marketing;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4006;Многогранный копирайтер | Тексты и рекомендации;https://t.me/mnogocopy;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4007;Продвижение экспертов в Telegram | Наталья Барвинская;https://t.me/expertpromotion;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4008;Максим Бондаренко о SMM, маркетинге и воронках;https://t.me/imasmm;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4009;Decoding Human — Роман Пустовойт;https://t.me/decodinghuman;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4010;ProDigital. Интернет маркетинг и SMM;https://t.me/prodigitalme;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4011;Осознанный маркетинг • Нина;https://t.me/ginger_content;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4012;Asia Pacific🇨🇳Маркетинг в Китае;https://t.me/as_pacific;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4013;Илья Еремин | Контент-маркетинг;https://t.me/bzdynko;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4014;Маркетинг CLUB;https://t.me/m_clab;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4015;Ooh ahh…;https://t.me/rgb_graphics;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4016;👨🏻‍💻/ Марат Юсупов;https://t.me/maratyus;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4017;Маркетолог Евгений Ванжула;https://t.me/vanzhula;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4018;Сибирцева про инфобиз!;https://t.me/av_sibirtseva;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4019;MEDIA RESEARCHES;https://t.me/mediaresearchesanalytics;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4020;Чертаринская про маркетинг и коммуникации;https://t.me/chertarinskaya;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4021;Контентная Мастерская YL: контент-маркетинг для бизнеса;https://t.me/kontent_marketing_YL;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4022;RE:source;https://t.me/resource6s;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4023;TenTen (Тендеры по маркетингу);https://t.me/adstender;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4024;Юля Тохтуева | Маркетинг и клиенты;https://t.me/personal_branding_experts;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4025;гура́;https://t.me/creativeee;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4026;Digital Strategy;https://t.me/digitalstrategy_agency;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4027;SAPE PRO;https://t.me/sapeseoteam;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4028;диджитал разнорабочий;https://t.me/sabinawrites;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4029;Культовый контентщик | Шарапов Артём;https://t.me/cult_content;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4030;Событийный маркетинг для бизнеса;https://t.me/Dmitrieva_eventmarketing;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4031;Вебер в деле;https://t.me/vebervdele;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4032;ШМОТ;https://t.me/zashmot;111000;24000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4033;Раздетый стилист Лена Червова;https://t.me/elennne_style;75000;18000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4034;Чувства Wearующих;https://t.me/wearfeelings;70000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4035;LOOKFINDER;https://t.me/lookfinder;65000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4036;Sale Me Please;https://t.me/Salemeplease;62000;11000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4037;WYSH MODA;https://t.me/wyshmoda;59000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4038;the girl who;https://t.me/girl_who;59000;16000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4039;Fak Fashion Fair;https://t.me/FakFashion;52000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4040;ШопагоLee;https://t.me/ShopahoLee;50000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4041;Dressed to Kill;https://t.me/dressedto;47000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4042;Не бьюти единым;https://t.me/nebeauty_blog;40000;8000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4043;Будь фэшнбл;https://t.me/be_fashion;37000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4044;ФРОНТ РОУ;https://t.me/frontroww;30000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4045;На примерке;https://t.me/lowfashion;29000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4046;Мамкина модница;https://t.me/mamkina;27000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4047;Шмоточная;https://t.me/clothernaya;26000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4048;Надеть или одеть?;https://t.me/localdress;24000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4049;Beauty телеграммы;https://t.me/beauty_goldman;24000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4050;Купи, молись, люби;https://t.me/buy_pray_love;24000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4051;Shnurok;https://t.me/shnurokotbalenciaga;22000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4052;Шопоголик из Москвы;https://t.me/promo_queen;21000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4053;Шопинг-терапия;https://t.me/shopotherapy;21000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4054;WZR;https://t.me/WZReveryday;19000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4055;Из Милана, с любовью;https://t.me/ismilanasluboviu;18000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4056;НечегоНадеть - Стиль | Одежда | Платья + Wildberries;https://t.me/net5style;17000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4057;Clothes Hunter;https://t.me/Clotheshunter;17000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4058;Стилист София Потапова;https://t.me/zametkimoegostilista;17000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4059;Эля ПроШоппинг;https://t.me/elyaproshopping;15000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4060;Модная Курочка;https://t.me/ya_b_kupila;15000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4061;Арин, где купила?;https://t.me/arinashopogolic;14000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4062;SportChic Виктория Давыдова;https://t.me/sportchic;14000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4063;Make Your Style;https://t.me/make_your_style;14000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4064;Боттега надета;https://t.me/bottega_nadeta;13000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4065;Fashion Inn | Dasha Frenklakh;https://t.me/fashioninn;13000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4066;MZR;https://t.me/mzreveryday;13000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4067;В твоем шкафчике Мода| Стиль| Образы;https://t.me/ModaMari;13000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4068;КАПСУЛЬНЫЙ ГАРДЕРОБ;https://t.me/your_capsule_wardrobe;13000;5000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4069;Хот Кутюр;https://t.me/hotcouture;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4070;Дом стиля | образы;https://t.me/domstilya;11000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4071;Pastila🍭;https://t.me/pastilamode;11000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4072;SNEAKERMANIA;https://t.me/sneakermania;10000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4073;Чё по стилю?;https://t.me/marusia_stile;10000;6000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4074;Коплю на Биркин;https://t.me/partiastylia;9000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4075;(Не)компульсивные покупки;https://t.me/femiskida;9000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4076;Модные образы на каждый день;https://t.me/obrazipovsednevni;9000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4077;Зара не с базара;https://t.me/necbazara;8000;4000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4078;Modnaya Kontora;https://t.me/modnayakontora;7000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4079;Бегущая за трендами;https://t.me/runtobuy;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4080;Фэшнспазм;https://t.me/fashionspazm;7000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4081;ОКТЯБРЬ;https://t.me/oktyabrskateshop;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4082;Патчи, джинсы и просекко;https://t.me/dobavit_v_wishlist;6000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4083;бисерная сумочка;https://t.me/biserbag;6000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4084;Вроде по моде | Обзоры и подборки;https://t.me/lika_pro_ali;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4085;𝟑𝟔𝟓 𝐝𝐚𝐲𝐬 𝐨𝐟 𝐅𝐚𝐬𝐡𝐢𝐨𝐧;https://t.me/fashion365days;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4086;Блог в стиле Vogue;https://t.me/lifestyleandme;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4087;TRIMPOL;https://t.me/fashionfornication;5000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4088;Шмотки и цацки;https://t.me/shmotcacki;4000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4089;ежедневник стилиста;https://t.me/stylistsdiary;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4090;Fashionista's Corner;https://t.me/fashionistas_corner;3000;2000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4091;С тусовки на Патрики;https://t.me/tusovkiipatriki;3000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4092;LED ANNA - бренд премиальной одежды;https://t.me/ledanna86;2000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4093;Жить - Кружить;https://t.me/kru_zhit;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4094;УЛИЦА СТИЛЯ;https://t.me/UlitsaStilya;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4095;Кофе с Машей ☕️/ Wildberries;https://t.me/mycoffeewithmasha;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4096;CRIT.ERIUM;https://t.me/crit_erium;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4097;AgathaStyle;https://t.me/agatstyle;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4098;Bitter honey;https://t.me/stylebitterhoney;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4099;Fashion language;https://t.me/buywithdianee;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4100;Просто о моде;https://t.me/prostopromodu;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4101;ПроFashion;https://t.me/Ianakul_stylist;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4102;Элис not from Пэрис;https://t.me/alisa_arts;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4103;Парниковые попсы;https://t.me/parnikpops;1000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4104;Ручки вяжут | Вязание;https://t.me/hand_knit;275000;42000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4105;Вязание спицами и крючком;https://t.me/spize25;67000;10000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4106;Вязание схемы, описание, пряжа;https://t.me/vataknit;50000;7000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4107;Ольга Кондратьева. Вяжем с WickedLynx;https://t.me/ok_wickedlynx;32000;13000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4108;Вязаные Идеи. Вязание;https://t.me/knitideas;24000;3000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
+4109;Стильное вязание;https://t.me/magicneedle;21000;1000;true;2023-12-29T11:11:27;2023-08-15T22:23:38;2053-08-15T22:23:38;null;false
