@@ -1,0 +1,5 @@
+id;first_name;user_name;registration_date;user_role;current_step;is_admin;score;is_blocked;chat_id;is_delete
+1;Oleg;regionn23;2023-11-22T15:34:32;Frozen CSS;current_step;true;55180;false;1;false
+2;Tim;regionn24;2023-10-22T15:34:32;Frozen CSS;current_step;false;55180;false;2;false
+3;Maks;regionn25;2022-10-22T15:34:32;Frozen CSS;current_step;false;55180;false;3;false
+4;Yura;regionn26;2022-11-22T15:34:32;Frozen CSS;current_step;false;55180;false;4;false
