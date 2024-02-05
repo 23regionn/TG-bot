@@ -1,0 +1,72 @@
+{
+  "name": "AuditChannelsLog",
+  "fields": [
+    {
+      "fieldName": "dateLog",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contacts",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "endPublicDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "idChannel",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "isModerate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isPay",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "lastPayDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "link",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameChannel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priceForPay",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "countSubscribers",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "countViews",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "audit_channels_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20240205172201"
+}

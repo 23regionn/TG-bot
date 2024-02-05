@@ -37,6 +37,9 @@ import RelCategoryCityChannels from './rel-category-city-channels';
 import SearchTypeLog from './search-type-log';
 import CountChannelClickPageLog from './count-channel-click-page-log';
 import AllStatistics from '../modules/all-statistics/index';
+import ShowChannelsInCategoryLog from './show-channels-in-category-log';
+import ShowChannelsInCityLog from './show-channels-in-city-log';
+import AuditChannelsLog from './audit-channels-log';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -78,6 +81,9 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}rel-category-city-channels`} component={RelCategoryCityChannels} />
       <ErrorBoundaryRoute path={`${match.url}search-type-log`} component={SearchTypeLog} />
       <ErrorBoundaryRoute path={`${match.url}count-channel-click-page-log`} component={CountChannelClickPageLog} />
+      <ErrorBoundaryRoute path={`${match.url}show-channels-in-category-log`} component={ShowChannelsInCategoryLog} />
+      <ErrorBoundaryRoute path={`${match.url}show-channels-in-city-log`} component={ShowChannelsInCityLog} />
+      <ErrorBoundaryRoute path={`${match.url}audit-channels-log`} component={AuditChannelsLog} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>
