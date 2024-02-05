@@ -111,7 +111,8 @@ public class UpdateController {
             } else { // Ради дефолтового ответа
                 switch (messageText) {
                     default:
-                        telegramBot.sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                        //                        telegramBot.sendMessage(chatId, "Извините, команда не распознана", nameForLog);
+                        telegramBot.checkFindChannelOrAddChannel(chatId, nameForLog);
                 }
             }
         } else if (update.hasInlineQuery()) {

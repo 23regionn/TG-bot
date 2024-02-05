@@ -1,0 +1,41 @@
+
+entity ShowChannelsInCategoryLog{
+	idChannel Long,
+	nameChannel String,
+	idCategory Long,
+	nameCategory String,
+	isShowChannel Boolean,
+	scoreChannel Double,
+	comment String,
+    	dateLog LocalDate
+}
+
+entity ShowChannelsInCityLog{
+	idChannel Long,
+	nameChannel String,
+	idCategory Long,
+	nameCategory String,
+	idCity Long,
+	nameCity String,
+	isShowChannel Boolean,
+	scoreChannel Double,
+	comment String,
+    	dateLog LocalDate
+}
+
+entity AuditChannelsLog{
+    	dateLog LocalDate,
+	comment String,
+	contacts String,
+	endPublicDate ZonedDateTime,
+	idChannel Long,
+	isModerate Boolean,
+	isPay Boolean,
+	lastPayDate ZonedDateTime,
+	link String,
+	nameChannel String,
+	priceForPay String,
+	startDate ZonedDateTime,
+	countSubscribers Long,
+	countViews Long
+}
