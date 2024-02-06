@@ -92,6 +92,15 @@ export const EntitiesMenu = props => (
     <MenuItem icon="asterisk" to="/count-channel-click-page-log">
       Count Channel Click Page Log
     </MenuItem>
+    <MenuItem icon="asterisk" to="/show-channels-in-category-log">
+      Show Channels In Category Log
+    </MenuItem>
+    <MenuItem icon="asterisk" to="/show-channels-in-city-log">
+      Show Channels In City Log
+    </MenuItem>
+    <MenuItem icon="asterisk" to="/audit-channels-log">
+      Audit Channels Log
+    </MenuItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>
 );

@@ -44,6 +44,9 @@
     <include file="config/liquibase/changelog/20230928134341_added_entity_RelCategoryCityChannels.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231025203956_added_entity_SearchTypeLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231025203957_added_entity_CountChannelClickPageLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240206164039_added_entity_ShowChannelsInCategoryLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240206164040_added_entity_ShowChannelsInCityLog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240206164041_added_entity_AuditChannelsLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20221123131900_added_entity_constraints_TGUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221123131901_added_entity_constraints_TGUserLog.xml" relativeToChangelogFile="false"/>

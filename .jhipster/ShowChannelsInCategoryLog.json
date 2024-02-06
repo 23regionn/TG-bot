@@ -1,0 +1,60 @@
+{
+  "name": "ShowChannelsInCategoryLog",
+  "fields": [
+    {
+      "fieldName": "idChannel",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "nameChannel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "idCategory",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "nameCategory",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "isShowChannel",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "scoreChannel",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "oldIsShowChannel",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "oldScoreChannel",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "oldComment",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateLog",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "show_channels_in_category_log",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20240206164039"
+}
