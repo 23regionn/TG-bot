@@ -7,6 +7,9 @@ entity ShowChannelsInCategoryLog{
 	isShowChannel Boolean,
 	scoreChannel Double,
 	comment String,
+	oldIsShowChannel Boolean,
+	oldScoreChannel Double,
+	oldComment String,
     	dateLog LocalDate
 }
 
@@ -20,6 +23,9 @@ entity ShowChannelsInCityLog{
 	isShowChannel Boolean,
 	scoreChannel Double,
 	comment String,
+	oldIsShowChannel Boolean,
+	oldScoreChannel Double,
+	oldComment String,
     	dateLog LocalDate
 }
 
@@ -37,5 +43,17 @@ entity AuditChannelsLog{
 	priceForPay String,
 	startDate ZonedDateTime,
 	countSubscribers Long,
-	countViews Long
+	countViews Long,
+	oldComment String,
+	oldContacts String,
+	oldEndPublicDate ZonedDateTime,
+	oldIsModerate Boolean,
+	oldIsPay Boolean,
+	oldLastPayDate ZonedDateTime,
+	oldLink String,
+	oldNameChannel String,
+	oldPriceForPay String,
+	oldStartDate ZonedDateTime,
+	oldCountSubscribers Long,
+	oldCountViews Long
 }
