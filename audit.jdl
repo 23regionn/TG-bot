@@ -10,7 +10,7 @@ entity ShowChannelsInCategoryLog{
 	oldIsShowChannel Boolean,
 	oldScoreChannel Double,
 	oldComment String,
-    	dateLog LocalDate
+    dateLog LocalDate
 }
 
 entity ShowChannelsInCityLog{
@@ -26,11 +26,11 @@ entity ShowChannelsInCityLog{
 	oldIsShowChannel Boolean,
 	oldScoreChannel Double,
 	oldComment String,
-    	dateLog LocalDate
+    dateLog LocalDate
 }
 
 entity AuditChannelsLog{
-    	dateLog LocalDate,
+    dateLog LocalDate,
 	comment String,
 	contacts String,
 	endPublicDate ZonedDateTime,
