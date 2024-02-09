@@ -45,7 +45,7 @@ public class AuditChannelsLogResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new auditChannelsLog, or with status {@code 400 (Bad Request)} if the auditChannelsLog has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/audit-channels-logs")
+    //    @PostMapping("/audit-channels-logs")
     public ResponseEntity<AuditChannelsLog> createAuditChannelsLog(@RequestBody AuditChannelsLog auditChannelsLog)
         throws URISyntaxException {
         log.debug("REST request to save AuditChannelsLog : {}", auditChannelsLog);
@@ -69,7 +69,7 @@ public class AuditChannelsLogResource {
      * or with status {@code 500 (Internal Server Error)} if the auditChannelsLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/audit-channels-logs/{id}")
+    //    @PutMapping("/audit-channels-logs/{id}")
     public ResponseEntity<AuditChannelsLog> updateAuditChannelsLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AuditChannelsLog auditChannelsLog
@@ -104,7 +104,7 @@ public class AuditChannelsLogResource {
      * or with status {@code 500 (Internal Server Error)} if the auditChannelsLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/audit-channels-logs/{id}", consumes = "application/merge-patch+json")
+    //    @PatchMapping(value = "/audit-channels-logs/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<AuditChannelsLog> partialUpdateAuditChannelsLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody AuditChannelsLog auditChannelsLog
@@ -245,7 +245,7 @@ public class AuditChannelsLogResource {
      * @param id the id of the auditChannelsLog to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/audit-channels-logs/{id}")
+    //    @DeleteMapping("/audit-channels-logs/{id}")
     public ResponseEntity<Void> deleteAuditChannelsLog(@PathVariable Long id) {
         log.debug("REST request to delete AuditChannelsLog : {}", id);
         auditChannelsLogRepository.deleteById(id);

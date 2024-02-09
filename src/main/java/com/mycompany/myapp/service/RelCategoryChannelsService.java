@@ -5,11 +5,14 @@ import static com.mycompany.myapp.service.Constants.*;
 import com.mycompany.myapp.domain.Category;
 import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.domain.RelCategoryChannels;
+import com.mycompany.myapp.domain.ShowChannelsInCategoryLog;
 import com.mycompany.myapp.repository.CategoryRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.repository.RelCategoryChannelsRepository;
+import com.mycompany.myapp.repository.ShowChannelsInCategoryLogRepository;
 import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +25,18 @@ public class RelCategoryChannelsService {
     private final ChanellRepository chanellRepository;
     private final CategoryRepository categoryRepository;
 
+    private final ShowChannelsInCategoryLogRepository showChannelsInCategoryLogRepository;
+
     public RelCategoryChannelsService(
         ChanellRepository chanellRepository,
         CategoryRepository categoryRepository,
-        RelCategoryChannelsRepository relCategoryChannelsRepository
+        RelCategoryChannelsRepository relCategoryChannelsRepository,
+        ShowChannelsInCategoryLogRepository showChannelsInCategoryLogRepository
     ) {
         this.chanellRepository = chanellRepository;
         this.categoryRepository = categoryRepository;
         this.relCategoryChannelsRepository = relCategoryChannelsRepository;
+        this.showChannelsInCategoryLogRepository = showChannelsInCategoryLogRepository;
     }
 
     public List<RelCategoryChannels> getAllByCategory(Long categoryId) {
@@ -69,9 +76,45 @@ public class RelCategoryChannelsService {
             relCategoryChannels.setIsShowChannel(createDTO.getIsShowChannel());
             relCategoryChannels.setComment(createDTO.getComment());
 
+            ShowChannelsInCategoryLog audit = new ShowChannelsInCategoryLog();
+            audit.setIdCategory(category.getId());
+            audit.setNameCategory(category.getName());
+            audit.setIdChannel(chanell.getId());
+            audit.setNameChannel(chanell.getName());
+            audit.setComment(createDTO.getComment());
+            audit.setScoreChannel(createDTO.getScoreChannel());
+            audit.setIsShowChannel(createDTO.getIsShowChannel());
+            audit.setDateLog(LocalDate.now());
+            showChannelsInCategoryLogRepository.save(audit);
+
             return relCategoryChannelsRepository.save(relCategoryChannels);
         } else {
             throw new BadRequestAlertException("Канал уже существет", "Нельзя создать дубль ", "Есть в БД");
         }
+    }
+
+    public ShowChannelsInCategoryLog setAuditAfterUpdateRecord(ShowChannelsInCategoryLog audit, RelCategoryChannels rel) {
+        RelCategoryChannels rels = relCategoryChannelsRepository
+            .findById(rel.getId())
+            .orElseThrow(
+                () -> {
+                    throw new BadRequestAlertException(REL_CATEGORY_CHANNEL_NOT_FOUND, REL_CATEGORY_CHANNEL_NAME, ID_NOT_FOUND);
+                }
+            );
+
+        Chanell chanell = rels.getChanell();
+        Category category = rels.getCategory();
+
+        audit.setIdCategory(category.getId());
+        audit.setNameCategory(category.getName());
+        audit.setIdChannel(chanell.getId());
+        audit.setNameChannel(chanell.getName());
+
+        /*audit.setComment(createDTO.getComment());
+        audit.setScoreChannel(createDTO.getScoreChannel());
+        audit.setIsShowChannel(createDTO.getIsShowChannel());*/
+
+        audit.setDateLog(LocalDate.now());
+        return showChannelsInCategoryLogRepository.save(audit);
     }
 }

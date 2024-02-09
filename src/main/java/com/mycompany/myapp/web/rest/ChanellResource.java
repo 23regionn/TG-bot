@@ -1,22 +1,23 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.AuditChannelsLog;
 import com.mycompany.myapp.domain.Chanell;
+import com.mycompany.myapp.repository.AuditChannelsLogRepository;
 import com.mycompany.myapp.repository.ChanellRepository;
 import com.mycompany.myapp.service.ChannelService;
-import com.mycompany.myapp.service.dto.ChanellPostDTO;
 import com.mycompany.myapp.service.dto.ChannelNameAndIDDTO;
 import com.mycompany.myapp.service.dto.channel.ChannelInfoDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +41,16 @@ public class ChanellResource {
 
     private final ChanellRepository chanellRepository;
     private final ChannelService channelService;
+    private final AuditChannelsLogRepository auditChannelsLogRepository;
 
-    public ChanellResource(ChanellRepository chanellRepository, ChannelService channelService) {
+    public ChanellResource(
+        ChanellRepository chanellRepository,
+        ChannelService channelService,
+        AuditChannelsLogRepository auditChannelsLogRepository
+    ) {
         this.chanellRepository = chanellRepository;
         this.channelService = channelService;
+        this.auditChannelsLogRepository = auditChannelsLogRepository;
     }
 
     /**
@@ -59,7 +66,27 @@ public class ChanellResource {
         if (chanell.getId() != null) {
             throw new BadRequestAlertException("A new chanell cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        chanell.setStartDate(ZonedDateTime.now());
+        chanell.setLastPayDate(ZonedDateTime.now());
         Chanell result = chanellRepository.save(chanell);
+
+        AuditChannelsLog audit = new AuditChannelsLog();
+        audit.setComment(result.getComment());
+        audit.setContacts(result.getContacts());
+        audit.setCountViews(result.getCountViews());
+        audit.setCountSubscribers(result.getCountSubscribers());
+        audit.setLink(result.getLink());
+        audit.setNameChannel(result.getName());
+        audit.setIdChannel(result.getId());
+        audit.setIsModerate(result.getIsModerate());
+        audit.setIsPay(result.getIsPay());
+        audit.setPriceForPay(result.getPriceForPay() == null ? null : String.valueOf(result.getPriceForPay()));
+        audit.setStartDate(result.getStartDate());
+        audit.setLastPayDate(result.getLastPayDate());
+        audit.setEndPublicDate(result.getEndPublicDate());
+        audit.setDateLog(LocalDate.now());
+        auditChannelsLogRepository.save(audit);
+
         return ResponseEntity
             .created(new URI("/api/chanells/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -126,14 +153,18 @@ public class ChanellResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        AuditChannelsLog audit = new AuditChannelsLog();
+
         Optional<Chanell> result = chanellRepository
             .findById(chanell.getId())
             .map(
                 existingChanell -> {
                     if (chanell.getName() != null) {
+                        audit.setOldNameChannel(existingChanell.getName());
                         existingChanell.setName(chanell.getName());
                     }
                     if (chanell.getLink() != null) {
+                        audit.setOldLink(existingChanell.getLink());
                         existingChanell.setLink(chanell.getLink());
                     }
                     if (chanell.getScore() != null) {
@@ -143,7 +174,12 @@ public class ChanellResource {
                         existingChanell.setStatus(chanell.getStatus());
                     }
                     if (chanell.getCountSubscribers() != null) {
+                        audit.setOldCountSubscribers(existingChanell.getCountSubscribers());
                         existingChanell.setCountSubscribers(chanell.getCountSubscribers());
+                    }
+                    if (chanell.getCountViews() != null) {
+                        audit.setOldCountViews(existingChanell.getCountViews());
+                        existingChanell.setCountViews(chanell.getCountViews());
                     }
                     if (chanell.getQuailityFromAnotherSources() != null) {
                         existingChanell.setQuailityFromAnotherSources(chanell.getQuailityFromAnotherSources());
@@ -152,15 +188,20 @@ public class ChanellResource {
                         existingChanell.setPriceDiapozon(chanell.getPriceDiapozon());
                     }
                     if (chanell.getIsModerate() != null) {
+                        audit.setOldIsModerate(existingChanell.getIsModerate());
                         existingChanell.setIsModerate(chanell.getIsModerate());
                     }
                     if (chanell.getShowChanellInTopByCategory() != null) {
                         existingChanell.setShowChanellInTopByCategory(chanell.getShowChanellInTopByCategory());
                     }
                     if (chanell.getIsPay() != null) {
+                        audit.setOldIsPay(existingChanell.getIsPay());
                         existingChanell.setIsPay(chanell.getIsPay());
                     }
                     if (chanell.getPriceForPay() != null) {
+                        audit.setOldPriceForPay(
+                            existingChanell.getPriceForPay() == null ? null : String.valueOf(existingChanell.getPriceForPay())
+                        );
                         existingChanell.setPriceForPay(chanell.getPriceForPay());
                     }
                     /*if (chanell.getStartDate() != null) {
@@ -170,14 +211,18 @@ public class ChanellResource {
                         existingChanell.setLastPayDate(chanell.getLastPayDate());
                     }*/
                     if (chanell.getEndPublicDate() != null) {
+                        audit.setOldEndPublicDate(existingChanell.getEndPublicDate());
                         existingChanell.setEndPublicDate(chanell.getEndPublicDate());
                     }
                     if (chanell.getComment() != null) {
+                        audit.setOldComment(existingChanell.getComment());
                         existingChanell.setComment(chanell.getComment());
                     }
                     if (chanell.getContacts() != null) {
+                        audit.setOldContacts(existingChanell.getContacts());
                         existingChanell.setContacts(chanell.getContacts());
                     }
+                    existingChanell.setLastPayDate(ZonedDateTime.now());
 
                     return existingChanell;
                 }
@@ -185,7 +230,20 @@ public class ChanellResource {
             .map(chanellRepository::save);
 
         if (result.isPresent()) {
-            Chanell channelAfterUpdate = result.get();
+            audit.setComment(chanell.getComment());
+            audit.setContacts(chanell.getContacts());
+            audit.setCountViews(chanell.getCountViews());
+            audit.setCountSubscribers(chanell.getCountSubscribers());
+            audit.setLink(chanell.getLink());
+            audit.setNameChannel(chanell.getName());
+            audit.setIdChannel(chanell.getId());
+            audit.setIsModerate(chanell.getIsModerate());
+            audit.setIsPay(chanell.getIsPay());
+            audit.setPriceForPay(chanell.getPriceForPay() == null ? null : String.valueOf(chanell.getPriceForPay()));
+            audit.setEndPublicDate(chanell.getEndPublicDate());
+            audit.setDateLog(LocalDate.now());
+
+            auditChannelsLogRepository.save(audit);
         }
 
         return ResponseUtil.wrapOrNotFound(

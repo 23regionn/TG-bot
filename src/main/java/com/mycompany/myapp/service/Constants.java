@@ -10,5 +10,7 @@ public class Constants {
     public static final String REL_CATEGORY_CITY_NOT_FOUND = "relCategoryCity not found";
     public static final String ID_NOT_FOUND = "id not found";
     public static final String CHANNEL_NOT_FOUND = "channel not found";
+    public static final String REL_CATEGORY_CHANNEL_NOT_FOUND = "rel category channel not found";
     public static final String CHANNEL_NAME = "channel";
+    public static final String REL_CATEGORY_CHANNEL_NAME = "rel category channel";
 }

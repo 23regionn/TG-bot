@@ -1,12 +1,15 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.RelCategoryChannels;
+import com.mycompany.myapp.domain.ShowChannelsInCategoryLog;
 import com.mycompany.myapp.repository.RelCategoryChannelsRepository;
+import com.mycompany.myapp.repository.ShowChannelsInCategoryLogRepository;
 import com.mycompany.myapp.service.RelCategoryChannelsService;
 import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,13 +40,16 @@ public class RelCategoryChannelsResource {
 
     private final RelCategoryChannelsRepository relCategoryChannelsRepository;
     private final RelCategoryChannelsService relCategoryChannelsService;
+    private final ShowChannelsInCategoryLogRepository showChannelsInCategoryLogRepository;
 
     public RelCategoryChannelsResource(
         RelCategoryChannelsRepository relCategoryChannelsRepository,
-        RelCategoryChannelsService relCategoryChannelsService
+        RelCategoryChannelsService relCategoryChannelsService,
+        ShowChannelsInCategoryLogRepository showChannelsInCategoryLogRepository
     ) {
         this.relCategoryChannelsRepository = relCategoryChannelsRepository;
         this.relCategoryChannelsService = relCategoryChannelsService;
+        this.showChannelsInCategoryLogRepository = showChannelsInCategoryLogRepository;
     }
 
     /**
@@ -129,6 +135,8 @@ public class RelCategoryChannelsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        ShowChannelsInCategoryLog audit = new ShowChannelsInCategoryLog();
+
         Optional<RelCategoryChannels> result = relCategoryChannelsRepository
             .findById(relCategoryChannels.getId())
             .map(
@@ -148,6 +156,18 @@ public class RelCategoryChannelsResource {
                 }
             )
             .map(relCategoryChannelsRepository::save);
+
+        /*if (result.isPresent()){
+            audit.setIdCategory(category.getId());
+            audit.setNameCategory(category.getName());
+            audit.setIdChannel(chanell.getId());
+            audit.setNameChannel(chanell.getName());
+            audit.setComment(createDTO.getComment());
+            audit.setScoreChannel(createDTO.getScoreChannel());
+            audit.setIsShowChannel(createDTO.getIsShowChannel());
+            audit.setDateLog(LocalDate.now());
+            showChannelsInCategoryLogRepository.save(audit);
+        }*/
 
         return ResponseUtil.wrapOrNotFound(
             result,
