@@ -142,13 +142,16 @@ public class RelCategoryChannelsResource {
             .map(
                 existingRelCategoryChannels -> {
                     if (relCategoryChannels.getScoreChannel() != null) {
+                        audit.setOldScoreChannel(existingRelCategoryChannels.getScoreChannel());
                         existingRelCategoryChannels.setScoreChannel(relCategoryChannels.getScoreChannel());
                     }
                     if (relCategoryChannels.getIsShowChannel() != null) {
+                        audit.setOldIsShowChannel(existingRelCategoryChannels.getIsShowChannel());
                         existingRelCategoryChannels.setIsShowChannel(relCategoryChannels.getIsShowChannel());
                     }
 
                     if (relCategoryChannels.getComment() != null) {
+                        audit.setOldComment(existingRelCategoryChannels.getComment());
                         existingRelCategoryChannels.setComment(relCategoryChannels.getComment());
                     }
 
@@ -157,17 +160,9 @@ public class RelCategoryChannelsResource {
             )
             .map(relCategoryChannelsRepository::save);
 
-        /*if (result.isPresent()){
-            audit.setIdCategory(category.getId());
-            audit.setNameCategory(category.getName());
-            audit.setIdChannel(chanell.getId());
-            audit.setNameChannel(chanell.getName());
-            audit.setComment(createDTO.getComment());
-            audit.setScoreChannel(createDTO.getScoreChannel());
-            audit.setIsShowChannel(createDTO.getIsShowChannel());
-            audit.setDateLog(LocalDate.now());
-            showChannelsInCategoryLogRepository.save(audit);
-        }*/
+        if (result.isPresent()) {
+            relCategoryChannelsService.setAuditAfterUpdateRecord(audit, result.get());
+        }
 
         return ResponseUtil.wrapOrNotFound(
             result,

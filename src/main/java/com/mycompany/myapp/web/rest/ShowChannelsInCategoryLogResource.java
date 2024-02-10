@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.ShowChannelsInCategoryLogRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class ShowChannelsInCategoryLogResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new showChannelsInCategoryLog, or with status {@code 400 (Bad Request)} if the showChannelsInCategoryLog has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/show-channels-in-category-logs")
+    //    @PostMapping("/show-channels-in-category-logs")
     public ResponseEntity<ShowChannelsInCategoryLog> createShowChannelsInCategoryLog(
         @RequestBody ShowChannelsInCategoryLog showChannelsInCategoryLog
     ) throws URISyntaxException {
@@ -70,7 +71,7 @@ public class ShowChannelsInCategoryLogResource {
      * or with status {@code 500 (Internal Server Error)} if the showChannelsInCategoryLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/show-channels-in-category-logs/{id}")
+    //    @PutMapping("/show-channels-in-category-logs/{id}")
     public ResponseEntity<ShowChannelsInCategoryLog> updateShowChannelsInCategoryLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ShowChannelsInCategoryLog showChannelsInCategoryLog
@@ -105,7 +106,7 @@ public class ShowChannelsInCategoryLogResource {
      * or with status {@code 500 (Internal Server Error)} if the showChannelsInCategoryLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/show-channels-in-category-logs/{id}", consumes = "application/merge-patch+json")
+    //    @PatchMapping(value = "/show-channels-in-category-logs/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<ShowChannelsInCategoryLog> partialUpdateShowChannelsInCategoryLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ShowChannelsInCategoryLog showChannelsInCategoryLog
@@ -188,7 +189,7 @@ public class ShowChannelsInCategoryLogResource {
      * @param id the id of the showChannelsInCategoryLog to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the showChannelsInCategoryLog, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/show-channels-in-category-logs/{id}")
+    //    @GetMapping("/show-channels-in-category-logs/{id}")
     public ResponseEntity<ShowChannelsInCategoryLog> getShowChannelsInCategoryLog(@PathVariable Long id) {
         log.debug("REST request to get ShowChannelsInCategoryLog : {}", id);
         Optional<ShowChannelsInCategoryLog> showChannelsInCategoryLog = showChannelsInCategoryLogRepository.findById(id);
@@ -201,7 +202,7 @@ public class ShowChannelsInCategoryLogResource {
      * @param id the id of the showChannelsInCategoryLog to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/show-channels-in-category-logs/{id}")
+    //    @DeleteMapping("/show-channels-in-category-logs/{id}")
     public ResponseEntity<Void> deleteShowChannelsInCategoryLog(@PathVariable Long id) {
         log.debug("REST request to delete ShowChannelsInCategoryLog : {}", id);
         showChannelsInCategoryLogRepository.deleteById(id);
@@ -209,5 +210,11 @@ public class ShowChannelsInCategoryLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/show-channels-in-category-logs/by-date/{date}")
+    public List<ShowChannelsInCategoryLog> getAllShowChannelsInCategoryLogsByDate(@PathVariable LocalDate date) {
+        log.debug("REST request to get all ShowChannelsInCategoryLogs by dates");
+        return showChannelsInCategoryLogRepository.findAllByDateLog(date);
     }
 }

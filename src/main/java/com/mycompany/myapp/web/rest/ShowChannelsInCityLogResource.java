@@ -1,10 +1,12 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.ShowChannelsInCategoryLog;
 import com.mycompany.myapp.domain.ShowChannelsInCityLog;
 import com.mycompany.myapp.repository.ShowChannelsInCityLogRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,7 +47,7 @@ public class ShowChannelsInCityLogResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new showChannelsInCityLog, or with status {@code 400 (Bad Request)} if the showChannelsInCityLog has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/show-channels-in-city-logs")
+    //    @PostMapping("/show-channels-in-city-logs")
     public ResponseEntity<ShowChannelsInCityLog> createShowChannelsInCityLog(@RequestBody ShowChannelsInCityLog showChannelsInCityLog)
         throws URISyntaxException {
         log.debug("REST request to save ShowChannelsInCityLog : {}", showChannelsInCityLog);
@@ -69,7 +71,7 @@ public class ShowChannelsInCityLogResource {
      * or with status {@code 500 (Internal Server Error)} if the showChannelsInCityLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/show-channels-in-city-logs/{id}")
+    //    @PutMapping("/show-channels-in-city-logs/{id}")
     public ResponseEntity<ShowChannelsInCityLog> updateShowChannelsInCityLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ShowChannelsInCityLog showChannelsInCityLog
@@ -104,7 +106,7 @@ public class ShowChannelsInCityLogResource {
      * or with status {@code 500 (Internal Server Error)} if the showChannelsInCityLog couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/show-channels-in-city-logs/{id}", consumes = "application/merge-patch+json")
+    //    @PatchMapping(value = "/show-channels-in-city-logs/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<ShowChannelsInCityLog> partialUpdateShowChannelsInCityLog(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody ShowChannelsInCityLog showChannelsInCityLog
@@ -206,7 +208,7 @@ public class ShowChannelsInCityLogResource {
      * @param id the id of the showChannelsInCityLog to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/show-channels-in-city-logs/{id}")
+    //    @DeleteMapping("/show-channels-in-city-logs/{id}")
     public ResponseEntity<Void> deleteShowChannelsInCityLog(@PathVariable Long id) {
         log.debug("REST request to delete ShowChannelsInCityLog : {}", id);
         showChannelsInCityLogRepository.deleteById(id);
@@ -214,5 +216,11 @@ public class ShowChannelsInCityLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/show-channels-in-city-logs/by-date/{date}")
+    public List<ShowChannelsInCityLog> getAllShowChannelsInCityLogsByDate(@PathVariable LocalDate date) {
+        log.debug("REST request to get all ShowChannelsInCategoryLogs by dates");
+        return showChannelsInCityLogRepository.findAllByDateLog(date);
     }
 }

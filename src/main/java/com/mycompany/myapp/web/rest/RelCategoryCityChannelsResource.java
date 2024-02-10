@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.RelCategoryChannels;
 import com.mycompany.myapp.domain.RelCategoryCityChannels;
+import com.mycompany.myapp.domain.ShowChannelsInCityLog;
 import com.mycompany.myapp.repository.RelCategoryCityChannelsRepository;
 import com.mycompany.myapp.service.RelCategoryCityChannelsService;
 import com.mycompany.myapp.service.dto.relCategoryChannel.RelCategoryChannelsCreateDTO;
@@ -132,17 +133,22 @@ public class RelCategoryCityChannelsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        ShowChannelsInCityLog audit = new ShowChannelsInCityLog();
+
         Optional<RelCategoryCityChannels> result = relCategoryCityChannelsRepository
             .findById(relCategoryCityChannels.getId())
             .map(
                 existingRelCategoryCityChannels -> {
                     if (relCategoryCityChannels.getScoreChannel() != null) {
+                        audit.setOldScoreChannel(existingRelCategoryCityChannels.getScoreChannel());
                         existingRelCategoryCityChannels.setScoreChannel(relCategoryCityChannels.getScoreChannel());
                     }
                     if (relCategoryCityChannels.getIsShowChannel() != null) {
+                        audit.setOldIsShowChannel(existingRelCategoryCityChannels.getIsShowChannel());
                         existingRelCategoryCityChannels.setIsShowChannel(relCategoryCityChannels.getIsShowChannel());
                     }
                     if (relCategoryCityChannels.getComment() != null) {
+                        audit.setOldComment(existingRelCategoryCityChannels.getComment());
                         existingRelCategoryCityChannels.setComment(relCategoryCityChannels.getComment());
                     }
 
@@ -150,6 +156,10 @@ public class RelCategoryCityChannelsResource {
                 }
             )
             .map(relCategoryCityChannelsRepository::save);
+
+        if (result.isPresent()) {
+            relCategoryCityChannelsService.setAuditAfterUpdateRecord(audit, result.get());
+        }
 
         return ResponseUtil.wrapOrNotFound(
             result,

@@ -5,6 +5,7 @@ import com.mycompany.myapp.repository.AuditChannelsLogRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -253,5 +254,11 @@ public class AuditChannelsLogResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/audit-channels-logs/by-date/{date}")
+    public List<AuditChannelsLog> getAllAuditChannelsLogsByDate(@PathVariable LocalDate date) {
+        log.debug("REST request to get all AuditChannelsLogs  by dates");
+        return auditChannelsLogRepository.findAllByDateLog(date);
     }
 }

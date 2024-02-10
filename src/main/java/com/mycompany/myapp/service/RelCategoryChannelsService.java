@@ -94,25 +94,21 @@ public class RelCategoryChannelsService {
     }
 
     public ShowChannelsInCategoryLog setAuditAfterUpdateRecord(ShowChannelsInCategoryLog audit, RelCategoryChannels rel) {
-        RelCategoryChannels rels = relCategoryChannelsRepository
-            .findById(rel.getId())
-            .orElseThrow(
-                () -> {
-                    throw new BadRequestAlertException(REL_CATEGORY_CHANNEL_NOT_FOUND, REL_CATEGORY_CHANNEL_NAME, ID_NOT_FOUND);
-                }
-            );
+        Chanell chanell = rel.getChanell();
+        Category category = rel.getCategory();
 
-        Chanell chanell = rels.getChanell();
-        Category category = rels.getCategory();
+        if (chanell != null) {
+            audit.setIdChannel(chanell.getId());
+            audit.setNameChannel(chanell.getName());
+        }
+        if (category != null) {
+            audit.setIdCategory(category.getId());
+            audit.setNameCategory(category.getName());
+        }
 
-        audit.setIdCategory(category.getId());
-        audit.setNameCategory(category.getName());
-        audit.setIdChannel(chanell.getId());
-        audit.setNameChannel(chanell.getName());
-
-        /*audit.setComment(createDTO.getComment());
-        audit.setScoreChannel(createDTO.getScoreChannel());
-        audit.setIsShowChannel(createDTO.getIsShowChannel());*/
+        audit.setComment(rel.getComment());
+        audit.setScoreChannel(rel.getScoreChannel());
+        audit.setIsShowChannel(rel.getIsShowChannel());
 
         audit.setDateLog(LocalDate.now());
         return showChannelsInCategoryLogRepository.save(audit);

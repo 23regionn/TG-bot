@@ -9,6 +9,7 @@ import com.mycompany.myapp.service.dto.relCategoryCity.RelCategoryCityCreateDTO;
 import com.mycompany.myapp.service.dto.relCategoryCityChannels.RelCategoryCityChannelsCreateDTO;
 import com.mycompany.myapp.web.rest.RelCategoryCityChannelsResource;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ public class RelCategoryCityChannelsService {
 
     private final RelCategoryCityRepository relCategoryCityRepository;
     private final RelCategoryCityChannelsRepository relCategoryCityChannelsRepository;
+    private final ShowChannelsInCityLogRepository showChannelsInCityLogRepository;
     private final ChanellRepository chanellRepository;
     private final CategoryRepository categoryRepository;
     private final CityRepository cityRepository;
@@ -28,13 +30,15 @@ public class RelCategoryCityChannelsService {
         CategoryRepository categoryRepository,
         RelCategoryCityRepository relCategoryCityRepository,
         CityRepository cityRepository,
-        RelCategoryCityChannelsRepository relCategoryCityChannelsRepository
+        RelCategoryCityChannelsRepository relCategoryCityChannelsRepository,
+        ShowChannelsInCityLogRepository showChannelsInCityLogRepository
     ) {
         this.chanellRepository = chanellRepository;
         this.categoryRepository = categoryRepository;
         this.relCategoryCityRepository = relCategoryCityRepository;
         this.cityRepository = cityRepository;
         this.relCategoryCityChannelsRepository = relCategoryCityChannelsRepository;
+        this.showChannelsInCityLogRepository = showChannelsInCityLogRepository;
     }
 
     public List<RelCategoryCityChannels> getCategoryCityChannelsByRelCityCategory(Long relCategoryCityChannelId) {
@@ -66,6 +70,9 @@ public class RelCategoryCityChannelsService {
                 }
             );
 
+        Category category = relCategoryCity != null ? relCategoryCity.getCategory() : null;
+        City city = relCategoryCity != null ? relCategoryCity.getCity() : null;
+
         if (!relCategoryCityChannelsRepository.existsByChanellAndRelCategoryCity(chanell, relCategoryCity)) {
             RelCategoryCityChannels relCategoryCityChannels = new RelCategoryCityChannels();
             relCategoryCityChannels.setComment(createDTO.getComment());
@@ -74,9 +81,61 @@ public class RelCategoryCityChannelsService {
             relCategoryCityChannels.setChanell(chanell);
             relCategoryCityChannels.setRelCategoryCity(relCategoryCity);
 
+            ShowChannelsInCityLog audit = new ShowChannelsInCityLog();
+            if (chanell != null) {
+                audit.setIdChannel(chanell.getId());
+                audit.setNameChannel(chanell.getName());
+            }
+
+            if (category != null) {
+                audit.setIdCategory(category.getId());
+                audit.setNameCategory(category.getName());
+            }
+
+            if (city != null) {
+                audit.setIdCity(city.getId());
+                audit.setNameCity(city.getCityName());
+            }
+
+            audit.setComment(createDTO.getComment());
+            audit.setScoreChannel(createDTO.getScoreChannel());
+            audit.setIsShowChannel(createDTO.getIsShowChannel());
+
+            audit.setDateLog(LocalDate.now());
+            showChannelsInCityLogRepository.save(audit);
+
             return relCategoryCityChannelsRepository.save(relCategoryCityChannels);
         } else {
             throw new BadRequestAlertException("Канал уже существет", "Нельзя создать дубль ", "Есть в БД");
         }
+    }
+
+    public ShowChannelsInCityLog setAuditAfterUpdateRecord(ShowChannelsInCityLog audit, RelCategoryCityChannels rel) {
+        Chanell chanell = rel.getChanell();
+        RelCategoryCity categoryCity = rel.getRelCategoryCity();
+        Category category = categoryCity != null ? categoryCity.getCategory() : null;
+        City city = categoryCity != null ? categoryCity.getCity() : null;
+
+        if (chanell != null) {
+            audit.setIdChannel(chanell.getId());
+            audit.setNameChannel(chanell.getName());
+        }
+
+        if (category != null) {
+            audit.setIdCategory(category.getId());
+            audit.setNameCategory(category.getName());
+        }
+
+        if (city != null) {
+            audit.setIdCity(city.getId());
+            audit.setNameCity(city.getCityName());
+        }
+
+        audit.setComment(rel.getComment());
+        audit.setScoreChannel(rel.getScoreChannel());
+        audit.setIsShowChannel(rel.getIsShowChannel());
+
+        audit.setDateLog(LocalDate.now());
+        return showChannelsInCityLogRepository.save(audit);
     }
 }
