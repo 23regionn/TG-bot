@@ -193,3 +193,15 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://angular.github.io/protractor/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
+
+## Для старта проекта необходимо установить токен и наименование тг-бота
+
+- в файлике application.yml: name:
+  token:
+  rename:
+
+- в файлике application-dev.yml: server:
+  port:
+  datasource:
+  url:
+- старый образец fake-data находиться в корне проекта папка old-data-base папка fake-data-09-02-2024
