@@ -1,0 +1,48 @@
+$indent: 3.25rem;
+$fontSize_l: 0.875rem;
+$fontSize_m: 1rem;
+$fontSize_xl: 1.25rem;
+
+.button-part-grid-archive {
+  .p-button {
+    // --color-no-highlight: #dddddd;
+    // background-color: var(--color-no-highlight);
+    border-color: var(--color-no-highlight) !important;
+    color: white !important;
+    font-size: $fontSize_m !important;
+    width: 10.9375rem;
+    height: 2.75rem;
+  }
+  .p-highlight {
+    --color-highlight: #4696ec;
+    // background-color: var(--color-highlight) ;
+    border-color: var(--color-highlight) !important;
+    font-size: $fontSize_m !important;
+    color: white !important;
+  }
+}
+
+.button-part-grid-archive {
+  .p-togglebutton.p-button.p-highlight:hover {
+    // background: #dddddd;
+    // border-color: #dddddd;
+  }
+  .p-togglebutton.p-button {
+    min-width: 200px;
+    min-height: 44px;
+    border-radius: 6px;
+    background-color: #4696ec;
+    width: 100%;
+  }
+
+  .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 6px;
+    background-color: #4696ec;
+    color: #ffffff;
+  }
+  .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):focus {
+    background-color: #4696ec !important;
+  }
+}

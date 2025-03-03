@@ -1,0 +1,28 @@
+$indents: 1rem;
+
+.button-block {
+  display: flex;
+  flex-direction: row-reverse;
+
+  .first-block {
+    &.only-thirds-block {
+      margin-left: $indents;
+    }
+  }
+  .second-block {
+    &.all-blocks {
+      margin-left: $indents;
+      margin-right: $indents;
+    }
+
+    &.only-first-block {
+      margin-right: $indents;
+    }
+
+    &.only-thirds-block {
+      margin-left: $indents;
+    }
+  }
+  .thirds-block {
+  }
+}

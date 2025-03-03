@@ -1,0 +1,27 @@
+$color: #2196f3;
+$b_color: rgba(255, 255, 255, 0);
+
+#singleSplitButton > .p-splitbutton-menubutton {
+  border: 0px $b_color;
+  border-radius: 20px;
+  background-color: $b_color;
+  color: $color;
+
+  &:hover {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+
+  &:focus {
+    border: 1px $color;
+    border-radius: 20px;
+    -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+}
+
+#singleSplitButton > .p-splitbutton-defaultbutton {
+  display: none;
+}

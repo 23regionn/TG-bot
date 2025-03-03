@@ -1,0 +1,10 @@
+export enum Height_CSS {
+  HEIGHT_NORMAL = 'HEIGHT_NORMAL',
+  HEIGHT_LOW = 'HEIGHT_LOW',
+  HEIGHT_BIG = 'HEIGHT_BIG',
+}
+
+export enum Flex_CSS {
+  FLEX_ROW = 'FLEX_ROW',
+  FLEX_COLUMN = 'FLEX_COLUMN',
+}

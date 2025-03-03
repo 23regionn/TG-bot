@@ -1,0 +1,103 @@
+$indents: 16px;
+
+.footerButton {
+  display: flex;
+  flex-direction: row-reverse;
+
+  .first-block {
+    &.only-thirds-block {
+      margin-left: $indents;
+    }
+  }
+
+  .second-block {
+    &.all-blocks {
+      margin-left: $indents;
+      margin-right: $indents;
+    }
+
+    &.only-first-block {
+      margin-right: $indents;
+    }
+
+    &.only-thirds-block {
+      margin-left: $indents;
+    }
+  }
+
+  .thirds-block {
+  }
+}
+
+.firstButton {
+  min-width: 200px;
+  width: 200px;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 6px;
+  height: 40px;
+
+  &:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  }
+}
+
+.secondButton {
+  min-width: 200px;
+  width: 200px;
+  display: inline-block;
+  background-color: rgb(16, 188, 231);
+  border-color: rgb(16, 188, 231);
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  height: 40px;
+
+  &:hover {
+    background-color: rgb(16, 188, 231) !important;
+    border-color: rgb(16, 188, 231) !important;
+    color: white !important;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  }
+}
+
+.thirdsButton {
+  min-width: 200px;
+  width: 200px;
+  display: inline-block;
+  background-color: white;
+  color: dodgerblue;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  height: 40px;
+
+  &:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  }
+}
+.fourthButton {
+  min-width: 200px;
+  width: 200px;
+  display: inline-block;
+  background: #ffffff;
+  color: #cb3234;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  border: 1.5px solid #cb3234;
+  border-radius: 6px;
+  height: 40px;
+  &:hover {
+    background-color: #ffffff !important;
+    border-color: #cb3234 !important;
+    color: #cb3234 !important;
+    background-color: #ffffff;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  }
+}

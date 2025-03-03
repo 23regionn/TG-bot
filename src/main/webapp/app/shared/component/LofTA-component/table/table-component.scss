@@ -1,0 +1,60 @@
+$b_color: rgba(255, 255, 255, 0);
+$colorDown: rgba(33, 150, 243, 0.8);
+$colorBg: #f9f9fd;
+$colorUp: rgba(234, 234, 239, 0.8);
+$widthScroll: 12px;
+
+.div-style {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 1rem;
+  .tableStyle1 {
+    width: 100%;
+    max-height: 100%;
+    height: auto;
+    .p-datatable-wrapper::-webkit-scrollbar {
+      width: $widthScroll !important;
+    }
+
+    .p-datatable-wrapper::-webkit-scrollbar-track {
+      margin-top: 2px !important;
+      margin-bottom: 2px !important;
+      -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset !important;
+      background-color: $colorBg !important;
+      border-radius: 10px !important;
+    }
+
+    .p-datatable-wrapper::-webkit-scrollbar-thumb {
+      border-radius: 10px !important;
+      background: linear-gradient(180deg, $colorUp, $colorDown) !important;
+    }
+  }
+}
+.style-icon-block {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+}
+
+// ___________________ стили от inputs_text для инпутов-фильтров в таблице техпроверок
+.filter_table_tech_acceptance {
+  input {
+    border-radius: 6px;
+    color: #2c2c2c !important;
+
+    &:hover {
+      border: none;
+      outline: none;
+      -webkit-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+      -moz-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+      box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+    }
+    &:active {
+      border: none;
+      outline: none;
+      -webkit-box-shadow: 0px 0px 6px 2.25px #4696ec;
+      -moz-box-shadow: 0px 0px 6px 2.25px #4696ec;
+      box-shadow: 0px 0px 6px 2.25px #4696ec;
+    }
+  }
+}

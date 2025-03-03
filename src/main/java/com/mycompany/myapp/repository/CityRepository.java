@@ -26,7 +26,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
     Set<String> getCitiesNamesNewRel(@Param("currentDate") ZonedDateTime currentDate);
 
     // Список городов по первой букве
-    @Query(
+    /*@Query(
         "select cit from City cit JOIN cit.relCategoryCities relCatCit JOIN relCatCit.category cat " +
         " join relCatCit.relCategoryCityChannels  relCatCitCh join relCatCitCh.chanell chan " +
         " where SUBSTRING(cit.cityName, 1, 1) = :firstLetter " +
@@ -35,5 +35,14 @@ public interface CityRepository extends JpaRepository<City, Long> {
         " and relCatCit.isShow = true " +
         " and cat.isShow = true"
     )
-    Set<City> getCitiesByFirstLetterNewRel(@Param("firstLetter") String firstLetter, @Param("currentDate") ZonedDateTime currentDate);
+    Set<City> getCitiesByFirstLetterNewRel(@Param("firstLetter") String firstLetter, @Param("currentDate") ZonedDateTime currentDate);*/
+
+    @Query(
+        "select cit from City cit  JOIN cit.relCategoryCities relCatCit " +
+        " join relCatCit.relCategoryCityChannels " +
+        " where SUBSTRING(cit.cityName, 1, 1) = :firstLetter " +
+        " and relCatCit.isShow = true " +
+        " and relCatCit.isShow = true "
+    )
+    Set<City> getCitiesByFirstLetterNewRel(@Param("firstLetter") String firstLetter);
 }

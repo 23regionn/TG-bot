@@ -1,0 +1,275 @@
+$widthValue: 420px;
+$minWidthValue: 420px;
+$maxWidthValue: 420px;
+$fontSize_l: 16px;
+$fontSize_m: 20px;
+$fontSize_xl: 24px;
+$top: 100px;
+$widthCloser: 15px;
+$margin: 3.125rem;
+
+.leftBar-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: fixed;
+  width: 100%;
+  height: 90%;
+  top: $top;
+  left: 0px;
+
+  .leftBar-sideMenu-closer {
+    width: $widthCloser;
+
+    .button {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background: #d9230f;
+      color: white;
+      text-align: center;
+      padding-top: 50vh;
+      cursor: pointer;
+    }
+  }
+
+  .leftBar-sideMenu {
+    $headerHeight_l: 80px;
+    $headerHeight_m: 225px;
+    $heightFooter: 20px;
+    $padding_l: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: $widthValue;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    transition: all 0.3s;
+
+    &.margin-left {
+      margin-left: -$widthValue;
+    }
+
+    .leftBar-header {
+      left: 0px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.75);
+      position: relative;
+      padding-left: $padding_l;
+      padding-right: $padding_l;
+      font-size: $fontSize_m;
+
+      .leftBar-sideMenu-closer-2 {
+        position: absolute;
+        top: 91.8%;
+        left: 98%;
+        background-color: rgba(33, 150, 243);
+        box-shadow: 2px 2px 5px 1px rgb(33, 150, 243, 0.75);
+        z-index: 1000;
+        .burger-arrow {
+          border-radius: 5px;
+          background-color: rgba(255, 255, 255, 0);
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+
+          &:hover {
+            cursor: pointer;
+          }
+          &.active {
+            span:nth-child(1) {
+              transform: translate(-5px) rotate(-40deg);
+            }
+            span:nth-child(2) {
+              transform: scale(0);
+            }
+            span:nth-child(3) {
+              transform: translate(-5px) rotate(40deg);
+            }
+          }
+          span {
+            transition: all 0.3s;
+            height: 3px;
+            background-color: white;
+            display: block;
+            width: 30px;
+            margin: 3px;
+          }
+        }
+      }
+
+      &.l_header {
+        min-height: $headerHeight_l;
+      }
+
+      &.m_header {
+        min-height: $headerHeight_m;
+      }
+
+      .leftBar-header-nav-back {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 23px;
+
+        .leftBar-header-nav-link {
+          padding-left: 0px;
+          padding-right: 0px;
+          color: #4696ec;
+
+          .leftBar-header-link-icon {
+            margin-right: 10px;
+          }
+
+          &.l_font-size {
+            font-size: $fontSize_l;
+          }
+        }
+      }
+
+      .leftBar-text-overflow {
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        -ms-line-clamp: 2;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        display: -webkit-box;
+        word-wrap: normal;
+        -webkit-box-orient: vertical;
+        box-orient: vertical;
+
+        &:after {
+          content: '';
+        }
+
+        &:hover {
+          overflow: visible;
+          display: inline;
+        }
+      }
+
+      .leftBar-header-text {
+        font-size: $fontSize_xl;
+      }
+
+      &.b_style {
+        font-weight: bold;
+      }
+
+      .leftBar-header-last-element {
+        $margin_m: 30px;
+        margin-top: auto;
+        width: 100%;
+
+        &.m_margin {
+          margin-bottom: $margin_m;
+        }
+      }
+
+      .leftBar-header-button {
+        $colorButton: #2196f3;
+        background-color: white;
+        color: $colorButton;
+        border: 2px solid $colorButton;
+        border-radius: 6px;
+        justify-content: center;
+        width: 100%;
+        font-size: $fontSize_l;
+
+        &:hover {
+          background-color: $colorButton;
+          color: white;
+          box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+      }
+    }
+
+    .leftBar-menu {
+      background-color: white;
+      height: calc(100% - 225px - 200px);
+      width: 100%;
+
+      &.l_height {
+        min-height: calc(100vh - #{$headerHeight_l} - #{$heightFooter} - #{$top});
+      }
+
+      &.m_height {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        min-height: calc(100vh - #{$headerHeight_m} - #{$heightFooter} - #{$top});
+      }
+
+      &.noFooter_height {
+        min-height: calc(100vh - #{$headerHeight_m} - #{$top});
+      }
+
+      .leftBar-scroll-panel {
+        width: 100%;
+        margin-top: 15px;
+        height: calc(100% - 5%);
+      }
+    }
+
+    .leftBar-footer {
+      height: 100px;
+    }
+  }
+  .leftBar-content {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+    position: relative;
+    margin-left: $margin;
+    margin-right: $margin;
+
+    &.r_flex-direction {
+      flex-direction: row;
+    }
+
+    &.c_flex-direction {
+      flex-direction: column;
+    }
+  }
+}
+
+.leftBar-container_size_text_m {
+  font-size: $fontSize_m;
+}
+#inspectionScrPanel {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  position: relative;
+  height: calc(100% - 5%);
+}
+#left_bar_menu_content_menu {
+  input {
+    border-radius: 6px;
+    color: #2c2c2c !important;
+
+    &:hover {
+      border: none;
+      outline: none;
+      -webkit-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+      -moz-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+      box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+    }
+    &:active {
+      border: none;
+      outline: none;
+      -webkit-box-shadow: 0px 0px 6px 2.25px #4696ec;
+      -moz-box-shadow: 0px 0px 6px 2.25px #4696ec;
+      box-shadow: 0px 0px 6px 2.25px #4696ec;
+    }
+  }
+}

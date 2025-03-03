@@ -1,0 +1,13 @@
+$fontSize_m: 16px;
+$fontSize_xl: 20px;
+$colorText: #8d8d8d;
+
+.leftBar-tree-menu {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  color: $colorText;
+  border: 0px;
+  padding-left: 0;
+  padding-right: 0px;
+  font-size: $fontSize_m;
+}

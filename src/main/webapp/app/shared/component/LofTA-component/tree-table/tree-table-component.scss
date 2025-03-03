@@ -1,0 +1,76 @@
+$b_color: rgba(255, 255, 255, 0);
+$colorDown: rgba(33, 150, 243, 0.8);
+$colorBg: #f9f9fd;
+$colorUp: rgba(234, 234, 239, 0.8);
+$widthScroll: 12px;
+
+#treeTableStyle1 > .p-treetable-footer {
+  background-color: $b_color;
+  border: 0px $b_color;
+  margin: 0px 0px 0px 0px;
+  padding: 16px 0px 0px 0px;
+}
+
+#treeTableStyle1 > .p-treetable-scrollable-wrapper {
+  .p-treetable-scrollable-view {
+    .p-treetable-scrollable-header {
+      .p-treetable-scrollable-header-box {
+        margin-right: $widthScroll !important;
+      }
+    }
+
+    .p-treetable-scrollable-body {
+      overflow-x: hidden !important;
+      .p-treetable-scrollable-body-table {
+      }
+    }
+
+    .p-treetable-scrollable-body::-webkit-scrollbar {
+      width: $widthScroll !important;
+    }
+
+    .p-treetable-scrollable-body::-webkit-scrollbar-track {
+      margin-top: 2px !important;
+      margin-bottom: 2px !important;
+      -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset !important;
+      background-color: $colorBg !important;
+      border-radius: 10px !important;
+    }
+
+    .p-treetable-scrollable-body::-webkit-scrollbar-thumb {
+      border-radius: 10px !important;
+      background: linear-gradient(180deg, $colorUp, $colorDown) !important;
+    }
+  }
+}
+
+/*#treeTableStyle1 > .p-treetable-scrollable-body	 {
+  background-color: black;
+  width: 40px;
+  visibility: collapse;
+}*/
+#treeTableStyle1,
+#tree_table_select_entity,
+#tree_table_checkpoints {
+  .p-filter-column {
+    input {
+      border-radius: 6px;
+      color: #2c2c2c !important;
+
+      &:hover {
+        border: none;
+        outline: none;
+        -webkit-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+        -moz-box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+        box-shadow: 0px 0px 6px 2.25px rgba(70, 150, 236, 0.4);
+      }
+      &:active {
+        border: none;
+        outline: none;
+        -webkit-box-shadow: 0px 0px 6px 2.25px #4696ec;
+        -moz-box-shadow: 0px 0px 6px 2.25px #4696ec;
+        box-shadow: 0px 0px 6px 2.25px #4696ec;
+      }
+    }
+  }
+}

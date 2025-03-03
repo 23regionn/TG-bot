@@ -5,11 +5,14 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IChanell, defaultValue } from 'app/shared/model/chanell.model';
+import { IPaginator } from 'app/shared/util/pagination.constants';
 import { getOnlyCategories } from 'app/modules/all-categories/all-categories.reducer';
+import { ISort } from 'app/shared/util/sort-constants';
 
 export const ACTION_TYPES = {
   FETCH_CHANELL_LIST: 'chanell/FETCH_CHANELL_LIST',
   FETCH_CHANELL: 'chanell/FETCH_CHANELL',
+  FETCH_CHANELL_PAGE: 'chanell/FETCH_CHANELL_PAGE',
   CREATE_CHANELL: 'chanell/CREATE_CHANELL',
   UPDATE_CHANELL: 'chanell/UPDATE_CHANELL',
   PARTIAL_UPDATE_CHANELL: 'chanell/PARTIAL_UPDATE_CHANELL',
@@ -24,6 +27,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
+  chanellsPage: {} as any,
 };
 
 export type ChanellState = Readonly<typeof initialState>;
@@ -34,6 +38,7 @@ export default (state: ChanellState = initialState, action): ChanellState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_CHANELL_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CHANELL):
+    case REQUEST(ACTION_TYPES.FETCH_CHANELL_PAGE):
       return {
         ...state,
         errorMessage: null,
@@ -63,11 +68,25 @@ export default (state: ChanellState = initialState, action): ChanellState => {
         updateSuccess: false,
         errorMessage: action.payload,
       };
+    case FAILURE(ACTION_TYPES.FETCH_CHANELL_PAGE):
+      return {
+        ...state,
+        loading: false,
+        updating: false,
+        updateSuccess: false,
+        errorMessage: action.payload,
+      };
     case SUCCESS(ACTION_TYPES.FETCH_CHANELL_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_CHANELL_PAGE):
+      return {
+        ...state,
+        loading: false,
+        chanellsPage: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_CHANELL):
       return {
@@ -101,6 +120,7 @@ export default (state: ChanellState = initialState, action): ChanellState => {
 };
 
 const apiUrl = 'api/chanells';
+const apiPage = 'api/channels-paginator';
 
 // Actions
 
@@ -296,4 +316,34 @@ export const createChannelForChannelPage: any = channel => async dispatch => {
   });
   dispatch(getAllChanellsInfoDTO());
   return result;
+};
+
+export const getChannelsPage: any = (paginator: IPaginator, filter?, sort?: ISort) => {
+  // export const getChannelsPage: any = (paginator: IPaginator, sort?: ISort) => {
+  let requestUrl = '';
+  let filterUrl = '';
+  // const filterUrl = '';
+
+  /*filter.inspectionInvIdName !== '' ? (filterUrl += `&inspectionInvIdName=${filter.inspectionInvIdName}`) : (filterUrl += ``);
+  filter.entityHierarchyName !== '' ? (filterUrl += `&entityHierarchyName=${filter.entityHierarchyName}`) : (filterUrl += ``);
+
+  filter.startDate !== '' ? (filterUrl += `&startDate=${filter.startDate}`) : (filterUrl += ``);
+  filter.endDate !== '' ? (filterUrl += `&endDate=${filter.endDate}`) : (filterUrl += ``);*/
+
+  filter.name !== '' ? (filterUrl += `&name=${filter.name}`) : (filterUrl += ``);
+  filter.link !== '' ? (filterUrl += `&link=${filter.link}`) : (filterUrl += ``);
+
+  filter.lastPayDate !== '' ? (filterUrl += `&lastPayDate=${filter.lastPayDate}`) : (filterUrl += ``);
+  filter.endPublicDate !== '' ? (filterUrl += `&endPublicDate=${filter.endPublicDate}`) : (filterUrl += ``);
+
+  sort && sort.sortField
+    ? (requestUrl = `${apiPage}/?numberPage=${paginator.numberPage}&countElement=${paginator.countElement}
+    &nameColumn=${sort.sortField}&optionalSort=${sort.sortOrder}${filterUrl}`)
+    : (requestUrl = `${apiPage}/?numberPage=${paginator.numberPage}&countElement=${paginator.countElement}
+    ${filterUrl}`);
+
+  return {
+    type: ACTION_TYPES.FETCH_CHANELL_PAGE,
+    payload: axios.get<IChanell>(requestUrl),
+  };
 };

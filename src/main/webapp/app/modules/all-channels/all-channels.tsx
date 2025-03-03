@@ -3,22 +3,22 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { SelectButton } from 'primereact/selectbutton';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import {
   createChannelForChannelPage,
   getAllChanellsInfoDTO,
   partialUpdateChannelForChannelPage,
+  getChannelsPage,
 } from 'app/entities/chanell/chanell.reducer';
-import { NavLink } from 'reactstrap';
 import { Calendar } from 'primereact/calendar';
+import { IPaginator } from 'app/shared/util/pagination.constants';
+import { ISort } from 'app/shared/util/sort-constants';
+import { TableComponentNew } from 'app/shared/component/LofTA-component/table/table-lazy/table-component-new';
+import { IFilter } from 'app/shared/util/constant';
 
 // Primereact
 // Primereact
@@ -41,11 +41,14 @@ export const AllChannels = (props: IAllChannelsProps) => {
   const [isModerateState, setIsModerateState] = useState(false);
   const [isPayState, setIsPayState] = useState(false);
 
+  // const paginatorJson: IPaginator = { numberPage: 1, countElement: 5 };
+
   useEffect(() => {
-    props.getAllChanellsInfoDTO();
+    // props.getAllChanellsInfoDTO();
+    // props.getChannelsPage(paginatorJson);
   }, []);
 
-  const { chanellList, match, loading } = props;
+  const { chanellList, match, loading, chanellsPage } = props;
 
   const editChannel = rowData => {
     window.console.log(rowData, 'rowData222');
@@ -188,6 +191,196 @@ export const AllChannels = (props: IAllChannelsProps) => {
     );
   };
 
+  const [lastSort, setLastSort] = useState(null);
+  const [lastPaginator, setLastPaginator] = useState(null);
+
+  /*const options = [
+    { name: translate('eaistkApp.listOfTechnicalAcceptances.archive.false'), value: false },
+    { name: translate('eaistkApp.listOfTechnicalAcceptances.archive.true'), value: true },
+  ];
+
+  const [valueArc, setValueArc] = useState(options[0].value);
+  const changeArc = e => {
+    setValueArc(e.value);
+    getInspection(lastPaginator, lastSort, e.value);
+  };*/
+
+  const getInspection = (pagination: IPaginator, sort: ISort) => {
+    setLastSort(sort);
+    setLastPaginator(pagination);
+    /*let archive;
+    if (isArchive === null) {
+      archive = valueArc ? valueArc : false;
+    } else {
+      archive = isArchive;
+    }*/
+    // props.getInspectionsPage(pagination, archive, filtersJsonForm, sort.sortOrder ? sort : null);
+    // props.getChannelsPage(paginatorJson);
+    props.getChannelsPage(pagination, filtersJsonForm, sort.sortOrder ? sort : null);
+  };
+
+  const arrayColumn = [
+    {
+      field: 'id',
+      header: 'ID',
+      sortField: 'id',
+      sortable: true,
+      filter: false,
+      filterPlaceholder: null,
+      filterMatchMode: null,
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: false,
+      style: { maxWidth: '5%', minWidth: '5%', textAlign: 'center' },
+    },
+    {
+      field: 'name',
+      header: 'Наименование',
+      sortable: true,
+      sortField: 'name',
+      filter: true,
+      filterPlaceholder: 'Поиск по названию',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: true,
+      style: { minWidth: '10%', maxWidth: '10%' },
+    },
+    {
+      field: 'link',
+      header: 'Ссылка',
+      sortable: false,
+      sortField: 'link',
+      filter: true,
+      filterPlaceholder: 'Поиск по ссылке',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: true,
+      style: { minWidth: '10%', maxWidth: '10%' },
+    },
+    {
+      field: 'isModerate',
+      header: 'Модерация',
+      sortable: true,
+      sortField: 'isModerate',
+      filter: false,
+      filterPlaceholder: 'Поиск по модерации',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: false,
+      style: { minWidth: '1%', maxWidth: '10%' },
+    },
+    {
+      field: 'isPay',
+      header: 'Платный',
+      sortable: true,
+      sortField: 'isPay',
+      filter: false,
+      filterPlaceholder: 'Поиск по платному',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: false,
+      style: { minWidth: '1%', maxWidth: '10%' },
+    },
+    {
+      field: 'lastPayDate',
+      header: 'Последнее размещение',
+      sortable: true,
+      sortField: 'lastPayDate',
+      filter: true,
+      useDate: true,
+      filterPlaceholder: '',
+      filterMatchMode: 'dateIs',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: false,
+      style: { minWidth: '12%', maxWidth: '12%' },
+    },
+    {
+      field: 'endPublicDate',
+      header: 'Конечная дата',
+      sortable: true,
+      sortField: 'endPublicDate',
+      filter: true,
+      useDate: true,
+      filterPlaceholder: null,
+      filterMatchMode: 'dateIs',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: false,
+      style: { minWidth: '12%', maxWidth: '12%' },
+    },
+    {
+      field: 'contacts',
+      header: 'Контакт',
+      sortable: true,
+      sortField: 'contacts',
+      filter: true,
+      filterPlaceholder: 'Поиск по контакту',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: true,
+      style: { minWidth: '5%', maxWidth: '18%' },
+    },
+    {
+      field: 'comment',
+      header: 'Комментарий',
+      sortable: false,
+      sortField: 'comment',
+      filter: false,
+      filterPlaceholder: 'Поиск по комментарию',
+      filterMatchMode: 'contains',
+      showFilterMenuOptions: false,
+      showFilterMenu: false,
+      showClearButton: true,
+      style: { minWidth: '5%', maxWidth: '18%' },
+    },
+  ];
+
+  const arrayColumnBody = [
+    /*{ body: isArchiveItem, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
+    { body: editItemDialog, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
+    { body: btnOfLogs, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
+    { body: viewItemTemplate, style: { minWidth: '13%', maxWidth: '13%', textAlign: 'center' } },*/
+  ];
+
+  const [lazyParamsFilter, setLazyParamsFilter] = useState({
+    filters: {
+      /*inspectionInvIdName: { value: '', matchMode: 'contains' },
+      entityHierarchyName: { value: '', matchMode: 'contains' },*/
+      name: { value: '', matchMode: 'contains' },
+      link: { value: '', matchMode: 'contains' },
+      lastPayDate: { value: '', matchMode: 'dateIs' },
+      endPublicDate: { value: '', matchMode: 'dateIs' },
+    },
+  });
+  const filtersJsonForm: IFilter = {
+    /*inspectionInvIdName: lazyParamsFilter.filters['inspectionInvIdName'].value,
+    entityHierarchyName: lazyParamsFilter.filters['entityHierarchyName'].value,*/
+    name: lazyParamsFilter.filters['name'].value,
+    link: lazyParamsFilter.filters['link'].value,
+    lastPayDate:
+      lazyParamsFilter.filters['lastPayDate'].value !== '' &&
+      lazyParamsFilter.filters['lastPayDate'].value !== null &&
+      lazyParamsFilter.filters['lastPayDate'].value !== undefined
+        ? new Date(lazyParamsFilter.filters['lastPayDate'].value).toLocaleDateString()
+        : '',
+    endPublicDate:
+      lazyParamsFilter.filters['endPublicDate'].value !== '' &&
+      lazyParamsFilter.filters['endPublicDate'].value !== null &&
+      lazyParamsFilter.filters['endPublicDate'].value !== undefined
+        ? new Date(lazyParamsFilter.filters['endPublicDate'].value).toLocaleDateString()
+        : '',
+  };
+
+  const onFilter = event => {
+    setLazyParamsFilter(event);
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -198,7 +391,23 @@ export const AllChannels = (props: IAllChannelsProps) => {
       </div>
 
       <br />
-      <DataTable value={chanellList as any[]} sortMode="multiple" className="oi-p-datatable">
+
+      <div className="list-acceptances-table-block">
+        <TableComponentNew
+          item={chanellsPage}
+          getItem={getInspection}
+          column={arrayColumn}
+          columnBody={arrayColumnBody}
+          lazyParamsFilter={lazyParamsFilter}
+          onFilter={onFilter}
+          frozenValue={true}
+          rows={5}
+          // loading={loadInspectionPage}
+          loading={loading}
+          arrayCount={[5, 10, 15]}
+        ></TableComponentNew>
+      </div>
+      {/*<DataTable value={chanellList as any[]} sortMode="multiple" className="oi-p-datatable">
         <Column headerStyle={{ width: '5rem' }} field="id" header="№"></Column>
         <Column field="name" filter filterPlaceholder="Поиск по наименованию" sortable header="Имя канала"></Column>
         <Column
@@ -241,7 +450,7 @@ export const AllChannels = (props: IAllChannelsProps) => {
         ></Column>
 
         <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
-      </DataTable>
+      </DataTable>*/}
 
       <Dialog
         visible={editChannelDialog}
@@ -421,12 +630,14 @@ export const AllChannels = (props: IAllChannelsProps) => {
 const mapStateToProps = ({ chanell }: IRootState) => ({
   chanellList: chanell.entities,
   loading: chanell.loading,
+  chanellsPage: chanell.chanellsPage,
 });
 
 const mapDispatchToProps = {
   partialUpdateChannelForChannelPage,
   createChannelForChannelPage,
   getAllChanellsInfoDTO,
+  getChannelsPage,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

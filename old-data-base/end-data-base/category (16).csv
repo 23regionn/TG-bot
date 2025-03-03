@@ -1,0 +1,166 @@
+id;name;score;is_first;is_show
+1;Биржа каналов;100;true;true
+2;GIF и Video;100;true;true
+3;IT;100;true;true
+4;Telegram;100;true;true
+5;Автомобили;100;true;true
+6;Английский язык;100;true;true
+7;Астрология;100;true;true
+8;Авторский блог;100;true;true
+9;Азербайджан;100;true;true
+10;Анекдоты;100;true;true
+11;Аниме;200;false;true
+12;Армения;190;false;true
+13;Афиша;180;false;true
+14;Белоруссия;170;false;true
+15;Бизнес и финансы;160;false;true
+16;Бодибилдинг;150;false;true
+17;Блогеры;140;false;true
+18;Блокчейн;130;false;true
+19;Военное;120;false;true
+20;Все каналы;110;false;true
+21;Все подряд;90;false;true
+22;Гороскоп;95;false;true
+23;Грузия;80;false;true
+24;Даркнет;60;false;true
+25;Дизайн;70;false;true
+26;Мужской;50;false;true
+27;Родителям;40;false;true
+28;ЕГЭ и экзамены;10;false;true
+29;Игры;30;false;true
+30;Инвестиции;20;false;true
+31;Инстаграм;100;true;true
+32;Искусство;100;true;true
+33;Казахстан;100;true;true
+34;Каталог;100;true;true
+35;Киргизия;100;true;true
+36;Криптовалюты;100;true;true
+37;Кулинария и еда;100;true;true
+38;Лайфхаки;100;true;true
+39;Лингвистика;100;true;true
+40;Литература;100;true;true
+41;Магазин;200;false;true
+42;Медицина;190;false;true
+43;Мобайл;180;false;true
+44;Молдавия;170;false;true
+45;Музыка;160;false;true
+46;Наука и технологии;150;false;true
+47;Недвижимость;140;false;true
+48;Новости;130;false;true
+49;Образование;120;false;true
+50;Однострочные;110;false;true
+51;Подкасты;90;false;true
+52;Программирование;95;false;true
+53;Подслушано;95;false;true
+54;Политика;80;false;true
+55;18+;60;true;true
+56;Природа и животные;70;false;true
+57;Ставки и прогнозы;50;false;true
+58;Родителям;40;false;true
+59;Прокси;10;false;true
+60;Психология;30;false;true
+61;Путешествия;20;false;true
+62;Работа;100;true;true
+63;Разное;100;true;true
+64;Региональные;100;true;true
+65;Религия;100;true;true
+66;СВО;100;true;true
+67;Сервисы;100;true;true
+68;Сливы;100;true;true
+69;Спорт;100;true;true
+70;Стикеры;100;true;true
+71;Строительство и ремонт;100;true;true
+72;Ставки на спорт;200;false;true
+73;Таджикистан;190;false;true
+74;Трейдинг;180;false;true
+75;Удаленная работа;170;false;true
+76;Узбекистан;160;false;true
+77;Украина;150;false;true
+78;Женские;140;false;true
+79;Фильмы и сериалы;130;false;true
+80;Фитнес;120;false;true
+81;Фото;110;false;true
+82;Скидки;90;false;true
+83;Цитаты;95;false;true
+84;Чаты;80;false;true
+85;Шок-контент;60;false;true
+86;Экология;70;false;true
+87;Экономика;50;false;true
+88;Юмор и мемы;40;false;true
+89;Юриспруденция;10;false;true
+90;Песочница;30;false;true
+91;Wildberries акции;30;false;true
+92;Wildberries курсы;30;false;true
+93;Ozon акции;30;false;true
+94;Ozon курсы;30;false;true
+95;CS GO;30;false;true
+96;Z-каналы;30;false;true
+97;Православие;30;false;true
+98;Ислам;30;false;true
+99;ЗОЖ;30;false;true
+100;Трезвость;30;false;true
+1000;Шоу-бизнес;30;false;true
+1001;Немецкий язык;30;false;true
+1002;Языки Европы;30;false;true
+1003;Языки Азии;30;false;true
+1004;Русский язык;30;false;true
+1005;Охота;30;false;true
+1006;Рыбалка;30;false;true
+1007;Дача;30;false;true
+1008;Игры для консолей;30;false;true
+1011;Мобильные игры;30;false;true
+1010;CS:Go Dota 2;30;false;true
+1009;Киберспорт;30;false;true
+1012;World of Tanks;30;false;true
+1013;Genshin Impact;30;false;true
+1014;Мемы;30;false;true
+1015;Юмор;30;false;true
+1016;Футбол;30;true;true
+1017;Теннис;30;false;true
+1018;Баскетбол;30;false;true
+1019;Единоборства;30;false;true
+1020;Хоккей;30;false;true
+1021;Турецкий язык;30;false;true
+1022;Brawl Stars;30;false;true
+1023;Французский язык;30;false;true
+1024;Корейский язык;30;false;true
+1025;Китайский язык;30;false;true
+1026;K-pop;30;false;true
+1027;Здоровое питание;30;false;true
+1028;Банки;30;false;true
+1029;Торговля в розницу;30;false;true
+1030;Мамочкам;30;false;true
+1031;Транспорт;30;false;true
+1032;Авторынок;30;false;true
+1033;Дальнобой;30;false;true
+1034;Авиация;30;false;true
+1035;Wildberries;30;false;true
+1036;Ozon;30;false;true
+1037;Java;30;false;true
+1038;Python;30;false;true
+1039;Frontend;30;false;true
+1040;PHP;30;false;true
+1041;QA;30;false;true
+1042;Косметика;30;false;true
+1043;Маникюр;30;false;true
+1044;Стиль;30;false;true
+1045;Вязание;30;false;true
+1046;Маркетинг;30;false;true
+1047;Аниме 18+;30;false;true
+1048;Взрослым;30;false;true
+1049;Москва;30;false;true
+1050;Санкт-Петербург;30;false;true
+1051;Рестораны и кафе;30;false;true
+1052;Аренда жилья;30;false;true
+1053;Театр и Кино;30;false;true
+1054;Госслужбы;30;false;true
+1055;Частные организации;30;false;true
+1056;Stand Up;30;false;true
+1057;Районы и жилые комплексы;30;false;true
+1058;Местные блогеры;30;false;true
+1059;Политические партии;30;false;true
+1060;История;30;false;true
+1061;Официальные лица;30;false;true
+1062;Общественные объединения;30;false;true
+1063;Знакомства;30;false;true
+1064;Библиотеки;30;false;true

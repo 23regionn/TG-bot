@@ -979,7 +979,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         finalList =
             cityRepository
                 //                .getCitiesByFirstLetter(firstLetter)
-                .getCitiesByFirstLetterNewRel(firstLetter, ZonedDateTime.now().minusDays(1l))
+                .getCitiesByFirstLetterNewRel(firstLetter)
                 .stream()
                 .sorted(
                     (o1, o2) -> {
@@ -3648,7 +3648,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         var searchCategory = new InlineKeyboardButton();
         rowInLine = new ArrayList<>();
         searchCategory.setText("Ввести название категории"); // Содержимое ответа в кнопке
-        searchCategory.setSwitchInlineQueryCurrentChat(" ");
+        searchCategory.setSwitchInlineQueryCurrentChat("");
         rowInLine.add(searchCategory);
         rowsInLine.add(rowInLine);
 

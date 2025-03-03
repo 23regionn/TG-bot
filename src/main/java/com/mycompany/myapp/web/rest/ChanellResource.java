@@ -1,5 +1,7 @@
 package com.mycompany.myapp.web.rest;
 
+import static com.mycompany.myapp.service.utils.PaginatorCheck.*;
+
 import com.mycompany.myapp.domain.AuditChannelsLog;
 import com.mycompany.myapp.domain.Chanell;
 import com.mycompany.myapp.repository.AuditChannelsLogRepository;
@@ -11,13 +13,16 @@ import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -302,5 +307,97 @@ public class ChanellResource {
     public List<ChannelInfoDTO> getAllChanellsInfoDTO() {
         log.debug("REST request to get all ChannelInfoDTO");
         return channelService.getAllChanellsInfoDTO();
+    }
+
+    @GetMapping("/channels-paginator")
+    public Page<ChannelInfoDTO> getFirstPage(
+        @RequestParam Optional<Integer> numberPage,
+        @RequestParam Optional<Integer> countElement,
+        @RequestParam Optional<String> nameColumn,
+        @RequestParam Optional<Integer> optionalSort,
+        @RequestParam Optional<String> name,
+        @RequestParam Optional<String> link,
+        @RequestParam Optional<String> lastPayDate,
+        @RequestParam Optional<String> endPublicDate
+        /*,
+        @RequestParam Optional<String> inspectionInvIdName,
+        @RequestParam Optional<String> entityHierarchyName,*/
+        /*@RequestParam (required = false, defaultValue = "false") Boolean isPay,
+        @RequestParam Optional<String> startDate,
+        @RequestParam Optional<String> endDate*/
+    ) {
+        log.debug("REST request to get ChannelDTO paging");
+
+        int page = numberOfPage(numberPage);
+        int count = countElementOnPage(countElement);
+        Sort sort = sortColumn(nameColumn, optionalSort, "id");
+
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");
+        LocalDate startDateSL = LocalDate.parse(
+            lastPayDate.isPresent() ? lastPayDate.get() : LocalDate.ofEpochDay(365).toString(),
+            lastPayDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        );
+        LocalDate startDateEL = LocalDate.parse(
+            lastPayDate.isPresent() ? lastPayDate.get() : LocalDate.now().toString(),
+            lastPayDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        );
+        ZonedDateTime startDateS = ZonedDateTime.of(
+            startDateSL.getYear(),
+            startDateSL.getMonthValue(),
+            startDateSL.getDayOfMonth(),
+            0,
+            0,
+            0,
+            0,
+            zoneId
+        );
+        ZonedDateTime startDateE = ZonedDateTime.of(
+            startDateEL.getYear(),
+            startDateEL.getMonthValue(),
+            startDateEL.getDayOfMonth(),
+            23,
+            59,
+            59,
+            59,
+            zoneId
+        );
+        LocalDate endDateSL = LocalDate.parse(
+            endPublicDate.isPresent() ? endPublicDate.get() : LocalDate.ofEpochDay(365).toString(),
+            endPublicDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        );
+        LocalDate endDateEL = LocalDate.parse(
+            endPublicDate.isPresent() ? endPublicDate.get() : LocalDate.now().toString(),
+            endPublicDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        );
+        ZonedDateTime endDateS = ZonedDateTime.of(
+            endDateSL.getYear(),
+            endDateSL.getMonthValue(),
+            endDateSL.getDayOfMonth(),
+            0,
+            0,
+            0,
+            0,
+            zoneId
+        );
+        ZonedDateTime endDateE = ZonedDateTime.of(
+            endDateEL.getYear(),
+            endDateEL.getMonthValue(),
+            endDateEL.getDayOfMonth(),
+            23,
+            59,
+            59,
+            59,
+            zoneId
+        );
+
+        return channelService.findChannelInfoDTOPages(
+            name.isPresent() ? name.get() : "",
+            link.isPresent() ? link.get() : "",
+            startDateS,
+            startDateE,
+            endDateS,
+            endDateE,
+            PageRequest.of(page, count, sort)
+        );
     }
 }

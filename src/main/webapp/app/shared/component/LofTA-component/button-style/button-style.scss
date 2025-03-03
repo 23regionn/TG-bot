@@ -1,0 +1,48 @@
+$border_rd_standard: 0.375rem;
+$border_rd_standard_Pl: 0.475rem;
+$border_rd_standard_Mi: 0.275rem;
+
+$background-color-white: white;
+$color-blue: dodgerblue;
+
+$font-size-L: 1rem;
+
+$height-default: 2.5rem;
+
+$width-125-rem: 12.5rem;
+
+.button-st {
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: $border_rd_standard;
+
+  &.border-radius_Pl {
+    border-radius: $border_rd_standard_Pl;
+  }
+  &.border-radius_Mi {
+    border-radius: $border_rd_standard_Mi;
+  }
+
+  &.style-white {
+    background-color: white;
+    color: dodgerblue;
+  }
+
+  &.font-size-L {
+    font-size: $font-size-L;
+  }
+
+  &.height-default {
+    height: $height-default;
+  }
+
+  &.width-125 {
+    min-width: $width-125-rem;
+    width: $width-125-rem;
+  }
+}
+
+.button-st-shadow:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}

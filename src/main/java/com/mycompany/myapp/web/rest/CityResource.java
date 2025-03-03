@@ -188,4 +188,10 @@ public class CityResource {
         log.debug("REST request to get all City Names new rel");
         return cityRepository.getCitiesNamesNewRel(ZonedDateTime.now());
     }
+
+    @GetMapping("/cities-first")
+    public Set<City> getCitiesFirst() {
+        log.debug("REST request to get all City first");
+        return cityRepository.getCitiesByFirstLetterNewRel("К");
+    }
 }

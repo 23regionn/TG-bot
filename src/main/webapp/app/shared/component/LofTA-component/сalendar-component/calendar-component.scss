@@ -1,0 +1,30 @@
+$b_color: rgb(255, 255, 255);
+$border_color: rgb(59, 130, 246, 0.5);
+
+.calendarStyle1 {
+  top: 110px !important;
+  height: 30rem;
+  background: $b_color !important;
+  box-shadow: 0 2px 4px -1px rgb(59 130 246 / 20%), 0 4px 5px 0 rgb(59 130 246 / 14%), 0 1px 10px 0 rgb(59 130 246 / 12%) !important;
+  .p-datepicker-group-container {
+    .p-datepicker-group {
+      .p-datepicker-header {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        .p-datepicker-title {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          gap: 10px;
+          order: -1;
+        }
+      }
+    }
+  }
+}
+
+.dropdownStyle1 {
+  padding-left: 0px;
+  margin-left: 0px;
+}
