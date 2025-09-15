@@ -84,7 +84,7 @@ export const AllStatisticsTgUsers = (props: IAllStatisticsTgUsersProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статитстика бота по пользователям </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статистика бота по пользователям </div>
       </div>
 
       <br />

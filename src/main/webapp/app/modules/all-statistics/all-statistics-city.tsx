@@ -154,7 +154,7 @@ export const AllStatisticsCity = (props: IAllStatisticsCityProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статитстика бота по городам </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статистика бота по городам </div>
       </div>
 
       <br />

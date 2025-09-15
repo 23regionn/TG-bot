@@ -142,7 +142,7 @@ export const AllStatisticsClicks = (props: IAllStatisticsClicksProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по нажатиям </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статистика бота по нажатиям </div>
       </div>
       <hr />
 
@@ -347,7 +347,7 @@ export const AllStatisticsClicks = (props: IAllStatisticsClicksProps) => {
       <hr />
 
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по нажатиям на листалку </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статистика бота по нажатиям на листалку </div>
       </div>
 
       <br />
@@ -361,7 +361,7 @@ export const AllStatisticsClicks = (props: IAllStatisticsClicksProps) => {
       <hr />
 
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота по нажатиям на листалку на даты </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статистика бота по нажатиям на листалку на даты </div>
       </div>
 
       <div className="p-field">

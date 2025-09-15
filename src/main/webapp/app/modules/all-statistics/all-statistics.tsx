@@ -108,7 +108,7 @@ export const AllStatistics = (props: IAllStatisticsProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статитстика бота </div>
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '2rem' }}> Статистика бота </div>
       </div>
       <hr />
 

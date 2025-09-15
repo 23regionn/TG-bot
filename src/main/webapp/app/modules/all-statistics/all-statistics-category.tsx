@@ -155,7 +155,8 @@ export const AllStatisticsCategory = (props: IAllStatisticsCategoryProps) => {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статитстика бота по категориям </div>
+
+        <div style={{ flexGrow: 1, textAlign: 'center', fontSize: '1.4rem' }}> Статистика бота по категориям </div>
       </div>
 
       <br />
