@@ -583,6 +583,7 @@ id;is_show;score;is_first;category_id;city_id;comment
 583;true;10;false;61;125;comment
 584;true;10;false;1061;124;comment
 585;true;10;false;48;132;comment
+586;true;10;false;48;124;comment
 587;true;10;false;48;133;comment
 588;true;10;false;48;134;comment
 589;true;10;false;48;135;comment
@@ -1150,6 +1151,7 @@ id;is_show;score;is_first;category_id;city_id;comment
 1152;true;10;false;1058;192;comment
 1153;true;10;false;15;191;comment
 1154;true;10;false;15;192;comment
+1155;true;10;false;1055;193;comment
 1156;true;10;false;48;194;comment
 1157;true;10;false;1061;130;comment
 1158;true;10;false;1061;194;comment

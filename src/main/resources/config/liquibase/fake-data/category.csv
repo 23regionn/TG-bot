@@ -1,4 +1,4 @@
-﻿id;name;score;is_first;is_show
+id;name;score;is_first;is_show
 1;Биржа каналов;100;true;true
 2;GIF и Video;100;true;true
 3;IT;100;true;true
@@ -76,7 +76,7 @@
 75;Удаленная работа;170;false;true
 76;Узбекистан;160;false;true
 77;Украина;150;false;true
-78;ФЕМ-ЛГБТ-БЛМ;140;false;true
+78;Женские;140;false;true
 79;Фильмы и сериалы;130;false;true
 80;Фитнес;120;false;true
 81;Фото;110;false;true
