@@ -9,6 +9,13 @@
     <!--
         Added the entity City.
     -->
+
+    <changeSet id="20230729180248-0" author="oleg">
+        <createSequence sequenceName="сity_seq"
+                        startValue="1000"
+                        incrementBy="50"/>
+    </changeSet>
+
     <changeSet id="20230730180248-1" author="jhipster">
         <createTable tableName="city">
             <column name="id" type="bigint">

@@ -19,7 +19,7 @@ public class City implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "сity_seq")
     private Long id;
 
     @NotNull

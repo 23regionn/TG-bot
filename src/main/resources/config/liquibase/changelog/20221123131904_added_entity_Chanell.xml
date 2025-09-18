@@ -9,6 +9,13 @@
     <!--
         Added the entity Chanell.
     -->
+
+    <changeSet id="20221122131904-0" author="oleg">
+        <createSequence sequenceName="chanell_seq"
+                        startValue="11000"
+                        incrementBy="1"/>
+    </changeSet>
+
     <changeSet id="20221123131904-1" author="jhipster">
         <createTable tableName="chanell">
             <column name="id" type="bigint">
