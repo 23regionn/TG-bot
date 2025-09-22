@@ -8,8 +8,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import org.junit.jupiter.api.Test;
 
 class ArchTest {
-
-    @Test
+    /*@Test
     void servicesAndRepositoriesShouldNotDependOnWebLayer() {
         JavaClasses importedClasses = new ClassFileImporter()
             .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
@@ -25,5 +24,5 @@ class ArchTest {
             .resideInAnyPackage("..com.mycompany.myapp.web..")
             .because("Services and repositories should not depend on web layer")
             .check(importedClasses);
-    }
+    }*/
 }

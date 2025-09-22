@@ -182,13 +182,13 @@ jhipster:
 
 # application:
 bot:
-  name: Gid_Telegram
-  token: 5789913711:AAHAWlpA3yTidklgM1lfL9rBG9ewrThpW0Y
-  rename: TestGidPoTelegramBot
+  # name: Gid_Telegram
+  # token: 5789913711:AAHAWlpA3yTidklgM1lfL9rBG9ewrThpW0Y
+  # rename: TestGidPoTelegramBot
 
-  #  name: OlegTestBot
-  #  token: 5617005559:AAE74-hkBPMVNqs947nYEZReeYjv4Kb6Voc
-  #  rename: OlezhanTestBot
+  name: OlegTestBot
+  token: 5617005559:AAE74-hkBPMVNqs947nYEZReeYjv4Kb6Voc
+  rename: OlezhanTestBot
 
   #  name: Города и каналы 🇷🇺
   #  token: 6893351229:AAHmuPrcaFhgwhpdITSmQJ8KWk0pFXUslrE

@@ -333,63 +333,30 @@ public class ChanellResource {
         Sort sort = sortColumn(nameColumn, optionalSort, "id");
 
         ZoneId zoneId = ZoneId.of("Europe/Moscow");
-        LocalDate startDateSL = LocalDate.parse(
-            lastPayDate.isPresent() ? lastPayDate.get() : LocalDate.ofEpochDay(365).toString(),
-            lastPayDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        );
-        LocalDate startDateEL = LocalDate.parse(
-            lastPayDate.isPresent() ? lastPayDate.get() : LocalDate.now().toString(),
-            lastPayDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        );
-        ZonedDateTime startDateS = ZonedDateTime.of(
-            startDateSL.getYear(),
-            startDateSL.getMonthValue(),
-            startDateSL.getDayOfMonth(),
-            0,
-            0,
-            0,
-            0,
-            zoneId
-        );
-        ZonedDateTime startDateE = ZonedDateTime.of(
-            startDateEL.getYear(),
-            startDateEL.getMonthValue(),
-            startDateEL.getDayOfMonth(),
-            23,
-            59,
-            59,
-            59,
-            zoneId
-        );
-        LocalDate endDateSL = LocalDate.parse(
-            endPublicDate.isPresent() ? endPublicDate.get() : LocalDate.ofEpochDay(365).toString(),
-            endPublicDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        );
-        LocalDate endDateEL = LocalDate.parse(
-            endPublicDate.isPresent() ? endPublicDate.get() : LocalDate.now().toString(),
-            endPublicDate.isPresent() ? DateTimeFormatter.ofPattern("dd.MM.yyyy") : DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        );
-        ZonedDateTime endDateS = ZonedDateTime.of(
-            endDateSL.getYear(),
-            endDateSL.getMonthValue(),
-            endDateSL.getDayOfMonth(),
-            0,
-            0,
-            0,
-            0,
-            zoneId
-        );
-        ZonedDateTime endDateE = ZonedDateTime.of(
-            endDateEL.getYear(),
-            endDateEL.getMonthValue(),
-            endDateEL.getDayOfMonth(),
-            23,
-            59,
-            59,
-            59,
-            zoneId
-        );
 
+        // lastPayDate
+        ZonedDateTime startDateS;
+        ZonedDateTime startDateE;
+        if (lastPayDate.isPresent() && !lastPayDate.get().isEmpty()) {
+            LocalDate date = LocalDate.parse(lastPayDate.get(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            startDateS = date.atStartOfDay(zoneId);
+            startDateE = date.atTime(23, 59, 59).atZone(zoneId);
+        } else {
+            startDateS = ZonedDateTime.parse("0001-01-01T00:00:00Z");
+            startDateE = ZonedDateTime.parse("9999-12-31T23:59:59Z");
+        }
+
+        // endPublicDate
+        ZonedDateTime endDateS;
+        ZonedDateTime endDateE;
+        if (endPublicDate.isPresent() && !endPublicDate.get().isEmpty()) {
+            LocalDate date = LocalDate.parse(endPublicDate.get(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            endDateS = date.atStartOfDay(zoneId);
+            endDateE = date.atTime(23, 59, 59).atZone(zoneId);
+        } else {
+            endDateS = ZonedDateTime.parse("0001-01-01T00:00:00Z");
+            endDateE = ZonedDateTime.parse("9999-12-31T23:59:59Z");
+        }
         return channelService.findChannelInfoDTOPages(
             name.isPresent() ? name.get() : "",
             link.isPresent() ? link.get() : "",

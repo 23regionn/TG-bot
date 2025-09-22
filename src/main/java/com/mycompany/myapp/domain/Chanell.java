@@ -20,7 +20,7 @@ public class Chanell implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "chanell_seq")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "chanell_seq", allocationSize = 1)
     private Long id;
 
     @NotNull
