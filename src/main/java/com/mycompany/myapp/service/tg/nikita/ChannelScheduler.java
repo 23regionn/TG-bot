@@ -20,16 +20,16 @@ public class ChannelScheduler {
     private ChannelTestService channelTestService;
 
     // Запускать каждые 5 минут для теста
-    @Scheduled(fixedRate = 60000)
-    public void scheduledChannelCheck() {
-        log.info("Запуск scheduledChannelCheck...");
-        channelTestService.testChannelQuery();
-    }
-
-    // Запускать при старте приложения
-    @EventListener(ApplicationReadyEvent.class)
-    public void onStartup() {
-        log.info("Запуск теста при старте приложения...");
-        channelTestService.testChannelQuery();
-    }
+//    @Scheduled(fixedRate = 60000)
+//    public void scheduledChannelCheck() {
+//        log.info("Запуск scheduledChannelCheck...");
+//        channelTestService.testChannelQuery();
+//    }
+//
+//    // Запускать при старте приложения
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void onStartup() {
+//        log.info("Запуск теста при старте приложения...");
+//        channelTestService.testChannelQuery();
+//    }
 }

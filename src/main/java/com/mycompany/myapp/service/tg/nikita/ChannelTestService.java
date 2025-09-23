@@ -28,35 +28,35 @@ public class ChannelTestService {
     @Autowired
     private ChannelService channelService;
 
-    public void testChannelQuery() {
-        try {
-            log.info("=== ПРОВЕРКА НАЛИЧИЯ ДАННЫХ В БАЗЕ ===");
-
-            // 1. Проверим сколько всего записей
-            long totalCount = chanellRepository.countAllChannels();
-            log.info("Всего записей в таблице chanell: {}", totalCount);
-
-            if (totalCount == 0) {
-                log.error("Таблица chanell ПУСТАЯ! Нет данных для выборки.");
-                return;
-            }
-
-            // 2. Посмотрим первые 5 записей
-            List<Chanell> sampleChannels = chanellRepository.findAnyChannels();
-            log.info("Примеры записей из базы:");
-            for (Chanell channel : sampleChannels) {
-                log.info("ID: {}, Name: '{}', Link: '{}', lastPayDate: {}, endPublicDate: {}",
-                    channel.getId(), channel.getName(), channel.getLink(),
-                    channel.getLastPayDate(), channel.getEndPublicDate());
-            }
-
-            // 3. Теперь попробуем разные варианты запросов
-            testWithDifferentFilters();
-
-        } catch (Exception e) {
-            log.error("Ошибка при проверке данных: {}", e.getMessage(), e);
-        }
-    }
+//    public void testChannelQuery() {
+//        try {
+//            log.info("=== ПРОВЕРКА НАЛИЧИЯ ДАННЫХ В БАЗЕ ===");
+//
+//            // 1. Проверим сколько всего записей
+//            long totalCount = chanellRepository.countAllChannels();
+//            log.info("Всего записей в таблице chanell: {}", totalCount);
+//
+//            if (totalCount == 0) {
+//                log.error("Таблица chanell ПУСТАЯ! Нет данных для выборки.");
+//                return;
+//            }
+//
+//            // 2. Посмотрим первые 5 записей
+//            List<Chanell> sampleChannels = chanellRepository.findAnyChannels();
+//            log.info("Примеры записей из базы:");
+//            for (Chanell channel : sampleChannels) {
+//                log.info("ID: {}, Name: '{}', Link: '{}', lastPayDate: {}, endPublicDate: {}",
+//                    channel.getId(), channel.getName(), channel.getLink(),
+//                    channel.getLastPayDate(), channel.getEndPublicDate());
+//            }
+//
+//            // 3. Теперь попробуем разные варианты запросов
+//            testWithDifferentFilters();
+//
+//        } catch (Exception e) {
+//            log.error("Ошибка при проверке данных: {}", e.getMessage(), e);
+//        }
+//    }
 
     private void testWithDifferentFilters() {
         log.info("=== ТЕСТИРУЕМ РАЗНЫЕ ВАРИАНТЫ ФИЛЬТРОВ ===");

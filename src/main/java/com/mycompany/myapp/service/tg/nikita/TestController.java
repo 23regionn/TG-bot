@@ -15,14 +15,14 @@ public class TestController {
     @Autowired
     private ChannelTestService channelTestService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testChannelsQuery() {
-        try {
-            channelTestService.testChannelQuery();
-            return ResponseEntity.ok("Тестовый запрос выполнен успешно");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ошибка: " + e.getMessage());
-        }
-    }
+//    @GetMapping("/test")
+//    public ResponseEntity<String> testChannelsQuery() {
+//        try {
+//            channelTestService.testChannelQuery();
+//            return ResponseEntity.ok("Тестовый запрос выполнен успешно");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body("Ошибка: " + e.getMessage());
+//        }
+//    }
 }

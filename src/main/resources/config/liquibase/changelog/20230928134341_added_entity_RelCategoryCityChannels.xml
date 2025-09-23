@@ -13,7 +13,7 @@
     <changeSet id="20220917181841-2" author="oleg">
         <createSequence sequenceName="rel_category_city_channels_seq"
                         startValue="10000"
-                        incrementBy="50"/>
+                        incrementBy="1"/>
     </changeSet>
 
     <changeSet id="20230928181841-1" author="jhipster">
