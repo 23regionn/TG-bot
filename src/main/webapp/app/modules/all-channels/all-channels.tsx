@@ -137,6 +137,10 @@ export const AllChannels = (props: IAllChannelsProps) => {
     setEndPublicDateState(null);
 
     setEditChannelDialog(false);
+
+    if (lastPaginator) {
+      getInspection(lastPaginator, lastSort);
+    }
   };
 
   const createCategoryButton = () => {
@@ -167,6 +171,10 @@ export const AllChannels = (props: IAllChannelsProps) => {
     setEndPublicDateState(null);
 
     setCreateChanDialog(false);
+
+    if (lastPaginator) {
+      getInspection(lastPaginator, lastSort);
+    }
   };
 
   const editChannelDialogFooter = (
@@ -340,8 +348,8 @@ export const AllChannels = (props: IAllChannelsProps) => {
       style: { minWidth: '5%', maxWidth: '18%' },
     },
   ];
-
   const arrayColumnBody = [
+    { body: actionBodyTemplate, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } }
     /*{ body: isArchiveItem, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
     { body: editItemDialog, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
     { body: btnOfLogs, style: { minWidth: '4%', maxWidth: '4%', textAlign: 'center' } },
