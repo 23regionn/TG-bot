@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
@@ -9,6 +9,11 @@
     <!--
         Added the entity SearchTypeLog.
     -->
+    <changeSet id="20231025203956-0" author="Nikita">
+        <createSequence sequenceName="search_type_log_sequence"
+                        startValue="1000"
+                        incrementBy="1"/>
+    </changeSet>
     <changeSet id="20231025203956-1" author="jhipster">
         <createTable tableName="search_type_log">
             <column name="id" type="bigint">

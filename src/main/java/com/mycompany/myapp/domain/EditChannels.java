@@ -15,7 +15,7 @@ public class EditChannels implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "edit_channels_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "id_message")

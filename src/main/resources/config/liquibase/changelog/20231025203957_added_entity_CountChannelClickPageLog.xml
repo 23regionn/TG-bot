@@ -9,6 +9,11 @@
     <!--
         Added the entity CountChannelClickPageLog.
     -->
+    <changeSet id="20231025203957-0" author="Nikita">
+        <createSequence sequenceName="count_channel_click_seq"
+                        startValue="1000"
+                        incrementBy="1"/>
+    </changeSet>
     <changeSet id="20231025203957-1" author="jhipster">
         <createTable tableName="count_channel_click_page_log">
             <column name="id" type="bigint">

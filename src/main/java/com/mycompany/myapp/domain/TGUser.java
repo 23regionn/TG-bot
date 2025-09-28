@@ -19,7 +19,7 @@ public class TGUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "tg_user_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "first_name")

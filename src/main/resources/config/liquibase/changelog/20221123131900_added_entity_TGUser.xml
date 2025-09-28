@@ -9,6 +9,11 @@
     <!--
         Added the entity TGUser.
     -->
+    <changeSet id="20221123131900-0" author="Nikita">
+        <createSequence sequenceName="tg_user_seq"
+                        startValue="1000"
+                        incrementBy="1"/>
+    </changeSet>
     <changeSet id="20221123131900-1" author="jhipster">
         <createTable tableName="tg_user">
             <column name="id" type="bigint">

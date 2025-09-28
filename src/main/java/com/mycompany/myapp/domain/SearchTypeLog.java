@@ -16,7 +16,7 @@ public class SearchTypeLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "search_type_log_sequence", allocationSize = 1)
     private Long id;
 
     @Column(name = "chat_id")

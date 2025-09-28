@@ -9,6 +9,12 @@
     <!--
         Added the entity EditChannels.
     -->
+    <changeSet id="20230212183208-0" author="Neron">
+        <createSequence
+            sequenceName="edit_channels_seq"
+            startValue="1000"
+            incrementBy="1"/>
+    </changeSet>
     <changeSet id="20230212183208-1" author="jhipster">
         <createTable tableName="edit_channels">
             <column name="id" type="bigint">

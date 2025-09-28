@@ -16,7 +16,7 @@ public class RelCategoryChannels implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "rel_category_channels_seq", allocationSize = 1)
     private Long id;
 
     @NotNull

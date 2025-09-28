@@ -9,6 +9,12 @@
     <!--
         Added the entity RelCategoryChannels.
     -->
+    <changeSet id="20230928181839-1" author="Neron">
+        <createSequence
+            sequenceName="rel_category_channels_seq"
+            startValue="1000"
+            incrementBy="1"/>
+    </changeSet>
     <changeSet id="20230928181839-1" author="jhipster">
         <createTable tableName="rel_category_channels">
             <column name="id" type="bigint">

@@ -9,6 +9,11 @@
     <!--
         Added the entity Category.
     -->
+    <changeSet id="20221123131902-0" author="Nikita">
+        <createSequence sequenceName="category_seq"
+                        startValue="2000"
+                        incrementBy="1"/>
+    </changeSet>
     <changeSet id="20221123131902-1" author="jhipster">
         <createTable tableName="category">
             <column name="id" type="bigint">

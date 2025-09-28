@@ -9,6 +9,12 @@
     <!--
         Added the entity RelCategoryCity.
     -->
+    <changeSet id="20230928181840-0" author="Neron">
+        <createSequence
+            sequenceName="rel_category_city_seq"
+            startValue="1000"
+            incrementBy="1"/>
+    </changeSet>
     <changeSet id="20230928181840-1" author="jhipster">
         <createTable tableName="rel_category_city">
             <column name="id" type="bigint">
