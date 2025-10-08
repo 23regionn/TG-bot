@@ -1,10 +1,16 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
+import com.mycompany.myapp.service.dto.tgUsers.TgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +22,22 @@ public class TgUserService {
 
     public TgUserService(TGUserRepository tgUserRepository) {
         this.tgUserRepository = tgUserRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TgUserDTO> findTgUserDTOPages(
+        String firstName,
+        String userName,
+        ZonedDateTime startDate,
+        ZonedDateTime endDate,
+        Pageable pageable
+    ) {
+        return tgUserRepository.findTgUsersWithFilters(firstName, userName, startDate, endDate, pageable).map(TgUserDTO::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TgUserDTO> getAllTgUsers() {
+        return tgUserRepository.findAll().stream().map(TgUserDTO::fromEntity).collect(Collectors.toList());
     }
 
     public Long getTGUserCount() {

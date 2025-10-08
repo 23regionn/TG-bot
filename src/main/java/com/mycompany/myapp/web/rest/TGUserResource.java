@@ -1,20 +1,30 @@
 package com.mycompany.myapp.web.rest;
 
+import static com.mycompany.myapp.service.utils.PaginatorCheck.*;
+
 import com.mycompany.myapp.domain.TGUser;
 import com.mycompany.myapp.repository.TGUserRepository;
 import com.mycompany.myapp.service.TgUserService;
 import com.mycompany.myapp.service.dto.tgUsers.SearchAnyByDatesDTO;
 import com.mycompany.myapp.service.dto.tgUsers.StatisticsTgUserDTO;
+import com.mycompany.myapp.service.dto.tgUsers.TgUserDTO;
 import com.mycompany.myapp.service.dto.tgUsers.TgUsersCountDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -169,9 +179,47 @@ public class TGUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tGUsers in body.
      */
     @GetMapping("/tg-users")
-    public List<TGUser> getAllTGUsers() {
+    public ResponseEntity<List<TgUserDTO>> getAllTGUsers() {
         log.debug("REST request to get all TGUsers");
-        return tGUserRepository.findAll();
+        return ResponseEntity.ok(tgUserService.getAllTgUsers());
+    }
+
+    @GetMapping("/tg-users-paginator")
+    public Page<TgUserDTO> getTgUsersPage(
+        @RequestParam Optional<Integer> numberPage,
+        @RequestParam Optional<Integer> countElement,
+        @RequestParam Optional<String> nameColumn,
+        @RequestParam Optional<Integer> optionalSort,
+        @RequestParam Optional<String> firstName,
+        @RequestParam Optional<String> userName,
+        @RequestParam Optional<String> registrationDate
+    ) {
+        log.debug("REST request to get TGUserDTO paging");
+
+        int page = numberOfPage(numberPage);
+        int count = countElementOnPage(countElement);
+        Sort sort = sortColumn(nameColumn, optionalSort, "id");
+        ZoneId zoneId = ZoneId.of("Europe/Moscow");
+
+        // фильтр по registrationDate
+        ZonedDateTime startDate;
+        ZonedDateTime endDate;
+        if (registrationDate.isPresent() && !registrationDate.get().isEmpty()) {
+            LocalDate date = LocalDate.parse(registrationDate.get(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            startDate = date.atStartOfDay(zoneId);
+            endDate = date.atTime(23, 59, 59).atZone(zoneId);
+        } else {
+            startDate = ZonedDateTime.parse("0001-01-01T00:00:00Z");
+            endDate = ZonedDateTime.parse("9999-12-31T23:59:59Z");
+        }
+
+        return tgUserService.findTgUserDTOPages(
+            firstName.orElse(""),
+            userName.orElse(""),
+            startDate,
+            endDate,
+            PageRequest.of(page, count, sort)
+        );
     }
 
     /**

@@ -7,6 +7,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,17 @@ public interface TGUserRepository extends JpaRepository<TGUser, Long> {
     TGUser findByChatId(Long chatId);
 
     Set<TGUser> findAllByChatId(Long chatId);
+
+    @Query(
+        " SELECT u FROM TGUser u WHERE (:firstName = '' OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :firstName, '%'))) AND (:userName = '' OR LOWER(u.userName) LIKE LOWER(CONCAT('%', :userName, '%'))) AND (u.registrationDate BETWEEN :startDate AND :endDate)"
+    )
+    Page<TGUser> findTgUsersWithFilters(
+        @Param("firstName") String firstName,
+        @Param("userName") String userName,
+        @Param("startDate") ZonedDateTime startDate,
+        @Param("endDate") ZonedDateTime endDate,
+        Pageable pageable
+    );
 
     @Query("select t from TGUser t " + " where (t.chatId = :chatId)" + " and  (t.isDelete = true ) ")
     Set<TGUser> getByChatIdAndDeleteTrue(@Param("chatId") Long chatId);
